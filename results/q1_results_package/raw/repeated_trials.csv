@@ -1,0 +1,4 @@
+trial,approval_rate,approved_nodes,rejected_nodes,global_accuracy,global_demographic_parity_gap,mean_proof_generation_ms,mean_ipfs_retrieval_ms,runtime_ms,global_publication_gas,global_model_cid,report_cid,missing_reason
+1,0.666667,2,1,0.938889,0.144269,623.970667,0.871857,3176.796,449664,bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm,bafkreihwrnileecpbpormjvspjdakjpz4cl2y5j2zh3lijj47qlzk4yhjq,
+2,0.666667,2,1,0.938889,0.144269,630.829,0.920714,3162.308,449664,bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm,bafkreihfwye5z7utc6wmebceqcoo3aenietgr6774ldm24zz3zuxkdlzlq,
+3,0.666667,2,1,0.938889,0.144269,633.476333,0.992571,3158.502,449664,bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm,bafkreifjk7r3x72qqy5pmdxf2foqys3awtq32oso2oe73hnyzdl6k5llha,

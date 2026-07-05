@@ -1,0 +1,4 @@
+policy_item,value,missing_reason
+minimum_local_accuracy,0.62,
+maximum_demographic_parity_gap,0.28,
+approval_rule,accuracy >= min_accuracy and demographic_parity_gap <= max_demographic_parity_gap,

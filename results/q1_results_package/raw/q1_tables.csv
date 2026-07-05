@@ -1,0 +1,9 @@
+table,item,value
+R1,Nodes,3
+R1,Trials,3
+R1,Model,logistic_regression
+R1,IPFS mode,kubo-http
+R1,Final lifecycle,Archived
+R2,Approved/rejected,2/1
+R3,Global accuracy,0.938889
+R4,Mean proof time,629.425333

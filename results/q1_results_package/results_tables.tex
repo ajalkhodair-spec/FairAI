@@ -1,0 +1,76 @@
+\begin{table}[t]
+\centering
+\caption{MVP execution configuration and final outcome.}
+\small
+\begin{tabular}{ll}
+\hline
+Item & Value \\
+\hline
+Nodes & 3 \\
+Trials & 3 \\
+Model type & logistic\_regression \\
+Blockchain & hardhat \\
+Smart contracts & \textbackslash\{\}texttt\{FairAIEthicalLedger\}, \textbackslash\{\}texttt\{FairAISignedVerifier\}, \textbackslash\{\}texttt\{FairAIMultisigAdmin\} \\
+IPFS mode & \textbackslash\{\}texttt\{kubo-http\} \\
+IPFS endpoint & \textbackslash\{\}texttt\{http://127.0.0.1:5001\} \\
+Aggregation method & FedAvg weighted by local sample count \\
+Final lifecycle state & Archived \\
+Approved/rejected & 2/1 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Node-level eligibility and approval results.}
+\small
+\begin{tabular}{lrrrrll}
+\hline
+Node & Accuracy & DP gap & EO gap & Proof & Approval & Reason \\
+\hline
+1 & 0.950 & 0.003 & 0.010 & valid & Approved & eligible under configured policy \\
+2 & 0.963 & 0.000 & 0.012 & valid & Approved & eligible under configured policy \\
+3 & 0.963 & 0.282 & 0.000 & invalid & Rejected & DP gap 0.282132 > threshold 0.280000 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Global aggregation and publication results.}
+\small
+\begin{tabular}{ll}
+\hline
+Metric & Value \\
+\hline
+Approved participants & [1, 2] \\
+Excluded participant & [3] \\
+Aggregation method & FedAvg weighted by local sample count \\
+Global accuracy & 0.938889 \\
+Global DP gap & 0.144269 \\
+Global model CID & \textbackslash\{\}scriptsize\textbackslash\{\}texttt\{bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm\} \\
+Report CID & \textbackslash\{\}scriptsize\textbackslash\{\}texttt\{bafkreigkcm7b4wwixdmklowqx5zmjg7zzxh2olp7iiwdgz66rae3nqljem\} \\
+Global publication gas & 449664 \\
+\hline
+\end{tabular}
+\end{table}
+
+\begin{table}[t]
+\centering
+\caption{Repeated-trial aggregate framework metrics.}
+\small
+\begin{tabular}{ll}
+\hline
+Metric & Mean / Value \\
+\hline
+trials & 3 \\
+approval\_rate & 0.666667 \\
+global\_accuracy & 0.938889 \\
+global\_demographic\_parity\_gap & 0.144269 \\
+proof\_generation\_time\_ms & 629.4253333333334 \\
+ipfs\_retrieval\_time\_ms & 0.9283806666666666 \\
+runtime\_ms & 3165.8686666666667 \\
+global\_publication\_gas & 449664 \\
+\hline
+\end{tabular}
+\end{table}

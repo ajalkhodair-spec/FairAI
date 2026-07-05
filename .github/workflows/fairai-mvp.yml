@@ -1,0 +1,46 @@
+name: FairAI MVP
+
+on:
+  push:
+    paths:
+      - "circuits/**"
+      - "hardhat/**"
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/fairai-mvp.yml"
+  pull_request:
+    paths:
+      - "circuits/**"
+      - "hardhat/**"
+      - "scripts/**"
+      - "tests/**"
+      - ".github/workflows/fairai-mvp.yml"
+
+jobs:
+  contract-tests:
+    runs-on: ubuntu-latest
+    defaults:
+      run:
+        working-directory: hardhat
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+      - run: npx hardhat compile
+      - run: npx hardhat test
+
+  python-unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+      - run: npm ci
+        working-directory: hardhat
+      - run: python -m unittest discover -s tests

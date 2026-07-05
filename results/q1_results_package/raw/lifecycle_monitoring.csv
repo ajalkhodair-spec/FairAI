@@ -1,0 +1,5 @@
+check,value,passed,missing_reason
+monitoring_status,passed,True,
+lifecycle_sequence,Open -> SubmissionClosed -> AggregationStarted -> Published -> Archived,True,
+final_round_state,Archived,True,
+audit_trail_failures,[],True,

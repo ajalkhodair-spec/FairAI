@@ -1,0 +1,13 @@
+validation_item,demonstrated,evidence,missing_reason
+raw data stayed local,True,No raw node datasets are written to chain or IPFS artifacts,
+strict Kubo/IPFS used,True,kubo-http,
+artifacts uploaded to IPFS,True,20 tracked artifacts,
+CIDs registered on-chain,True,model/proof/public/metadata/metrics/manifest CIDs recorded,
+Groth16 proof generated,True,FairnessEligibility.circom,
+snarkjs verification performed,True,local verification status exported,
+signed verifier decision used,True,signed,
+Node 3 rejected,True,policy gate rejected Node 3,
+approved-only aggregation completed,True,"[1, 2]",
+global model published,True,bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm,
+report published,True,bafkreigkcm7b4wwixdmklowqx5zmjg7zzxh2olp7iiwdgz66rae3nqljem,
+round archived,True,Archived,

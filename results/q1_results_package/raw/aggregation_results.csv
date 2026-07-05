@@ -1,0 +1,2 @@
+approved_participants,rejected_participants,aggregation_method,weighting_factor,aggregation_weights,global_validation_accuracy,global_demographic_parity_gap,global_model_cid,report_cid,global_publication_gas,missing_reason
+"[1, 2]",[3],FedAvg weighted by local sample count,local sample count,"[-0.337117, 2.274279, -1.659933]",0.938889,0.144269,bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm,bafkreigkcm7b4wwixdmklowqx5zmjg7zzxh2olp7iiwdgz66rae3nqljem,449664,

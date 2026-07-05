@@ -1,0 +1,21 @@
+\section{Results}
+\subsection{End-to-End FairAI MVP Execution}
+The objective of this experiment is to validate the FairAI governance workflow rather than to optimize classifier accuracy alone. The final MVP executed a three-node federated-learning round over a local Hardhat Ethereum network with Dockerized Kubo/IPFS storage. Raw local training data were not written on-chain. The contract-governed lifecycle completed the sequence Open, SubmissionClosed, AggregationStarted, Published, and Archived.
+
+\subsection{IPFS Artifact Traceability and Strict Storage Validation}
+The experiment used strict Kubo/IPFS mode (\texttt{kubo-http}), so local SHA-256 fallback storage was not accepted for the final result path. Node-level model, metrics, metadata, proof, public-input, and manifest artifacts were published as CIDs and validated through retrieval and pin checks. The global model was published as \texttt{bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm}, and the report was published as \texttt{bafkreigkcm7b4wwixdmklowqx5zmjg7zzxh2olp7iiwdgz66rae3nqljem}.
+
+\subsection{Groth16 Proof Generation and Signed On-Chain Verification Path}
+The experiment generates Groth16 proofs using the FairnessEligibility.circom circuit and verifies them locally with snarkjs. For the on-chain approval path, the final MVP uses a signed verifier-service model: the verifier checks the proof off-chain, signs the verification decision, FairAISignedVerifier verifies the authorized signer and decision on-chain, and FairAIEthicalLedger records the model as approved or rejected. Direct Solidity Groth16 verification was not used as the final result-generation path. The direct verifier and adapter remain in the implementation for future integration work, but the reported approval decisions use the signed verifier-service path.
+
+\subsection{Smart-Contract Approval and Rejection}
+The ledger recorded three local model submissions. Nodes 1 and 2 satisfied the configured policy and were approved. Node 3 was rejected because its demographic parity gap exceeded the configured eligibility threshold (0.282132 $>$ 0.280000). This demonstrates enforcement of the configured fairness eligibility policy at the aggregation gate.
+
+\subsection{Approved-Only Aggregation and Global Model Publication}
+Only approved local model artifacts were retrieved and included in weighted FedAvg. Nodes 1 and 2 were included, while Node 3 was excluded. The resulting global model achieved validation accuracy 0.938889 and demographic parity gap 0.144269. The global publication transaction consumed 449664 gas.
+
+\subsection{Repeated-Trial Framework Results}
+Across 3 repeated trials, the mean approval rate was 0.666667, the mean global accuracy was 0.938889, and the mean global demographic parity gap was 0.144269. Mean proof generation time was 629.425 ms, and mean IPFS retrieval time was 0.928 ms.
+
+\subsection{Framework Validation Summary}
+The results validate the FairAI MVP path at small scale: local training, IPFS publication, CID registration, proof-based verifier decision, smart-contract approval/rejection, approved-only aggregation, global publication, and lifecycle monitoring. These results validate the framework path rather than production throughput or classifier generality.

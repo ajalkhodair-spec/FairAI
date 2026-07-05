@@ -1,0 +1,19 @@
+scope,artifact_type,cid,size_bytes,upload_latency_ms,retrieval_latency_ms,retrieval_status,schema_validation_status,pin_status,missing_reason
+node_1,model,bafkreihuzbd3qwo3aem22e5t43ae6ietvoiaeaknj7rb6rugkw6rdqbvpe,139,missing,0.85,True,True,True,upload latency not exported
+node_1,metrics,bafkreidctgqjqvmdd3fi67frqxmv3c7duzhyp3ui6nxcq7vvkeytcdpyoq,268,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_1,metadata,bafkreicf3l6izo7ripo36bp4tmsm2tmmjqszcioyydjbqfidg3wswbmzja,212,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_1,proof,bafkreidywq5jkv5tubwytn5tqrreygochmjpfngqpih76gghs6cwiln3d4,722,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_1,public_inputs,bafkreibrxlbiwr35tj7prx3eoqpfkkt4yfghkvj3w64lbmt7sm5dl3n2bm,61,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_1,manifest,bafkreihtknztt4devqpxqtsonko7vwddrcdlnqohe7nqx6th3esshsrwyq,637,missing,1.113,True,True,True,upload latency not exported
+node_2,model,bafkreibpj5727w67ixqy4w42r7z3ziwd7ykcup7sda3433c4hmgc5l2vjm,137,missing,0.73,True,True,True,upload latency not exported
+node_2,metrics,bafkreiezf3ibqdv7ny4v43i5ochssd5yn3r7uyydxfjizrnfdy2jf5xrsa,255,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_2,metadata,bafkreieqbwei2hdx7xnycps5wln5cjm5xzz4s76rp2oevosxsyskfvgpzi,212,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_2,proof,bafkreictiddzwcshs6miwlmbj754rbjexrqckc2pqswxgzq6z3vmtlldyi,720,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_2,public_inputs,bafkreihijdsx75jehdvi3z4drbwtmmi7w3aigbob2ct3ebgkcsxnhgxj5m,61,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_2,manifest,bafkreifzof3w576dpceywwyndmqdu4lgrysoip4iqzqhfv5dafenjad6bm,634,missing,0.961,True,True,True,upload latency not exported
+node_3,model,bafkreiaewx3hhme3zatyr2bly7eoxvehexryxtoi7t7mexljggx6xdhvga,136,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_3,metrics,bafkreihlys3paa76iev65j37jnu56yjuckhyt4lcb3g522l5hypbeftg6q,265,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_3,metadata,bafkreih742jysrpb2pykewe7a446oibjkteqarx5h6mplmfzjanermyl6i,212,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_3,proof,bafkreie2zyhh4o2wun5cw3zowfl3f2kzt75ms7qrkd5c74m74op5ntdcua,49,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_3,public_inputs,bafkreicpkpg2ddblvigagvf3l6nd5s7f5ujkwtmocg5iopbpcelbeavziu,2,missing,missing,missing,missing,missing,retrieval/pin check not exported for this artifact
+node_3,manifest,bafkreid7fcn67efthm2vb2nadkbbayz5ypfsw36vetvyinvyvkejj7r56a,635,missing,0.821,True,True,True,upload latency not exported

@@ -1,0 +1,9 @@
+metric,mean_or_value,std,missing_reason
+trials,3,0,
+approval_rate,0.666667,0.0,
+global_accuracy,0.938889,0.0,
+global_demographic_parity_gap,0.144269,0.0,
+proof_generation_time_ms,629.4253333333334,4.905826292198065,
+ipfs_retrieval_time_ms,0.9283806666666666,0.06072109009506773,
+runtime_ms,3165.8686666666667,9.652790753628288,
+global_publication_gas,449664,0,

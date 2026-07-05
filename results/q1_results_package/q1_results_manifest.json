@@ -1,0 +1,915 @@
+{
+  "circuit_path": "circuits/FairnessEligibility.circom",
+  "contract_addresses": {
+    "FairAIEthicalLedger": "0xe7f1725E7734CE288F8367e1Bb143E90bb3F0512",
+    "FairAISignedVerifier": "0x5FbDB2315678afecb367f032d93F642f64180aa3"
+  },
+  "data_provenance_note": "All reported values were extracted from the final FairAI MVP experiment outputs. No previous manually shared result figures were used.",
+  "direct_solidity_groth16_verifier_used_in_final_result_path": false,
+  "experiment_summary": "outputs/fairai_mvp_final_experiment/experiment_summary.json",
+  "generated_at": "2026-06-26T20:53:56.207333+00:00",
+  "generated_docx": "outputs/fairai_mvp_final_experiment/q1_results_package/FairAI_Final_MVP_Q1_Results_Report.docx",
+  "generated_figures": [
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figures/lifecycle_flow.png",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figures/approval_rejection_results.png",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figures/node_policy_metrics.png",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figures/ipfs_artifact_traceability.png",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figures/zk_verification_path.png",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figures/approved_only_aggregation.png",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figures/repeated_trial_summary.png",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figures/framework_validation_checklist.png"
+  ],
+  "generated_latex_files": [
+    "outputs/fairai_mvp_final_experiment/q1_results_package/results_section.tex",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/results_tables.tex",
+    "outputs/fairai_mvp_final_experiment/q1_results_package/figure_captions.tex"
+  ],
+  "generated_workbook": "outputs/fairai_mvp_final_experiment/q1_results_package/FairAI_Final_MVP_Q1_Results.xlsx",
+  "git_commit": "missing",
+  "ipfs_endpoint": "http://127.0.0.1:5001",
+  "missing_metrics": [
+    {
+      "metric": "verifier_service_signature",
+      "missing_reason": "signature embedded in transaction calldata and not exported as a separate artifact",
+      "row_index": 0,
+      "table": "zk_proof_results"
+    },
+    {
+      "metric": "verifier_service_signature",
+      "missing_reason": "signature embedded in transaction calldata and not exported as a separate artifact",
+      "row_index": 1,
+      "table": "zk_proof_results"
+    },
+    {
+      "metric": "verifier_service_signature",
+      "missing_reason": "signature embedded in transaction calldata and not exported as a separate artifact",
+      "row_index": 2,
+      "table": "zk_proof_results"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "value not exported by final experiment output",
+      "row_index": 0,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 1,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 1,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 1,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 1,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 2,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 2,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 2,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 2,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 3,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 3,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 3,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 3,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 4,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 4,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 4,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 4,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "value not exported by final experiment output",
+      "row_index": 5,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "value not exported by final experiment output",
+      "row_index": 6,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 7,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 7,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 7,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 7,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 8,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 8,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 8,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 8,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 9,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 9,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 9,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 9,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 10,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 10,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 10,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 10,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "value not exported by final experiment output",
+      "row_index": 11,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 12,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 12,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 12,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 12,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 13,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 13,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 13,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 13,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 14,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 14,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 14,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 14,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 15,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 15,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 15,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 15,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 16,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 16,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 16,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 16,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "value not exported by final experiment output",
+      "row_index": 17,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 18,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency was not exported for individual artifacts",
+      "row_index": 19,
+      "table": "artifact_cids"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency not exported",
+      "row_index": 0,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 1,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 1,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 1,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 1,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 1,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 2,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 2,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 2,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 2,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 2,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 3,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 3,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 3,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 3,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 3,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 4,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 4,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 4,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 4,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 4,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency not exported",
+      "row_index": 5,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency not exported",
+      "row_index": 6,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 7,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 7,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 7,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 7,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 7,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 8,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 8,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 8,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 8,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 8,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 9,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 9,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 9,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 9,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 9,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 10,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 10,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 10,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 10,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 10,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency not exported",
+      "row_index": 11,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 12,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 12,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 12,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 12,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 12,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 13,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 13,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 13,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 13,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 13,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 14,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 14,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 14,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 14,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 14,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 15,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 15,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 15,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 15,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 15,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 16,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_latency_ms",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 16,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "retrieval_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 16,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "schema_validation_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 16,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "pin_status",
+      "missing_reason": "retrieval/pin check not exported for this artifact",
+      "row_index": 16,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "upload_latency_ms",
+      "missing_reason": "upload latency not exported",
+      "row_index": 17,
+      "table": "ipfs_metrics"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for node registration receipt",
+      "row_index": 0,
+      "table": "smart_contract_events"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for node registration receipt",
+      "row_index": 1,
+      "table": "smart_contract_events"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for node registration receipt",
+      "row_index": 2,
+      "table": "smart_contract_events"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle event receipt",
+      "row_index": 3,
+      "table": "smart_contract_events"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle event receipt",
+      "row_index": 4,
+      "table": "smart_contract_events"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle event receipt",
+      "row_index": 5,
+      "table": "smart_contract_events"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle event receipt",
+      "row_index": 6,
+      "table": "smart_contract_events"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle event receipt",
+      "row_index": 7,
+      "table": "smart_contract_events"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle transaction",
+      "row_index": 4,
+      "table": "transaction_gas"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle transaction",
+      "row_index": 5,
+      "table": "transaction_gas"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle transaction",
+      "row_index": 6,
+      "table": "transaction_gas"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle transaction",
+      "row_index": 7,
+      "table": "transaction_gas"
+    },
+    {
+      "metric": "gas_used",
+      "missing_reason": "gas not exported for lifecycle transaction",
+      "row_index": 8,
+      "table": "transaction_gas"
+    }
+  ],
+  "monitoring_report": "outputs/fairai_mvp_signed_results/monitoring_report.json",
+  "proof_system": "Groth16",
+  "proof_verification_path": "Groth16 generated and verified locally with snarkjs; signed verifier-service decision verified on-chain",
+  "report": "outputs/fairai_mvp_signed_results/report.md",
+  "run_summary": "outputs/fairai_mvp_signed_results/run_summary.json",
+  "signed_verifier_path": true,
+  "smart_contract_names": [
+    "FairAIEthicalLedger",
+    "FairAISignedVerifier",
+    "FairAIMultisigAdmin"
+  ],
+  "source_run_dir": "outputs/fairai_mvp_final_experiment",
+  "strict_ipfs_mode": true
+}

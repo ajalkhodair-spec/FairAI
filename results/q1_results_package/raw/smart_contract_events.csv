@@ -1,0 +1,13 @@
+event_type,node_id,round_id,state,approval_status,tx_hash,block_number,gas_used,missing_reason
+NodeRegistered,1,1,,,0x747445b085a5119eb98a9b07ef44853650d33ee4e6e99a6ffb8606e67d6de98d,7,missing,gas not exported for node registration receipt
+NodeRegistered,2,1,,,0x54abe2dc6b2f32a550715d3ad7444c3b44360d7af9b411e85255029435530632,8,missing,gas not exported for node registration receipt
+NodeRegistered,3,1,,,0x6e3318d3a5dd4608c536f95aea1ee43302d66c995ec0883a0d3af4d03f888948,9,missing,gas not exported for node registration receipt
+RoundStateChanged,,1,Open,,0x0dae6db89ba0438a79760164a11feb11ad9caf4f2f4df501091a77fe94b5f3e9,6,missing,gas not exported for lifecycle event receipt
+RoundStateChanged,,1,SubmissionClosed,,0x5d861abe1e6f63b6f19cd2b26898ae200b1473c131d2689cf9e97525a3906122,13,missing,gas not exported for lifecycle event receipt
+RoundStateChanged,,1,AggregationStarted,,0x770d005a0a0285f871f50701381add088395635013df126fe911011cad74ccd3,14,missing,gas not exported for lifecycle event receipt
+RoundStateChanged,,1,Published,,0x484003a430b69a3f780a0275e71d21c532f253689108b66d1ce6002e13f54309,15,missing,gas not exported for lifecycle event receipt
+RoundStateChanged,,1,Archived,,0xfcf0eaa3d6faf7213dc31f8785b633e5fccaf0269e355aaa7a8380d2f7c9ae4b,16,missing,gas not exported for lifecycle event receipt
+AuditLogged,node-1,1,,Approved,0x07ccccde9593deda8b3c4f82f6be99461aad59e309aad4c408766572b4786559,10,760819,
+AuditLogged,node-2,1,,Approved,0xea8ab32229ff113d15e0befdedb6a47bb30ac5a8a55178db1991844eb371221b,11,743695,
+AuditLogged,node-3,1,,Rejected,0xadff0137a527c853d4a0cc057f314c5e53011fdc89ab715ac8f241e5f45e756d,12,717757,
+GlobalModelPublished,,1,Published,,0x484003a430b69a3f780a0275e71d21c532f253689108b66d1ce6002e13f54309,15,449664,
