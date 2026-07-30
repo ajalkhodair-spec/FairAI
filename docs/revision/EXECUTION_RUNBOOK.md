@@ -52,13 +52,19 @@ The legacy ZK path additionally requires a compatible `circom`, `snarkjs`, and
 - Never use local content-addressed fallback for strict IPFS evidence.
 - Never overwrite `results/q1_results_package/`.
 
-## Planned Unified Interface
+## Unified Interface
 
 ```sh
-python -m fairai_revision.run --config configs/revision/legacy_mvp.yaml
+python3 -m venv .venv
+.venv/bin/python -m pip install -r requirements-lock.txt
+.venv/bin/python -m fairai_revision.datasets adult
+.venv/bin/python -m fairai_revision.datasets compas
+make test PYTHON=.venv/bin/python
+.venv/bin/python -m fairai_revision.run --config configs/revision/legacy_mvp.yaml
 make test
 make revision-smoke
 ```
 
-These commands are planned and are not yet implemented.
-
+Dataset downloads are checksum-enforced. A mismatch aborts preparation rather
+than substituting another source. Scenario configurations with
+`executor: planned` remain fail-closed until their phase is implemented.

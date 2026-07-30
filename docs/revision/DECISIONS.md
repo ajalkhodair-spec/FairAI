@@ -51,3 +51,21 @@ the scientific stack is pinned in the real-data phase.
 All required scenario configurations exist, but scenarios not yet implemented
 use `executor: planned`. Attempting to run one creates a failed manifest and
 raises `NotImplementedError`; it cannot silently emit placeholder results.
+
+## D-009 Do not redistribute COMPAS raw data
+
+The acquisition command downloads the pinned ProPublica source and records its
+checksum locally. The raw CSV remains ignored because ProPublica's data terms
+require attribution and restrict redistribution as a standalone data product.
+
+## D-010 Use favorable-outcome labels consistently
+
+Adult uses income greater than USD 50,000 as the favorable label. COMPAS uses
+no two-year recidivism as the favorable label. Metric code and documentation
+must retain this convention so fairness-gap directions remain interpretable.
+
+## D-011 Exclude protected attributes from model features by default
+
+Protected attributes are retained for group evaluation but excluded from model
+features. Preprocessing is fitted on the training split only, then applied to
+validation and test splits without learning new categories or statistics.

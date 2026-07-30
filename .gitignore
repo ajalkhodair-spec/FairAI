@@ -7,6 +7,10 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .coverage
+.venv/
+
+data/raw/
+data/processed/
 
 node_modules/
 npm-debug.log*

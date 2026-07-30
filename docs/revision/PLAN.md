@@ -18,7 +18,7 @@ This file is the source of truth for the acceptance-oriented revision.
 | 0 | Repository and evidence audit | Audit documents, baseline manifest, targeted tests | Complete |
 | 1 | Reproducibility infrastructure | Config runner, schemas, locks, smoke test | Complete |
 | 2 | Legacy reproduction | Three deterministic trials and gap report | Complete |
-| 3 | Adult/COMPAS and model interfaces | Licensed loaders, checksums, LR and MLP tests | Pending |
+| 3 | Adult/COMPAS and model interfaces | Licensed loaders, checksums, LR and MLP tests | Complete |
 | 4 | IID/non-IID partitioning and entropy | Deterministic partitions and entropy outputs | Pending |
 | 5 | Group fairness metrics and policy engine | DP, EO, EOdds, SAG and policy tests | Pending |
 | 6 | Baselines and ablations | B0-B4, B6-B7; B5 or documented blocker | Pending |
@@ -38,5 +38,5 @@ This file is the source of truth for the acceptance-oriented revision.
 
 ## Current Next Action
 
-Begin Phase 3 by adding verified Adult and COMPAS acquisition/preparation
-infrastructure, dataset cards, checksums, and common model interfaces.
+Begin Phase 4: deterministic IID and Dirichlet non-IID client partitioning,
+minimum-size enforcement, normalized entropy, and partition evidence.

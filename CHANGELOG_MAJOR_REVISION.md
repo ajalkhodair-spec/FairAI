@@ -13,8 +13,12 @@
 - Make targets, revision smoke test, and CI smoke integration.
 - Formal three-trial legacy reproduction with per-trial manifests.
 - Baseline comparison, node/global metrics, gas, artifact, proof, IPFS, and lifecycle exports.
+- Checksum-pinned Adult and COMPAS acquisition with source and license records.
+- Deterministic train, validation, and test preparation with train-only preprocessing.
+- Common logistic-regression and small-MLP model interfaces with serialization tests.
 
 ### Changed
 
 - No implementation behavior changed during Phase 0.
 - Legacy commands and behavior remain unchanged by the G1 runner.
+- Scientific dependencies are version-pinned for Python 3.13.

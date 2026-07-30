@@ -1,3 +1,9 @@
-# Phase 1 runner uses only the Python standard library.
-# Scientific dependencies will be pinned here when real-data support is added.
-
+joblib==1.5.2
+narwhals==2.15.0
+numpy==2.5.1
+pandas==3.0.3
+python-dateutil==2.9.0.post0
+scikit-learn==1.9.0
+scipy==1.18.0
+six==1.17.0
+threadpoolctl==3.6.0
