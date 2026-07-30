@@ -9,9 +9,10 @@
   small-MLP model interfaces, deterministic IID and Dirichlet client
   partitioning, minimum-size enforcement, canonical partition checksums, and
   normalized entropy exports, protected-group DP/EO/equalized-odds/SAG metrics,
-  explicit undefined results, and versioned round-bounded approval policies
+  explicit undefined results, versioned round-bounded approval policies, and
+  initial real-data multi-round B0/B1/B3 engineering-validation runs
 - Tests passed:
-  - Python: 49 tests
+  - Python: 50 tests
   - Solidity: 15 tests
   - Hardhat compile: 7 contracts
   - ZKey verification against R1CS and Powers of Tau

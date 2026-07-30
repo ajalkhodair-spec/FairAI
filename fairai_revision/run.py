@@ -455,10 +455,183 @@ def run_partition_analysis(config, output_dir):
     }
 
 
+def run_federated_core(config, output_dir):
+    import numpy as np
+
+    from .data import load_adult, load_compas
+    from .federated import run_federated_method
+    from .partition import (
+        export_partition_evidence,
+        parse_partition_spec,
+        partition_clients,
+    )
+    from .policy import load_policy_profiles
+
+    raw_root = REPO_ROOT / "data" / "raw"
+    if config["dataset"] == "adult":
+        dataset_dir = raw_root / "adult"
+        dataset = load_adult(dataset_dir, seed=config["seed"])
+    elif config["dataset"] == "compas":
+        dataset_dir = raw_root / "compas"
+        dataset = load_compas(
+            dataset_dir / "compas-scores-two-years.csv", seed=config["seed"]
+        )
+    else:
+        raise ValueError(f"Unsupported federated dataset: {config['dataset']}")
+    download_manifest = json.loads(
+        (dataset_dir / "download_manifest.json").read_text(encoding="utf-8")
+    )
+    profiles = load_policy_profiles(
+        REPO_ROOT / "configs" / "revision" / "policy_profiles.json"
+    )
+    profile_name = config["fairness_policy"].removesuffix("_policy")
+    try:
+        policy = profiles[profile_name]
+    except KeyError as exc:
+        raise ValueError(f"Unknown fairness policy: {profile_name}") from exc
+    methods = config.get("executable_methods", [])
+    if not methods:
+        raise ValueError("federated_core requires executable_methods")
+
+    protected = dataset.train.protected[
+        dataset.primary_protected_attribute
+    ].to_numpy()
+    partition_checksums = {}
+    global_rows = []
+    client_rows = []
+    test_rows = []
+    method_summaries = []
+    for partition_spec in config.get("partitions", ["iid"]):
+        mode, alpha = parse_partition_spec(partition_spec)
+        partition = partition_clients(
+            dataset.train.labels,
+            protected,
+            client_count=config["clients"],
+            mode=mode,
+            seed=config["seed"],
+            alpha=alpha,
+            minimum_samples=config.get("minimum_samples_per_client", 50),
+        )
+        partition_checksums[partition_spec] = partition.checksum
+        export_partition_evidence(
+            output_dir / "partitions" / partition_spec,
+            partition,
+            dataset.train.labels,
+            protected,
+        )
+        for method in methods:
+            result = run_federated_method(
+                dataset=dataset,
+                partition=partition,
+                method=method,
+                policy=policy,
+                model_type=config["model"],
+                rounds=config["rounds"],
+                local_epochs=config["local_epochs"],
+                seed=config["seed"],
+                minimum_group_samples=config.get("minimum_group_samples", 10),
+            )
+            global_rows.extend(
+                {
+                    "scenario_id": config["scenario_id"],
+                    "seed": config["seed"],
+                    "partition": partition_spec,
+                    **row,
+                }
+                for row in result["round_metrics"]
+            )
+            client_rows.extend(
+                {
+                    "scenario_id": config["scenario_id"],
+                    "seed": config["seed"],
+                    "partition": partition_spec,
+                    **row,
+                }
+                for row in result["client_metrics"]
+            )
+            test_metrics = result["test_metrics"]
+            test_rows.append(
+                {
+                    "scenario_id": config["scenario_id"],
+                    "seed": config["seed"],
+                    "partition": partition_spec,
+                    "method": method,
+                    "accuracy": test_metrics["accuracy"],
+                    "macro_f1": test_metrics["macro_f1"],
+                    "demographic_parity_gap": test_metrics[
+                        "demographic_parity_gap"
+                    ],
+                    "equal_opportunity_gap": test_metrics[
+                        "equal_opportunity_gap"
+                    ],
+                    "equalized_odds_gap": test_metrics["equalized_odds_gap"],
+                    "subgroup_accuracy_gap": test_metrics[
+                        "subgroup_accuracy_gap"
+                    ],
+                    "runtime_ms": result["runtime_ms"],
+                }
+            )
+            model_path = (
+                output_dir
+                / "models"
+                / f"{partition_spec}-{method}-final_parameters.npz"
+            )
+            np.savez_compressed(
+                model_path,
+                **{
+                    f"parameter_{index}": value
+                    for index, value in enumerate(result["final_parameters"])
+                },
+            )
+            method_summaries.append(
+                {
+                    "partition": partition_spec,
+                    "method": method,
+                    "runtime_ms": result["runtime_ms"],
+                    "final_validation_accuracy": result["round_metrics"][-1][
+                        "global_accuracy"
+                    ],
+                    "test_accuracy": test_metrics["accuracy"],
+                }
+            )
+    write_csv(
+        output_dir / "metrics" / "fairness_metrics_by_client.csv",
+        client_rows,
+        list(client_rows[0]),
+    )
+    write_csv(
+        output_dir / "metrics" / "fairness_metrics_global.csv",
+        global_rows,
+        list(global_rows[0]),
+    )
+    write_csv(
+        output_dir / "metrics" / "test_metrics.csv",
+        test_rows,
+        list(test_rows[0]),
+    )
+    partition_checksum = __import__("hashlib").sha256(
+        canonical_json_bytes(partition_checksums)
+    ).hexdigest()
+    return {
+        "dataset_checksum": download_manifest["archive_sha256"],
+        "partition_checksum": partition_checksum,
+        "summary": {
+            "dataset": config["dataset"],
+            "seed": config["seed"],
+            "methods_executed": methods,
+            "methods_not_executed": config.get("methods_not_executed", {}),
+            "partitions": partition_checksums,
+            "results": method_summaries,
+            "test_set_usage": "evaluated once after final round for each paired method",
+        },
+    }
+
+
 EXECUTORS = {
     "smoke": run_smoke,
     "legacy_mvp": run_legacy,
     "partition_analysis": run_partition_analysis,
+    "federated_core": run_federated_core,
 }
 
 

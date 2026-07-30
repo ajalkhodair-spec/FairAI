@@ -27,6 +27,8 @@
 - Pinned ZK toolchain manifest and compatibility checker.
 - EIP-712 signed-verifier V2 with signer revocation, nonce/digest replay protection, and expiry.
 - Reproducible authorized-key compromise test and explicit verifier trust model.
+- Deterministic multi-round real-data federated executor for B0, B1, and B3.
+- Initial manifest-backed Adult and COMPAS IID/non-IID result generation.
 
 ### Changed
 

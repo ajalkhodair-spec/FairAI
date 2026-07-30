@@ -73,6 +73,13 @@ class LogisticRegressionModel(FederatedModel):
             max_iter=self.max_iter,
             random_state=self.seed,
             solver="lbfgs",
+            warm_start=True,
+        )
+        self.set_parameters(
+            [
+                np.zeros((1, input_dim), dtype=float),
+                np.zeros(1, dtype=float),
+            ]
         )
         return self
 
@@ -97,6 +104,81 @@ class LogisticRegressionModel(FederatedModel):
         self.estimator.intercept_ = np.asarray(intercept, dtype=float).copy()
         self.estimator.classes_ = np.asarray([0, 1])
         self.estimator.n_features_in_ = self.estimator.coef_.shape[1]
+        return self
+
+
+class FederatedLogisticModel(FederatedModel):
+    model_type = "federated_logistic_regression"
+
+    def __init__(self, seed=42, epochs=1, learning_rate=0.05, l2=1e-4):
+        self.seed = seed
+        self.epochs = epochs
+        self.learning_rate = learning_rate
+        self.l2 = l2
+        self.coef = None
+        self.intercept = None
+
+    def initialize(self, input_dim):
+        self.coef = np.zeros((1, input_dim), dtype=float)
+        self.intercept = np.zeros(1, dtype=float)
+        return self
+
+    def train_local(self, features, labels):
+        features = np.asarray(features, dtype=float)
+        labels = np.asarray(labels, dtype=float)
+        if self.coef is None:
+            self.initialize(features.shape[1])
+        for _ in range(self.epochs):
+            logits = features @ self.coef[0] + self.intercept[0]
+            probabilities = 1.0 / (1.0 + np.exp(-np.clip(logits, -30, 30)))
+            residual = probabilities - labels
+            gradient = features.T @ residual / len(features) + self.l2 * self.coef[0]
+            intercept_gradient = residual.mean()
+            self.coef[0] -= self.learning_rate * gradient
+            self.intercept[0] -= self.learning_rate * intercept_gradient
+        return self
+
+    def predict(self, features):
+        return (self.predict_proba(features) >= 0.5).astype(int)
+
+    def predict_proba(self, features):
+        logits = np.asarray(features, dtype=float) @ self.coef[0] + self.intercept[0]
+        return 1.0 / (1.0 + np.exp(-np.clip(logits, -30, 30)))
+
+    def serialize(self, path):
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        joblib.dump(
+            {
+                "schema_version": "fairai.federated_logistic.v1",
+                "coef": self.coef,
+                "intercept": self.intercept,
+                "epochs": self.epochs,
+                "learning_rate": self.learning_rate,
+                "l2": self.l2,
+            },
+            path,
+        )
+        return path
+
+    def deserialize(self, path):
+        payload = joblib.load(path)
+        if payload.get("schema_version") != "fairai.federated_logistic.v1":
+            raise ValueError("Unsupported federated logistic artifact")
+        self.coef = np.asarray(payload["coef"], dtype=float)
+        self.intercept = np.asarray(payload["intercept"], dtype=float)
+        self.epochs = int(payload["epochs"])
+        self.learning_rate = float(payload["learning_rate"])
+        self.l2 = float(payload["l2"])
+        return self
+
+    def get_parameters(self):
+        return [self.coef.copy(), self.intercept.copy()]
+
+    def set_parameters(self, parameters):
+        coef, intercept = parameters
+        self.coef = np.asarray(coef, dtype=float).copy()
+        self.intercept = np.asarray(intercept, dtype=float).copy()
         return self
 
 
@@ -167,4 +249,6 @@ def create_model(model_type, **kwargs):
         return LogisticRegressionModel(**kwargs)
     if model_type == "small_mlp":
         return SmallMLPModel(**kwargs)
+    if model_type == "federated_logistic_regression":
+        return FederatedLogisticModel(**kwargs)
     raise ValueError(f"Unsupported model type: {model_type}")

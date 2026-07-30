@@ -118,3 +118,9 @@ hide a failed trust-boundary check.
 An authorized compromised key can produce an accepted false decision. This is
 an explicit signed-verifier trust limitation, not a test failure. Revocation
 prevents future signatures only after compromise is detected.
+
+## D-020 Give local epochs an explicit optimizer meaning
+
+The federated logistic path uses deterministic full-batch gradient updates.
+One local epoch is one complete gradient pass over the client's local training
+subset. LBFGS optimizer iterations are not reported as epochs.
