@@ -16,6 +16,8 @@
 - Checksum-pinned Adult and COMPAS acquisition with source and license records.
 - Deterministic train, validation, and test preparation with train-only preprocessing.
 - Common logistic-regression and small-MLP model interfaces with serialization tests.
+- Deterministic IID, label-Dirichlet, and joint label/group Dirichlet partitioning.
+- Minimum-client-size enforcement, canonical partition checksums, and entropy evidence exports.
 
 ### Changed
 

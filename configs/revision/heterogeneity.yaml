@@ -1,7 +1,7 @@
 {
   "schema_version": "fairai.revision.config.v1",
   "scenario_id": "heterogeneity_entropy",
-  "executor": "planned",
+  "executor": "partition_analysis",
   "evidence_type": "measured",
   "seed": 6001,
   "dataset": "adult",
@@ -12,6 +12,14 @@
   "method": "B0_B4",
   "fairness_policy": "submitted_policy",
   "attack_profile": "none",
-  "partitions": ["iid", "joint_dirichlet_1.0", "joint_dirichlet_0.3"],
+  "partitions": [
+    "iid",
+    "label_dirichlet_1.0",
+    "label_dirichlet_0.3",
+    "joint_dirichlet_1.0",
+    "joint_dirichlet_0.3"
+  ],
+  "minimum_samples_per_client": 50,
+  "partition_max_attempts": 1000,
   "seeds": 10
 }

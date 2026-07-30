@@ -27,8 +27,23 @@
     "seed": {"type": "integer"},
     "clients": {"type": "integer", "minimum": 1},
     "rounds": {"type": "integer", "minimum": 1},
-    "local_epochs": {"type": "integer", "minimum": 1}
+    "local_epochs": {"type": "integer", "minimum": 1},
+    "partitions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "iid",
+          "label_dirichlet_1.0",
+          "label_dirichlet_0.3",
+          "joint_dirichlet_1.0",
+          "joint_dirichlet_0.3"
+        ]
+      }
+    },
+    "minimum_samples_per_client": {"type": "integer", "minimum": 1},
+    "partition_max_attempts": {"type": "integer", "minimum": 1}
   },
   "additionalProperties": true
 }
-

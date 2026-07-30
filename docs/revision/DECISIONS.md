@@ -69,3 +69,16 @@ must retain this convention so fairness-gap directions remain interpretable.
 Protected attributes are retained for group evaluation but excluded from model
 features. Preprocessing is fitted on the training split only, then applied to
 validation and test splits without learning new categories or statistics.
+
+## D-012 Keep entropy diagnostic
+
+Label, protected-group, and source entropy characterize client heterogeneity.
+They are recorded for analysis but never used directly as an approval
+criterion. This prevents a descriptive distribution property from becoming an
+unstated fairness policy.
+
+## D-013 Fail closed on unsatisfied minimum client size
+
+Dirichlet allocation retries deterministically up to a configured bound. If no
+partition reaches the minimum sample count for every client, the run fails and
+records the error; it does not drop clients or relax the minimum silently.

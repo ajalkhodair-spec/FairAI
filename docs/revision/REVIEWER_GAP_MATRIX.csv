@@ -13,4 +13,4 @@ Reviewer 2,R2.1,IPFS overhead,Single-node add retrieval and pin instrumentation,
 Reviewer 2,R2.2,Complexity,Stage-addressable output schema now exists,Theory and measured stage timing missing,10,in_progress
 Reviewer 2,R2.3,Public repository,LICENSE and CITATION exist,Expected URL returns 404 and local remote is absent,11,blocked
 Reviewer 3,R3.1,Ethical scope,Fairness gate and audit trail,Broader ethical scope classification missing,10,open
-Reviewer 3,R3.2,Entropy,None,Client and source entropy analysis missing,4,open
+Reviewer 3,R3.2,Entropy,Deterministic label group and source entropy outputs for IID and Dirichlet partitions,Outcome correlations await training and fairness suites,4 and 9,in_progress

@@ -334,9 +334,131 @@ def run_legacy(config, output_dir):
     }
 
 
+def run_partition_analysis(config, output_dir):
+    from .data import load_adult, load_compas
+    from .partition import (
+        export_partition_evidence,
+        parse_partition_spec,
+        partition_clients,
+    )
+
+    raw_root = REPO_ROOT / "data" / "raw"
+    dataset_name = config["dataset"]
+    if dataset_name == "adult":
+        dataset_dir = raw_root / "adult"
+        dataset = load_adult(dataset_dir, seed=config["seed"])
+    elif dataset_name == "compas":
+        dataset_dir = raw_root / "compas"
+        dataset = load_compas(
+            dataset_dir / "compas-scores-two-years.csv", seed=config["seed"]
+        )
+    else:
+        raise ValueError(f"Unsupported partition-analysis dataset: {dataset_name}")
+
+    download_manifest_path = dataset_dir / "download_manifest.json"
+    if not download_manifest_path.is_file():
+        raise FileNotFoundError(
+            f"Dataset acquisition manifest is required: {download_manifest_path}"
+        )
+    download_manifest = json.loads(
+        download_manifest_path.read_text(encoding="utf-8")
+    )
+    dataset_checksum = download_manifest["archive_sha256"]
+    protected = dataset.train.protected[
+        dataset.primary_protected_attribute
+    ].to_numpy()
+    partition_specs = config.get("partitions", [])
+    if not partition_specs:
+        raise ValueError("partition_analysis requires at least one partition setting")
+
+    partition_rows = []
+    suite_checksums = {}
+    output_files = (
+        "entropy_by_client.csv",
+        "entropy_summary.csv",
+        "entropy_correlations.csv",
+        "partition_summary.csv",
+    )
+    aggregate_rows = {filename: [] for filename in output_files}
+    aggregate_fields = {}
+    for partition_spec in partition_specs:
+        mode, alpha = parse_partition_spec(partition_spec)
+        result = partition_clients(
+            dataset.train.labels,
+            protected,
+            client_count=config["clients"],
+            mode=mode,
+            seed=config["seed"],
+            alpha=alpha,
+            minimum_samples=config.get("minimum_samples_per_client", 50),
+            max_attempts=config.get("partition_max_attempts", 1000),
+        )
+        partition_dir = output_dir / "partitions" / partition_spec
+        evidence = export_partition_evidence(
+            partition_dir, result, dataset.train.labels, protected
+        )
+        suite_checksums[partition_spec] = result.checksum
+        partition_rows.append(
+            {
+                "partition": partition_spec,
+                "mode": mode,
+                "alpha": alpha,
+                "checksum": result.checksum,
+                "source_entropy": evidence["source_entropy"],
+                "attempts": result.attempts,
+            }
+        )
+        for filename in output_files:
+            with (partition_dir / filename).open(encoding="utf-8") as handle:
+                reader = csv.DictReader(handle)
+                rows = [
+                    {"partition": partition_spec, **row}
+                    for row in reader
+                ]
+                aggregate_rows[filename].extend(rows)
+                aggregate_fields[filename] = ["partition", *(reader.fieldnames or [])]
+
+    for filename in output_files:
+        write_csv(
+            output_dir / "partitions" / filename,
+            aggregate_rows[filename],
+            aggregate_fields[filename],
+        )
+    partition_checksum = __import__("hashlib").sha256(
+        canonical_json_bytes(suite_checksums)
+    ).hexdigest()
+    write_json(
+        output_dir / "partitions" / "partition_checksums.json",
+        {
+            "schema_version": "fairai.partition_suite.v1",
+            "dataset": dataset_name,
+            "dataset_checksum": dataset_checksum,
+            "suite_partition_checksum": partition_checksum,
+            "partitions": suite_checksums,
+        },
+    )
+    return {
+        "dataset_checksum": dataset_checksum,
+        "partition_checksum": partition_checksum,
+        "summary": {
+            "dataset": dataset_name,
+            "training_samples": len(dataset.train.labels),
+            "clients": config["clients"],
+            "minimum_samples_per_client": config.get(
+                "minimum_samples_per_client", 50
+            ),
+            "partitions": partition_rows,
+            "correlation_status": (
+                "undefined until local training and group-fairness outcomes are available"
+            ),
+        },
+    }
+
+
 EXECUTORS = {
     "smoke": run_smoke,
     "legacy_mvp": run_legacy,
+    "partition_analysis": run_partition_analysis,
 }
 
 

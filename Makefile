@@ -1,4 +1,4 @@
-.PHONY: test revision-smoke revision-baseline revision-core revision-scaling \
+.PHONY: test revision-smoke revision-baseline revision-partitions revision-core revision-scaling \
 	revision-fairness revision-security revision-ipfs revision-report revision-all
 
 PYTHON ?= python3
@@ -17,6 +17,11 @@ revision-baseline:
 	$(PYTHON) -m fairai_revision.run \
 		--config configs/revision/legacy_mvp.yaml \
 		--run-id legacy_mvp
+
+revision-partitions:
+	$(PYTHON) -m fairai_revision.run \
+		--config configs/revision/heterogeneity.yaml \
+		--run-id heterogeneity-partitions
 
 revision-core:
 	$(PYTHON) -m fairai_revision.run --config configs/revision/adult_core.yaml
@@ -38,5 +43,5 @@ revision-ipfs:
 revision-report:
 	$(PYTHON) -m fairai_revision.run --config configs/revision/full_revision_matrix.yaml
 
-revision-all: test revision-smoke revision-baseline revision-core revision-scaling \
+revision-all: test revision-smoke revision-baseline revision-partitions revision-core revision-scaling \
 	revision-fairness revision-security revision-ipfs revision-report
