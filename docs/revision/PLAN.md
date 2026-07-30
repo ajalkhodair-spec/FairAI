@@ -20,7 +20,7 @@ This file is the source of truth for the acceptance-oriented revision.
 | 2 | Legacy reproduction | Three deterministic trials and gap report | Complete |
 | 3 | Adult/COMPAS and model interfaces | Licensed loaders, checksums, LR and MLP tests | Complete |
 | 4 | IID/non-IID partitioning and entropy | Deterministic partitions and entropy outputs | Complete |
-| 5 | Group fairness metrics and policy engine | DP, EO, EOdds, SAG and policy tests | Pending |
+| 5 | Group fairness metrics and policy engine | DP, EO, EOdds, SAG and policy tests | Complete |
 | 6 | Baselines and ablations | B0-B4, B6-B7; B5 or documented blocker | Pending |
 | 7 | V2 proof binding | Versioned circuit, canonical digests, negative tests | Pending |
 | 8 | Verifier security | EIP-712, replay, expiry, revocation, compromise test | Pending |
@@ -38,5 +38,5 @@ This file is the source of truth for the acceptance-oriented revision.
 
 ## Current Next Action
 
-Begin Phase 5: group-based DP, EO, equalized-odds, subgroup accuracy gap,
-undefined-metric handling, and versioned fairness policies.
+Begin Phase 6: common federated experiment interface, aggregation algorithms,
+baselines B0-B4 and B6-B7, and explicit B5 feasibility handling.

@@ -82,3 +82,15 @@ unstated fairness policy.
 Dirichlet allocation retries deterministically up to a configured bound. If no
 partition reaches the minimum sample count for every client, the run fails and
 records the error; it does not drop clients or relax the minimum silently.
+
+## D-014 Represent undefined fairness metrics as null with reasons
+
+Zero is a valid fairness-gap result and cannot also mean "not computable."
+Missing groups, insufficient group samples, and zero rate denominators produce
+`null` plus a machine-readable reason.
+
+## D-015 Use fail-closed AND policy semantics
+
+Every enabled metric must pass. An undefined enabled metric rejects by default,
+and policy validity is bounded by an inclusive round range. Alternative
+undefined behavior must be stated in the versioned policy.

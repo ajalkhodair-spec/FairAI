@@ -1,6 +1,6 @@
 # Major Revision Status
 
-- Current phase: Phase 5, group fairness metrics and policy engine
+- Current phase: Phase 6, federated baselines and ablations
 - Completed: Phase 0 audit, baseline commit, annotated submitted-state tag,
   revision branch, strict-Kubo diagnostic legacy reproduction, G1
   configuration runner, schemas, manifests, Make targets, CI smoke step, and
@@ -8,9 +8,10 @@
   acquisition, train-only preprocessing, and common logistic-regression and
   small-MLP model interfaces, deterministic IID and Dirichlet client
   partitioning, minimum-size enforcement, canonical partition checksums, and
-  normalized entropy exports
+  normalized entropy exports, protected-group DP/EO/equalized-odds/SAG metrics,
+  explicit undefined results, and versioned round-bounded approval policies
 - Tests passed:
-  - Python: 23 tests
+  - Python: 32 tests
   - Solidity: 8 tests
   - Hardhat compile: 6 contracts
   - ZKey verification against R1CS and Powers of Tau
@@ -25,7 +26,7 @@
   - local `circom` reports version 0.5.46 while regeneration requires a
     compatible Circom 2 binary
   - Powers of Tau is external and needs a documented acquisition/checksum flow
-- Next action: implement correct group-based fairness metrics, explicit
-  undefined-metric policies, and versioned approval profiles
-- Latest commit hash: `61723ec`
+- Next action: implement common deterministic federated training and aggregation
+  interfaces for the required baselines and ablations
+- Latest commit hash: `3e7d601`
 - Latest output path: `outputs/revision_audit/baseline_manifest.json`

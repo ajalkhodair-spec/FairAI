@@ -18,6 +18,8 @@
 - Common logistic-regression and small-MLP model interfaces with serialization tests.
 - Deterministic IID, label-Dirichlet, and joint label/group Dirichlet partitioning.
 - Minimum-client-size enforcement, canonical partition checksums, and entropy evidence exports.
+- Protected-group DP, EO, equalized-odds, subgroup-accuracy, and per-group metrics.
+- Versioned approval profiles with metric masks, AND semantics, undefined handling, and round validity.
 
 ### Changed
 

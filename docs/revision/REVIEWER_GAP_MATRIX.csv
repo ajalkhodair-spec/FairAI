@@ -5,7 +5,7 @@ Reviewer 1,R1.1,Scale,Legacy reproduction plus verified Adult and COMPAS loaders
 Reviewer 1,R1.2,Proof semantics,Legacy threshold circuit,Metric correctness and artifact binding not proven,7,open
 Reviewer 1,R1.3,Verifier trust,Signed single verifier path,Replay expiry revocation and compromise evidence missing,8,open
 Reviewer 1,R1.4,Baselines,Approved-only FedAvg only,Comparative baselines absent,6,open
-Reviewer 1,R1.5,Fairness,DP and EO values in legacy evaluator,EOdds SAG sensitivity and undefined policy missing,5,open
+Reviewer 1,R1.5,Fairness,Protected-group DP EO equalized-odds SAG and versioned undefined handling implemented,Measured sensitivity and global outcomes remain,5 and 9,in_progress
 Reviewer 1,R1.6,Privacy,Raw-data locality statement,Formal privacy is not provided and exposure inventory missing,10,open
 Reviewer 1,R1.7,Scalability and cost,Selected timing and gas fields,Scaling throughput availability recovery and per-operation gas missing,9,open
 Reviewer 1,R1.8,Adversarial behavior,Some contract rejection tests,Targeted attacks and poisoning experiments missing,8-9,open
