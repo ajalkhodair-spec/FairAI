@@ -1,0 +1,65 @@
+{
+  "schema_version": "fairai.revision_audit.baseline.v1",
+  "repository_state": {
+    "branch": "major-revision-experiments",
+    "commit": "e34338c1b5148768aef948d28ae52896220c5414",
+    "tag": "v1.0.0-submitted",
+    "dirty": true,
+    "staged_files": 0,
+    "remote": null,
+    "expected_repository_url": "https://github.com/ajalkhodair-spec/FairAI-MVP",
+    "anonymous_access": "not_found"
+  },
+  "environment": {
+    "operating_system": "Darwin 25.5.0 arm64",
+    "python": "3.13.5",
+    "node": "24.4.1",
+    "npm": "11.4.2",
+    "docker": "24.0.7",
+    "docker_compose": "5.3.0",
+    "circom": "0.5.46",
+    "snarkjs": "0.7.5",
+    "hardhat": "2.28.6",
+    "kubo_compose_image": "ipfs/kubo:v0.29.0",
+    "ipfs_cli": null,
+    "kubo_runtime": "0.29.0"
+  },
+  "hashes": {
+    "package_lock_sha256": "f8e258e6bf226af01e4d4e3f83fc7660da6e62db41717cf485e8e5210771fe91",
+    "legacy_circuit_sha256": "c69f3a174f7aee8393d59432406dc9f2e01fee297d64df0d32aab81fb9e5b7c3",
+    "ledger_contract_sha256": "bd5810403d68cf309aac4edb7da8bf22f2bcc65a34eabd8bffa59e5800dedb6b",
+    "signed_verifier_sha256": "27939813650d0a38b9302e323280005e73dd2b703030888f1aa0caebe6c8fa04",
+    "powers_of_tau_sha256": "8fbb6e44c9e0e28419f9ffaf576ae2cf0b96dfeb897edecf737696e1488604d3",
+    "r1cs_sha256": "9b667628a2f783bd9c025f74513d81048b036530d53d188e04a89ed5f46afc6b",
+    "wasm_sha256": "e442275cdebd32e4a9ed9cc837857cf9de94866aea74706278482dfb0243b3a2",
+    "proving_key_sha256": "505d441b409ad28be9c96e2add6e5d519d8d9afe8520f7631ed22e51277e61e7",
+    "verification_key_sha256": "a127c1cd59606449eda0b8ebcb05bd7d19158985ab4a1d4dddd4f83adb4a56cf"
+  },
+  "baseline": {
+    "scenario_id": "legacy_mvp_reproduction",
+    "clients": 3,
+    "model": "logistic_regression",
+    "minimum_accuracy": 0.62,
+    "maximum_demographic_parity_gap": 0.28,
+    "trials": 3,
+    "strict_ipfs_claimed_by_q1_package": true
+  },
+  "validation": {
+    "python_tests_passed": 4,
+    "solidity_tests_passed": 8,
+    "solidity_files_compiled": 6,
+    "zkey_verified": true,
+    "legacy_trials_completed": 3,
+    "legacy_numeric_metrics_matched": true,
+    "legacy_global_publication_gas_matched": true,
+    "diagnostic_summary_sha256": "27bcbcc51e1e5c7e2091d824494f81c41b4433d59a38db1fac22e600837b2ec7"
+  },
+  "completion_status": "phase_0_complete",
+  "missing_fields": [
+    "public_repository",
+    "cpu",
+    "memory",
+    "contract_bytecode_hashes",
+    "clean_clone_result"
+  ]
+}

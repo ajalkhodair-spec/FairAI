@@ -16,6 +16,10 @@ hardhat/cache/
 hardhat/deployments/
 
 outputs/
+!outputs/
+outputs/*
+!outputs/revision_audit/
+!outputs/revision_audit/baseline_manifest.json
 build/
 *.wtns
 *.zkey
