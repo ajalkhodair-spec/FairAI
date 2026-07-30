@@ -94,3 +94,9 @@ Missing groups, insufficient group samples, and zero rate denominators produce
 Every enabled metric must pass. An undefined enabled metric rejects by default,
 and policy validity is bounded by an inclusive round range. Alternative
 undefined behavior must be stated in the versioned policy.
+
+## D-016 Do not substitute a heuristic for FairFed
+
+B5 remains unavailable until the primary-paper equations, parameters, and
+client-weighting behavior are reproduced and checked. Calls to B5 fail
+explicitly. B0-B4, B6, and B7 remain independently implementable.

@@ -1,5 +1,13 @@
 # Major Revision Blockers
 
+## B-005 Faithful FairFed baseline
+
+- Status: open
+- Impact: B5 comparative rows cannot be generated.
+- Evidence: `docs/revision/fairfed_blocker.md`
+- Resolution gate: primary-paper equations, parameter mapping, reference trace,
+  and manually verifiable weighting tests.
+
 ## B-001 Missing Git baseline
 
 The inspected checkout initially reported `No commits yet on main` and had no

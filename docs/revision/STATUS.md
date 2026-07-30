@@ -11,7 +11,7 @@
   normalized entropy exports, protected-group DP/EO/equalized-odds/SAG metrics,
   explicit undefined results, and versioned round-bounded approval policies
 - Tests passed:
-  - Python: 32 tests
+  - Python: 40 tests
   - Solidity: 8 tests
   - Hardhat compile: 6 contracts
   - ZKey verification against R1CS and Powers of Tau

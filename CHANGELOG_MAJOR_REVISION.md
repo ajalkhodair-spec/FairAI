@@ -20,6 +20,8 @@
 - Minimum-client-size enforcement, canonical partition checksums, and entropy evidence exports.
 - Protected-group DP, EO, equalized-odds, subgroup-accuracy, and per-group metrics.
 - Versioned approval profiles with metric masks, AND semantics, undefined handling, and round validity.
+- Shared B0-B4/B6-B7 eligibility and aggregation contracts.
+- Sample-weighted FedAvg and coordinate-wise median with shape and finite-value validation.
 
 ### Changed
 
