@@ -14,5 +14,19 @@
   "attack_profile": "none",
   "require_real_ipfs": true,
   "force_zk": false,
-  "trials": 3
+  "trials": 3,
+  "numeric_tolerance": 0.0001,
+  "expected_baseline": {
+    "nodes": {
+      "1": {"accuracy": 0.95, "demographic_parity_gap": 0.003127},
+      "2": {"accuracy": 0.9625, "demographic_parity_gap": 0.0},
+      "3": {"accuracy": 0.9625, "demographic_parity_gap": 0.282132}
+    },
+    "approved_nodes": 2,
+    "rejected_nodes": 1,
+    "global_accuracy": 0.938889,
+    "global_demographic_parity_gap": 0.144269,
+    "approval_rate": 0.666667,
+    "global_publication_gas": 449664
+  }
 }

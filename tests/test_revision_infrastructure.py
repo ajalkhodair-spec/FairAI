@@ -5,7 +5,7 @@ from pathlib import Path
 
 from fairai_revision.config import ConfigError, config_hash, load_config, validate_config
 from fairai_revision.manifest import validate_manifest
-from fairai_revision.run import execute
+from fairai_revision.run import baseline_comparison, execute
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -51,7 +51,49 @@ class RevisionInfrastructureTests(unittest.TestCase):
             self.assertEqual(resumed_dir, output_dir)
             self.assertEqual(resumed["completion_status"], "completed")
 
+    def test_baseline_comparison_uses_configured_tolerance(self):
+        config = {
+            "numeric_tolerance": 0.0001,
+            "expected_baseline": {
+                "nodes": {
+                    "1": {"accuracy": 0.95, "demographic_parity_gap": 0.01}
+                },
+                "approved_nodes": 1,
+                "rejected_nodes": 0,
+                "global_accuracy": 0.9,
+                "global_demographic_parity_gap": 0.1,
+                "approval_rate": 1.0,
+                "global_publication_gas": 100,
+            },
+        }
+        node_rows = [
+            {
+                "trial": 1,
+                "node_id": 1,
+                "accuracy": 0.95005,
+                "demographic_parity_gap": 0.01005,
+            }
+        ]
+        global_rows = [
+            {
+                "trial": 1,
+                "approved_nodes": 1,
+                "rejected_nodes": 0,
+                "global_accuracy": 0.90005,
+                "global_demographic_parity_gap": 0.10005,
+                "approval_rate": 1.0,
+            }
+        ]
+        gas_rows = [
+            {
+                "trial": 1,
+                "operation": "global_publication",
+                "gas_used": 100,
+            }
+        ]
+        result = baseline_comparison(config, node_rows, global_rows, gas_rows)
+        self.assertTrue(result["all_matched"])
+
 
 if __name__ == "__main__":
     unittest.main()
-

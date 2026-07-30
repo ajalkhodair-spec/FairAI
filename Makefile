@@ -13,7 +13,8 @@ revision-smoke:
 
 revision-baseline:
 	python3 -m fairai_revision.run \
-		--config configs/revision/legacy_mvp.yaml
+		--config configs/revision/legacy_mvp.yaml \
+		--run-id legacy_mvp
 
 revision-core:
 	python3 -m fairai_revision.run --config configs/revision/adult_core.yaml
@@ -37,4 +38,3 @@ revision-report:
 
 revision-all: test revision-smoke revision-baseline revision-core revision-scaling \
 	revision-fairness revision-security revision-ipfs revision-report
-

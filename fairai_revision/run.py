@@ -1,7 +1,9 @@
 import argparse
 import csv
 import json
+import statistics
 import sys
+import time
 import traceback
 from pathlib import Path
 
@@ -72,24 +74,262 @@ def run_smoke(config, output_dir):
     }
 
 
+def mean(values):
+    return statistics.mean(values) if values else None
+
+
+def write_csv(path, rows, fieldnames):
+    with Path(path).open("w", newline="", encoding="utf-8") as handle:
+        writer = csv.DictWriter(handle, fieldnames=fieldnames)
+        writer.writeheader()
+        writer.writerows(rows)
+
+
+def baseline_comparison(config, node_rows, global_rows, gas_rows):
+    expected = config.get("expected_baseline", {})
+    tolerance = config.get("numeric_tolerance", 1e-4)
+    comparisons = []
+
+    def compare(field, observed, expected_value, exact=False):
+        difference = abs(float(observed) - float(expected_value))
+        matched = difference == 0 if exact else difference <= tolerance
+        comparisons.append(
+            {
+                "field": field,
+                "observed": observed,
+                "expected": expected_value,
+                "absolute_difference": difference,
+                "tolerance": 0 if exact else tolerance,
+                "matched": matched,
+            }
+        )
+
+    first_trial_nodes = {str(row["node_id"]): row for row in node_rows if row["trial"] == 1}
+    for node_id, values in expected.get("nodes", {}).items():
+        observed = first_trial_nodes[node_id]
+        compare(
+            f"node_{node_id}.accuracy",
+            observed["accuracy"],
+            values["accuracy"],
+        )
+        compare(
+            f"node_{node_id}.demographic_parity_gap",
+            observed["demographic_parity_gap"],
+            values["demographic_parity_gap"],
+        )
+    first_global = next(row for row in global_rows if row["trial"] == 1)
+    for field in (
+        "approved_nodes",
+        "rejected_nodes",
+        "global_accuracy",
+        "global_demographic_parity_gap",
+        "approval_rate",
+    ):
+        compare(field, first_global[field], expected[field])
+    publication = next(row for row in gas_rows if row["trial"] == 1 and row["operation"] == "global_publication")
+    compare(
+        "global_publication_gas",
+        publication["gas_used"],
+        expected["global_publication_gas"],
+        exact=True,
+    )
+    return {
+        "schema_version": "fairai.legacy_baseline_comparison.v1",
+        "numeric_tolerance": tolerance,
+        "all_matched": all(row["matched"] for row in comparisons),
+        "comparisons": comparisons,
+    }
+
+
 def run_legacy(config, output_dir):
     from scripts.fairai_mvp import run_pipeline
 
-    summary = run_pipeline(
-        output_dir / "raw" / "legacy_run",
-        force_zk=config.get("force_zk", False),
-        require_real_ipfs=config.get("require_real_ipfs", True),
-    )
-    return {
-        "dataset_checksum": None,
-        "partition_checksum": None,
-        "summary": {
+    trials = config.get("trials", 3)
+    node_rows = []
+    global_rows = []
+    gas_rows = []
+    artifact_rows = []
+    proof_rows = []
+    ipfs_rows = []
+    lifecycle = []
+    trial_manifests = []
+    trial_summaries = []
+
+    for trial in range(1, trials + 1):
+        trial_id = f"{output_dir.name}-trial-{trial}"
+        trial_dir = output_dir / "raw" / f"trial_{trial}"
+        started = time.perf_counter()
+        trial_manifest = new_manifest(
+            config,
+            trial_id,
+            output_dir.name,
+            REPO_ROOT,
+        )
+        summary = run_pipeline(
+            trial_dir,
+            force_zk=config.get("force_zk", False),
+            require_real_ipfs=config.get("require_real_ipfs", True),
+        )
+        runtime_ms = round((time.perf_counter() - started) * 1000, 3)
+        prepare_output(trial_dir)
+        ledger = json.loads((trial_dir / "ledger.json").read_text(encoding="utf-8"))
+        records = {record["node_id"]: record for record in ledger["records"]}
+
+        for node in summary["node_results"]:
+            row = {
+                "run_id": trial_id,
+                "trial": trial,
+                "seed": config["seed"],
+                "node_id": node["node_id"],
+                "accuracy": node["accuracy"],
+                "demographic_parity_gap": node["demographic_parity_gap"],
+                "equal_opportunity_gap": node["equal_opportunity_gap"],
+                "proof_verified": node["proof_verified"],
+                "approval_status": node["approval_status"],
+                "source_file": f"raw/trial_{trial}/metrics.csv",
+            }
+            node_rows.append(row)
+            record = records[node["node_id"]]
+            for artifact_type, cid_field in (
+                ("model", "model_cid"),
+                ("proof", "proof_cid"),
+                ("public", "public_cid"),
+                ("metadata", "metadata_cid"),
+                ("metrics", "metrics_cid"),
+                ("manifest", "manifest_cid"),
+            ):
+                artifact_rows.append(
+                    {
+                        "run_id": trial_id,
+                        "trial": trial,
+                        "node_id": node["node_id"],
+                        "artifact_type": artifact_type,
+                        "cid": record[cid_field],
+                        "ipfs_mode": summary["ipfs_mode"],
+                        "source_file": f"raw/trial_{trial}/ledger.json",
+                    }
+                )
+            gas_rows.append(
+                {
+                    "run_id": trial_id,
+                    "trial": trial,
+                    "operation": "model_submission",
+                    "node_id": node["node_id"],
+                    "gas_used": int(node["gas_used"]),
+                    "source_file": f"raw/trial_{trial}/metrics.csv",
+                }
+            )
+
+        proof_times = summary["instrumentation"]["proof_generation_ms"]
+        for index, proof_ms in enumerate(proof_times, start=1):
+            proof_rows.append(
+                {
+                    "run_id": trial_id,
+                    "trial": trial,
+                    "node_id": index,
+                    "proof_generation_ms": proof_ms,
+                    "proof_verified": summary["node_results"][index - 1]["proof_verified"],
+                    "source_file": f"raw/trial_{trial}/run_summary.json",
+                }
+            )
+        for index, check in enumerate(
+            summary["instrumentation"]["ipfs_retrieval_checks"], start=1
+        ):
+            ipfs_rows.append(
+                {
+                    "run_id": trial_id,
+                    "trial": trial,
+                    "check_index": index,
+                    "cid": check["cid"],
+                    "mode": check["mode"],
+                    "valid": check["valid"],
+                    "retrieval_ms": check["retrieval_ms"],
+                    "source_file": f"raw/trial_{trial}/run_summary.json",
+                }
+            )
+        for event in summary["round_events"]:
+            lifecycle.append({"run_id": trial_id, "trial": trial, **event})
+
+        publication_gas = int(summary["global_publication"]["gas_used"])
+        gas_rows.append(
+            {
+                "run_id": trial_id,
+                "trial": trial,
+                "operation": "global_publication",
+                "node_id": "",
+                "gas_used": publication_gas,
+                "source_file": f"raw/trial_{trial}/run_summary.json",
+            }
+        )
+        global_row = {
+            "run_id": trial_id,
+            "trial": trial,
+            "seed": config["seed"],
             "approved_nodes": summary["approved_nodes"],
             "rejected_nodes": summary["rejected_nodes"],
+            "approval_rate": round(summary["approved_nodes"] / summary["nodes_total"], 6),
             "global_accuracy": summary["global_model"]["validation_metrics"]["accuracy"],
             "global_demographic_parity_gap": summary["global_model"]["validation_metrics"][
                 "demographic_parity_gap"
             ],
+            "runtime_ms": runtime_ms,
+            "source_file": f"raw/trial_{trial}/run_summary.json",
+        }
+        global_rows.append(global_row)
+        trial_summaries.append(global_row)
+
+        trial_manifest["contract_addresses"] = {
+            "ledger": summary["contract_address"],
+            "verifier": ledger["verifier_contract_address"],
+        }
+        trial_manifest["environment"]["kubo_version"] = "0.29.0"
+        trial_manifest["completion_status"] = "completed"
+        trial_manifest["end_timestamp"] = utc_now()
+        refresh_missing_fields(trial_manifest)
+        validate_manifest(trial_manifest)
+        write_json(trial_dir / "manifests" / "run_manifest.json", trial_manifest)
+        trial_manifests.append(trial_manifest)
+
+    comparison = baseline_comparison(config, node_rows, global_rows, gas_rows)
+    reproduction = {
+        "schema_version": "fairai.legacy_reproduction_summary.v1",
+        "scenario_id": config["scenario_id"],
+        "trials": trials,
+        "all_baseline_values_matched": comparison["all_matched"],
+        "mean_runtime_ms": mean([row["runtime_ms"] for row in global_rows]),
+        "mean_proof_generation_ms": mean(
+            [row["proof_generation_ms"] for row in proof_rows]
+        ),
+        "mean_ipfs_retrieval_ms": mean(
+            [row["retrieval_ms"] for row in ipfs_rows if row["valid"]]
+        ),
+        "trial_summaries": trial_summaries,
+    }
+    write_json(output_dir / "reproduction_summary.json", reproduction)
+    write_json(output_dir / "baseline_comparison.json", comparison)
+    write_json(output_dir / "lifecycle.json", lifecycle)
+    write_csv(output_dir / "node_metrics.csv", node_rows, list(node_rows[0]))
+    write_csv(output_dir / "global_metrics.csv", global_rows, list(global_rows[0]))
+    write_csv(output_dir / "gas.csv", gas_rows, list(gas_rows[0]))
+    write_csv(
+        output_dir / "artifact_inventory.csv", artifact_rows, list(artifact_rows[0])
+    )
+    write_csv(output_dir / "proof_timings.csv", proof_rows, list(proof_rows[0]))
+    write_csv(output_dir / "ipfs_timings.csv", ipfs_rows, list(ipfs_rows[0]))
+
+    return {
+        "dataset_checksum": None,
+        "partition_checksum": None,
+        "summary": {
+            "trials": trials,
+            "all_baseline_values_matched": comparison["all_matched"],
+            "mean_runtime_ms": reproduction["mean_runtime_ms"],
+            "mean_proof_generation_ms": reproduction["mean_proof_generation_ms"],
+            "mean_ipfs_retrieval_ms": reproduction["mean_ipfs_retrieval_ms"],
+        },
+        "manifest_updates": {
+            "contract_addresses": trial_manifests[0]["contract_addresses"],
+            "environment.kubo_version": "0.29.0",
         },
     }
 
@@ -133,6 +373,11 @@ def execute(config_path, output_root, run_id=None, parent_suite_id=None, resume=
         result = executor(config, output_dir)
         manifest["dataset_checksum"] = result["dataset_checksum"]
         manifest["partition_checksum"] = result["partition_checksum"]
+        updates = result.get("manifest_updates", {})
+        if "contract_addresses" in updates:
+            manifest["contract_addresses"] = updates["contract_addresses"]
+        if "environment.kubo_version" in updates:
+            manifest["environment"]["kubo_version"] = updates["environment.kubo_version"]
         write_json(output_dir / "derived" / "summary.json", result["summary"])
         manifest["completion_status"] = "completed"
     except Exception as exc:

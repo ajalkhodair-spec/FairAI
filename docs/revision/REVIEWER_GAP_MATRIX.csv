@@ -1,7 +1,7 @@
 reviewer,comment_id,concern,current_evidence,gap,planned_phase,status
 Editor,E1,Methodology detail,Configuration runner schemas runbook and manifest,Scientific scenario protocols still pending,1-10,in_progress
 Editor,E2,Experimental design,Three repeated synthetic trials,Too small for independent assessment,3-10,open
-Reviewer 1,R1.1,Scale,Three synthetic clients and logistic regression,Real datasets models clients rounds and seeds missing,3-10,open
+Reviewer 1,R1.1,Scale,Legacy three-node result reproduced with traceable trials,Real datasets models clients rounds and independent seeds missing,3-10,in_progress
 Reviewer 1,R1.2,Proof semantics,Legacy threshold circuit,Metric correctness and artifact binding not proven,7,open
 Reviewer 1,R1.3,Verifier trust,Signed single verifier path,Replay expiry revocation and compromise evidence missing,8,open
 Reviewer 1,R1.4,Baselines,Approved-only FedAvg only,Comparative baselines absent,6,open

@@ -11,6 +11,8 @@
 - Versioned configuration and run-manifest schemas.
 - Standard run evidence directory structure with failure preservation and resume checks.
 - Make targets, revision smoke test, and CI smoke integration.
+- Formal three-trial legacy reproduction with per-trial manifests.
+- Baseline comparison, node/global metrics, gas, artifact, proof, IPFS, and lifecycle exports.
 
 ### Changed
 
