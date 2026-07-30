@@ -25,6 +25,8 @@
 - Versioned V2 fairness-threshold circuit source with metric masks and artifact digest fields.
 - Strict canonical artifact serialization, BN254 digest mapping, and off-circuit binding checks.
 - Pinned ZK toolchain manifest and compatibility checker.
+- EIP-712 signed-verifier V2 with signer revocation, nonce/digest replay protection, and expiry.
+- Reproducible authorized-key compromise test and explicit verifier trust model.
 
 ### Changed
 

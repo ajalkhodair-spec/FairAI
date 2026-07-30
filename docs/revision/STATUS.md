@@ -12,8 +12,8 @@
   explicit undefined results, and versioned round-bounded approval policies
 - Tests passed:
   - Python: 49 tests
-  - Solidity: 8 tests
-  - Hardhat compile: 6 contracts
+  - Solidity: 15 tests
+  - Hardhat compile: 7 contracts
   - ZKey verification against R1CS and Powers of Tau
   - strict-Kubo three-trial legacy reproduction
 - Tests failed:

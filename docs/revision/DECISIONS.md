@@ -112,3 +112,9 @@ digests map to BN254 with integer reduction modulo the scalar field.
 Proof generation, Groth16 verification, artifact binding, policy evaluation,
 and decision signing are independent fields. No aggregate verified flag may
 hide a failed trust-boundary check.
+
+## D-019 Preserve the compromised-signer result
+
+An authorized compromised key can produce an accepted false decision. This is
+an explicit signed-verifier trust limitation, not a test failure. Revocation
+prevents future signatures only after compromise is detected.
