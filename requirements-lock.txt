@@ -1,0 +1,3 @@
+# Phase 1 runner uses only the Python standard library.
+# Scientific dependencies will be pinned here when real-data support is added.
+

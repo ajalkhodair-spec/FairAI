@@ -1,0 +1,18 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "legacy_mvp_reproduction",
+  "executor": "legacy_mvp",
+  "evidence_type": "measured",
+  "seed": 1001,
+  "dataset": "synthetic_v1",
+  "model": "logistic_regression",
+  "clients": 3,
+  "rounds": 1,
+  "local_epochs": 240,
+  "method": "full_fairai_signed_v1",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "none",
+  "require_real_ipfs": true,
+  "force_zk": false,
+  "trials": 3
+}

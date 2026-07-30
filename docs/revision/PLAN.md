@@ -16,7 +16,7 @@ This file is the source of truth for the acceptance-oriented revision.
 | Phase | Scope | Completion gate | Status |
 |---|---|---|---|
 | 0 | Repository and evidence audit | Audit documents, baseline manifest, targeted tests | Complete |
-| 1 | Reproducibility infrastructure | Config runner, schemas, locks, smoke test | Pending |
+| 1 | Reproducibility infrastructure | Config runner, schemas, locks, smoke test | Complete |
 | 2 | Legacy reproduction | Three deterministic trials and gap report | Pending |
 | 3 | Adult/COMPAS and model interfaces | Licensed loaders, checksums, LR and MLP tests | Pending |
 | 4 | IID/non-IID partitioning and entropy | Deterministic partitions and entropy outputs | Pending |
@@ -38,5 +38,5 @@ This file is the source of truth for the acceptance-oriented revision.
 
 ## Current Next Action
 
-Begin Phase 1: add the configuration-driven runner, schemas, dependency lock,
-Makefile gates, and revision smoke test without changing the legacy path.
+Begin Phase 2 formal legacy reproduction through the new runner, including
+three traceable trials and the required comparison/inventory outputs.

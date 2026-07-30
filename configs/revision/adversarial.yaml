@@ -1,0 +1,17 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "adversarial",
+  "executor": "planned",
+  "evidence_type": "measured",
+  "seed": 10001,
+  "dataset": "adult",
+  "model": "logistic_regression",
+  "clients": 10,
+  "rounds": 5,
+  "local_epochs": 3,
+  "method": "B0_B6_B4_B7",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "mandatory_A1_A14",
+  "malicious_client_ratio": 0.2,
+  "seeds": 5
+}

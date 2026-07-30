@@ -1,0 +1,18 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "client_scaling",
+  "executor": "planned",
+  "evidence_type": "measured",
+  "seed": 5001,
+  "dataset": "adult",
+  "model": "logistic_regression",
+  "clients": 20,
+  "rounds": 3,
+  "local_epochs": 3,
+  "method": "B0_B2_B4",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "none",
+  "client_counts": [3, 5, 10, 20],
+  "partition": "joint_dirichlet_0.3",
+  "seeds": 5
+}

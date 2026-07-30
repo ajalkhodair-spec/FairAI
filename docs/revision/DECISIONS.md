@@ -38,3 +38,16 @@ The clean repository intentionally excludes proving artifacts. Existing local
 R1CS, WASM, ZKey, verification key, and Powers of Tau files were used for the
 diagnostic legacy reproduction only after `snarkjs zkv` reported `ZKey Ok`.
 Their hashes are recorded in the audit manifest. They remain untracked.
+
+## D-007 Use JSON-compatible YAML in G1
+
+Revision configuration files use JSON syntax with `.yaml` extensions. JSON is a
+valid YAML subset, allowing clean-clone configuration loading with the Python
+standard library. This avoids introducing an unneeded parser dependency before
+the scientific stack is pinned in the real-data phase.
+
+## D-008 Preserve explicit planned executors
+
+All required scenario configurations exist, but scenarios not yet implemented
+use `executor: planned`. Attempting to run one creates a failed manifest and
+raises `NotImplementedError`; it cannot silently emit placeholder results.

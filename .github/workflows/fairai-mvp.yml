@@ -6,14 +6,24 @@ on:
       - "circuits/**"
       - "hardhat/**"
       - "scripts/**"
+      - "fairai_revision/**"
+      - "configs/revision/**"
+      - "schemas/**"
       - "tests/**"
+      - "Makefile"
+      - "requirements-lock.txt"
       - ".github/workflows/fairai-mvp.yml"
   pull_request:
     paths:
       - "circuits/**"
       - "hardhat/**"
       - "scripts/**"
+      - "fairai_revision/**"
+      - "configs/revision/**"
+      - "schemas/**"
       - "tests/**"
+      - "Makefile"
+      - "requirements-lock.txt"
       - ".github/workflows/fairai-mvp.yml"
 
 jobs:
@@ -43,4 +53,10 @@ jobs:
           node-version: "20"
       - run: npm ci
         working-directory: hardhat
+      - run: python -m compileall -q fairai_revision scripts tests
       - run: python -m unittest discover -s tests
+      - run: >-
+          python -m fairai_revision.run
+          --config configs/revision/smoke.yaml
+          --output-root "${RUNNER_TEMP}/fairai-revision"
+          --run-id ci-smoke

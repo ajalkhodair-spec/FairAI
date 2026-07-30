@@ -1,0 +1,17 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "heterogeneity_entropy",
+  "executor": "planned",
+  "evidence_type": "measured",
+  "seed": 6001,
+  "dataset": "adult",
+  "model": "logistic_regression",
+  "clients": 10,
+  "rounds": 5,
+  "local_epochs": 3,
+  "method": "B0_B4",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "none",
+  "partitions": ["iid", "joint_dirichlet_1.0", "joint_dirichlet_0.3"],
+  "seeds": 10
+}

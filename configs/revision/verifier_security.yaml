@@ -1,0 +1,15 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "verifier_security",
+  "executor": "planned",
+  "evidence_type": "measured",
+  "seed": 9001,
+  "dataset": "synthetic_unit",
+  "model": "logistic_regression",
+  "clients": 3,
+  "rounds": 2,
+  "local_epochs": 20,
+  "method": "eip712_signed_verifier",
+  "fairness_policy": "multi_metric",
+  "attack_profile": "signature_replay_revocation"
+}

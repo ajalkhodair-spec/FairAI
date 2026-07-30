@@ -1,0 +1,27 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fairai.revision.run_manifest.v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "run_id",
+    "scenario_id",
+    "configuration_hash",
+    "seed",
+    "environment",
+    "completion_status",
+    "missing_fields",
+    "errors"
+  ],
+  "properties": {
+    "schema_version": {"const": "fairai.revision.run_manifest.v1"},
+    "completion_status": {
+      "enum": ["running", "completed", "failed", "partial"]
+    },
+    "dirty_tree": {"type": "boolean"},
+    "missing_fields": {"type": "array", "items": {"type": "string"}},
+    "errors": {"type": "array"}
+  },
+  "additionalProperties": true
+}
+

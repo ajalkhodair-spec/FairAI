@@ -1,0 +1,17 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "adult_mlp",
+  "executor": "planned",
+  "evidence_type": "measured",
+  "seed": 4001,
+  "dataset": "adult",
+  "model": "small_mlp",
+  "clients": 10,
+  "rounds": 5,
+  "local_epochs": 3,
+  "method": "B0_B1_B4_B5",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "none",
+  "partition": "joint_dirichlet_0.3",
+  "seeds": 5
+}
