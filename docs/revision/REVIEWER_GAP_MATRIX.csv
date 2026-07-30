@@ -2,7 +2,7 @@ reviewer,comment_id,concern,current_evidence,gap,planned_phase,status
 Editor,E1,Methodology detail,Configuration runner schemas runbook and manifest,Scientific scenario protocols still pending,1-10,in_progress
 Editor,E2,Experimental design,Three repeated synthetic trials,Too small for independent assessment,3-10,open
 Reviewer 1,R1.1,Scale,Legacy reproduction plus verified Adult and COMPAS loaders and LR and MLP interfaces,Expanded clients rounds partitions and independent seeds remain,4-10,in_progress
-Reviewer 1,R1.2,Proof semantics,Legacy threshold circuit,Metric correctness and artifact binding not proven,7,open
+Reviewer 1,R1.2,Proof semantics,V2 source canonical digest binding verifier and explicit claim boundaries implemented,V2 compilation ceremony and cryptographic negative tests blocked by Circom version,7,in_progress
 Reviewer 1,R1.3,Verifier trust,Signed single verifier path,Replay expiry revocation and compromise evidence missing,8,open
 Reviewer 1,R1.4,Baselines,Approved-only FedAvg only,Comparative baselines absent,6,open
 Reviewer 1,R1.5,Fairness,Protected-group DP EO equalized-odds SAG and versioned undefined handling implemented,Measured sensitivity and global outcomes remain,5 and 9,in_progress

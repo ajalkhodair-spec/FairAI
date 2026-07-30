@@ -23,7 +23,31 @@ class CircuitSourceSmokeTests(unittest.TestCase):
         self.assertIn("fairness_ok.out === 1;", source)
         self.assertIn("component main = FairnessEligibility(16);", source)
 
+    def test_v2_circuit_is_versioned_and_binds_required_fields(self):
+        source = (ROOT / "circuits" / "FairnessEligibilityV2.circom").read_text(
+            encoding="utf-8"
+        )
+        required = (
+            "pragma circom 2.1.6",
+            "demographicParityGap",
+            "equalOpportunityGap",
+            "equalizedOddsGap",
+            "subgroupAccuracyGap",
+            "enableDemographicParity",
+            "nodeId",
+            "roundId",
+            "policyVersion",
+            "nonce",
+            "manifestDigestField",
+            "metricsDigestField",
+        )
+        for field in required:
+            with self.subTest(field=field):
+                self.assertIn(field, source)
+        self.assertIn("enabled * (enabled - 1) === 0", source)
+        self.assertIn("enabled * (1 - check.out) === 0", source)
+        self.assertNotIn("component main = FairnessEligibility(16)", source)
+
 
 if __name__ == "__main__":
     unittest.main()
-

@@ -100,3 +100,15 @@ undefined behavior must be stated in the versioned policy.
 B5 remains unavailable until the primary-paper equations, parameters, and
 client-weighting behavior are reproduced and checked. Calls to B5 fail
 explicitly. B0-B4, B6, and B7 remain independently implementable.
+
+## D-017 Use strict integer canonical artifacts for V2 binding
+
+Canonical V2 artifacts reject floating-point values. Metrics and thresholds use
+scaled integers and other nonintegral values use decimal strings. SHA-256
+digests map to BN254 with integer reduction modulo the scalar field.
+
+## D-018 Keep V2 proof outcomes separate
+
+Proof generation, Groth16 verification, artifact binding, policy evaluation,
+and decision signing are independent fields. No aggregate verified flag may
+hide a failed trust-boundary check.

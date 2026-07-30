@@ -22,6 +22,9 @@
 - Versioned approval profiles with metric masks, AND semantics, undefined handling, and round validity.
 - Shared B0-B4/B6-B7 eligibility and aggregation contracts.
 - Sample-weighted FedAvg and coordinate-wise median with shape and finite-value validation.
+- Versioned V2 fairness-threshold circuit source with metric masks and artifact digest fields.
+- Strict canonical artifact serialization, BN254 digest mapping, and off-circuit binding checks.
+- Pinned ZK toolchain manifest and compatibility checker.
 
 ### Changed
 

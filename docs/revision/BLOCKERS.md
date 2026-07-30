@@ -39,6 +39,7 @@ The available `circom --version` is 0.5.46, while regeneration requires a
 compatible Circom 2 binary. The Powers of Tau file is also absent by design.
 
 Existing compiled artifacts were cryptographically verified and allowed the
-diagnostic legacy run to complete. Phase 1 still requires a pinned Circom 2
-toolchain and documented Powers of Tau acquisition/checksum for clean
-reproduction.
+diagnostic legacy run to complete. The toolchain lock now pins Circom 2.1.6,
+snarkjs 0.7.5, and the known Powers of Tau checksum. V2 R1CS/WASM/ZKey
+generation and proof tests remain blocked until the local Circom 0.5.46 binary
+is replaced by the pinned compiler.
