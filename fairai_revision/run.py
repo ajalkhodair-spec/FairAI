@@ -22,6 +22,15 @@ REPO_ROOT = Path(__file__).resolve().parents[1]
 DEFAULT_OUTPUT_ROOT = REPO_ROOT / "outputs" / "major_revision"
 
 
+def experiment_seeds(config):
+    seeds = config.get("experiment_seeds", [config["seed"]])
+    if not seeds or not all(isinstance(seed, int) for seed in seeds):
+        raise ValueError("experiment_seeds must be a nonempty integer list")
+    if len(set(seeds)) != len(seeds):
+        raise ValueError("experiment_seeds must be unique")
+    return seeds
+
+
 def run_smoke(config, output_dir):
     from scripts.fairai_mvp import evaluate, generate_partition, train_logistic
 
@@ -364,11 +373,6 @@ def run_partition_analysis(config, output_dir):
         download_manifest_path.read_text(encoding="utf-8")
     )
     dataset_checksum = download_manifest["archive_sha256"]
-    experiment_seeds = config.get("experiment_seeds", [config["seed"]])
-    if not experiment_seeds or not all(
-        isinstance(seed, int) for seed in experiment_seeds
-    ):
-        raise ValueError("experiment_seeds must be a nonempty integer list")
     protected = dataset.train.protected[dataset.primary_protected_attribute].to_numpy()
     partition_specs = config.get("partitions", [])
     if not partition_specs:
@@ -496,6 +500,7 @@ def run_federated_core(config, output_dir):
     if not methods:
         raise ValueError("federated_core requires executable_methods")
 
+    seeds = experiment_seeds(config)
     protected = dataset.train.protected[
         dataset.primary_protected_attribute
     ].to_numpy()
@@ -504,7 +509,7 @@ def run_federated_core(config, output_dir):
     client_rows = []
     test_rows = []
     method_summaries = []
-    for experiment_seed in experiment_seeds:
+    for experiment_seed in seeds:
         for partition_spec in config.get("partitions", ["iid"]):
             mode, alpha = parse_partition_spec(partition_spec)
             partition = partition_clients(
@@ -624,7 +629,7 @@ def run_federated_core(config, output_dir):
         "summary": {
             "dataset": config["dataset"],
             "split_seed": config["seed"],
-            "experiment_seeds": experiment_seeds,
+            "experiment_seeds": seeds,
             "methods_executed": methods,
             "methods_not_executed": config.get("methods_not_executed", {}),
             "partitions": partition_checksums,

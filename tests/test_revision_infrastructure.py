@@ -5,13 +5,23 @@ from pathlib import Path
 
 from fairai_revision.config import ConfigError, config_hash, load_config, validate_config
 from fairai_revision.manifest import validate_manifest
-from fairai_revision.run import baseline_comparison, execute
+from fairai_revision.run import baseline_comparison, execute, experiment_seeds
 
 
 ROOT = Path(__file__).resolve().parents[1]
 
 
 class RevisionInfrastructureTests(unittest.TestCase):
+    def test_experiment_seed_validation(self):
+        self.assertEqual(
+            experiment_seeds({"seed": 1, "experiment_seeds": [2, 3]}),
+            [2, 3],
+        )
+        with self.assertRaisesRegex(ValueError, "unique"):
+            experiment_seeds({"seed": 1, "experiment_seeds": [2, 2]})
+        with self.assertRaises(ValueError):
+            experiment_seeds({"seed": 1, "experiment_seeds": []})
+
     def test_config_hash_is_canonical(self):
         first = {"b": 2, "a": 1}
         second = {"a": 1, "b": 2}
