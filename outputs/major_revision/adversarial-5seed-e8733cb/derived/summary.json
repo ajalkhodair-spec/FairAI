@@ -1,0 +1,481 @@
+{
+  "attack_profiles": [
+    "none",
+    "label_flip",
+    "sign_flip",
+    "random_weights"
+  ],
+  "client_counts": [
+    10
+  ],
+  "dataset": "adult",
+  "experiment_seeds": [
+    10001,
+    10002,
+    10003,
+    10004,
+    10005
+  ],
+  "methods_executed": [
+    "B0",
+    "B6"
+  ],
+  "methods_not_executed": {
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version",
+    "B7": "B7 requires the unavailable V2 Groth16 approval path"
+  },
+  "partitions": {
+    "seed_10001/clients_10/joint_dirichlet_0.3": "34c23d65cee7ea2fadd938ac712e44fdd949d0fb1deddbfa3ecd482b46bb4186",
+    "seed_10002/clients_10/joint_dirichlet_0.3": "af15fd40c6dad4217a7ea37694e4c6afd4a456da84951dcb085566e2c19b76ee",
+    "seed_10003/clients_10/joint_dirichlet_0.3": "670e9f414e55c453f9330b040d2b21d5437735e6421cb965e1adef4d03199a6d",
+    "seed_10004/clients_10/joint_dirichlet_0.3": "3e204ad9d4a1e3ae3d691f8208814107947f23d58e8925cec978e98e6562bd8e",
+    "seed_10005/clients_10/joint_dirichlet_0.3": "cfc1f3b56ad5a92e7379108284f656f52b1c102e8e89236dc87b4be828d62256"
+  },
+  "policy_profiles": [
+    "submitted"
+  ],
+  "results": [
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7756906077348066,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 91.11950002261437,
+      "seed": 10001,
+      "test_accuracy": 0.7788844621513944
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7929281767955801,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 78.78995902137831,
+      "seed": 10001,
+      "test_accuracy": 0.801062416998672
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7889502762430939,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 76.58016699133441,
+      "seed": 10001,
+      "test_accuracy": 0.7958831341301461
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.3997790055248619,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 76.87683400581591,
+      "seed": 10001,
+      "test_accuracy": 0.3855245683930943
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7549171270718232,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 77.86108402069658,
+      "seed": 10001,
+      "test_accuracy": 0.7589641434262948
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7560220994475139,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 76.67937499354593,
+      "seed": 10001,
+      "test_accuracy": 0.7599601593625498
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7560220994475139,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 75.97587499185465,
+      "seed": 10001,
+      "test_accuracy": 0.7602921646746348
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.756243093922652,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 75.66850000876002,
+      "seed": 10001,
+      "test_accuracy": 0.7598937583001328
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7712707182320442,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 81.9450420094654,
+      "seed": 10002,
+      "test_accuracy": 0.7733067729083666
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7511602209944751,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 83.04933400359005,
+      "seed": 10002,
+      "test_accuracy": 0.7543160690571049
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7511602209944751,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 81.52841700939462,
+      "seed": 10002,
+      "test_accuracy": 0.7543160690571049
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7069613259668508,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 84.29075000458397,
+      "seed": 10002,
+      "test_accuracy": 0.7158698539176627
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7538121546961326,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 83.50204199086875,
+      "seed": 10002,
+      "test_accuracy": 0.7572377158034529
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7531491712707182,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 82.26770799956284,
+      "seed": 10002,
+      "test_accuracy": 0.7566401062416999
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7540331491712707,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 83.92879198072478,
+      "seed": 10002,
+      "test_accuracy": 0.7580345285524568
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.754475138121547,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 82.69304101122543,
+      "seed": 10002,
+      "test_accuracy": 0.7580345285524568
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7710497237569061,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 81.8063750048168,
+      "seed": 10003,
+      "test_accuracy": 0.7724435590969455
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7268508287292818,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 82.15745800407603,
+      "seed": 10003,
+      "test_accuracy": 0.7330013280212483
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7303867403314918,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 81.73700000043027,
+      "seed": 10003,
+      "test_accuracy": 0.7346613545816733
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7197790055248618,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 83.0770839820616,
+      "seed": 10003,
+      "test_accuracy": 0.7195219123505976
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7580110497237569,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 83.0121669860091,
+      "seed": 10003,
+      "test_accuracy": 0.7611553784860557
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7580110497237569,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 83.12520899926312,
+      "seed": 10003,
+      "test_accuracy": 0.7618193891102257
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7586740331491713,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 82.27549999719486,
+      "seed": 10003,
+      "test_accuracy": 0.7627490039840638
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7566850828729281,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 82.66083398484625,
+      "seed": 10003,
+      "test_accuracy": 0.7606241699867198
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7750276243093923,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 76.26949998666532,
+      "seed": 10004,
+      "test_accuracy": 0.7785524568393094
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7869613259668509,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 79.40854202024639,
+      "seed": 10004,
+      "test_accuracy": 0.7906374501992032
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7838674033149171,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 77.202499989653,
+      "seed": 10004,
+      "test_accuracy": 0.7893758300132803
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.75646408839779,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 78.13400001032278,
+      "seed": 10004,
+      "test_accuracy": 0.7479415670650731
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7732596685082873,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 78.98933399701491,
+      "seed": 10004,
+      "test_accuracy": 0.7735059760956176
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7779005524861878,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 76.280167006189,
+      "seed": 10004,
+      "test_accuracy": 0.7815405046480743
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7741436464088398,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 77.41991701186635,
+      "seed": 10004,
+      "test_accuracy": 0.7756308100929615
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7756906077348066,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 75.94341700314544,
+      "seed": 10004,
+      "test_accuracy": 0.7790172642762284
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7708287292817679,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 83.17724999506027,
+      "seed": 10005,
+      "test_accuracy": 0.7727091633466135
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7823204419889502,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 83.20679099415429,
+      "seed": 10005,
+      "test_accuracy": 0.7863213811420983
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7787845303867403,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 80.57762499083765,
+      "seed": 10005,
+      "test_accuracy": 0.7829349269588314
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.6457458563535912,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 82.55816699238494,
+      "seed": 10005,
+      "test_accuracy": 0.650863213811421
+    },
+    {
+      "attack_type": "none",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7904972375690608,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 79.37941601267084,
+      "seed": 10005,
+      "test_accuracy": 0.7930278884462152
+    },
+    {
+      "attack_type": "label_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7734806629834254,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 78.76420899992809,
+      "seed": 10005,
+      "test_accuracy": 0.7752988047808765
+    },
+    {
+      "attack_type": "sign_flip",
+      "client_count": 10,
+      "final_validation_accuracy": 0.778121546961326,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 78.64629098912701,
+      "seed": 10005,
+      "test_accuracy": 0.7814741035856574
+    },
+    {
+      "attack_type": "random_weights",
+      "client_count": 10,
+      "final_validation_accuracy": 0.7984530386740332,
+      "method": "B6",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 80.95524998498149,
+      "seed": 10005,
+      "test_accuracy": 0.8047144754316069
+    }
+  ],
+  "split_seed": 10001,
+  "test_set_usage": "evaluated once after final round for each paired method"
+}

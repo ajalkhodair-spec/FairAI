@@ -1,0 +1,23 @@
+{
+  "batch_sizes": [
+    1,
+    5,
+    10,
+    20
+  ],
+  "chain_id": 31337,
+  "hardhat_network": true,
+  "modeled_cost_assumptions": {
+    "eth_usd": [
+      2000,
+      3500
+    ],
+    "gas_price_gwei": [
+      10,
+      30,
+      100
+    ]
+  },
+  "repetitions": 30,
+  "transactions_measured": 2825
+}

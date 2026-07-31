@@ -1,0 +1,11 @@
+entropy_metric,outcome,status,coefficient,reason
+label_entropy,accuracy,undefined,,outcome is produced by the later training and fairness experiment phase
+label_entropy,dp_gap,undefined,,outcome is produced by the later training and fairness experiment phase
+label_entropy,eo_gap,undefined,,outcome is produced by the later training and fairness experiment phase
+label_entropy,approval,undefined,,outcome is produced by the later training and fairness experiment phase
+label_entropy,client_exclusion,undefined,,outcome is produced by the later training and fairness experiment phase
+group_entropy,accuracy,undefined,,outcome is produced by the later training and fairness experiment phase
+group_entropy,dp_gap,undefined,,outcome is produced by the later training and fairness experiment phase
+group_entropy,eo_gap,undefined,,outcome is produced by the later training and fairness experiment phase
+group_entropy,approval,undefined,,outcome is produced by the later training and fairness experiment phase
+group_entropy,client_exclusion,undefined,,outcome is produced by the later training and fairness experiment phase

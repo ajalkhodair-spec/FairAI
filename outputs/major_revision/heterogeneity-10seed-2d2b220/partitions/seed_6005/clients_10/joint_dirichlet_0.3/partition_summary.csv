@@ -1,0 +1,2 @@
+mode,alpha,seed,client_count,sample_count,minimum_samples,attempts,partition_checksum
+joint_dirichlet,0.3,6005,10,25637,50,1,c3233a9a0937aacdd45e54e7b0cc2b5c2f564ca8ac20555737dcf978042eceff
