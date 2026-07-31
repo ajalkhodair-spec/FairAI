@@ -12,7 +12,8 @@ function percentile(values, probability) {
 }
 
 async function deployFixture() {
-  const [owner, verifierSigner] = await ethers.getSigners();
+  const verifierSigners = await ethers.getSigners();
+  const [owner] = verifierSigners;
   const MockVerifier = await ethers.getContractFactory("FairAIZKVerifierMock");
   const proofVerifier = await MockVerifier.deploy();
   await proofVerifier.waitForDeployment();
@@ -20,13 +21,13 @@ async function deployFixture() {
   const ledger = await Ledger.deploy();
   await ledger.waitForDeployment();
   await (await ledger.setVerifierContract(await proofVerifier.getAddress())).wait();
-  await (
-    await ledger.grantRole(
-      await ledger.VERIFIER_ROLE(),
-      verifierSigner.address
-    )
-  ).wait();
-  return { ledger, verifierSigner };
+  const verifierRole = await ledger.VERIFIER_ROLE();
+  for (const signer of verifierSigners.slice(1)) {
+    await (
+      await ledger.grantRole(verifierRole, signer.address)
+    ).wait();
+  }
+  return { ledger, verifierSigners };
 }
 
 function submissionArguments(roundId, suffix) {
@@ -77,11 +78,12 @@ async function runSequential(ledger, signer, argsByClient) {
   return { elapsedMs: performance.now() - started, transactionRows };
 }
 
-async function runConcurrent(ledger, signer, argsByClient) {
-  const nonceSigner = new ethers.NonceManager(signer);
+async function runConcurrent(ledger, signers, argsByClient) {
   const started = performance.now();
   const pending = await Promise.all(
-    argsByClient.map((args) => ledger.connect(nonceSigner).submitModel(...args))
+    argsByClient.map((args, index) =>
+      ledger.connect(signers[index]).submitModel(...args)
+    )
   );
   const receipts = await Promise.all(pending.map((transaction) => transaction.wait()));
   const elapsedMs = performance.now() - started;
@@ -105,7 +107,7 @@ async function main() {
   const concurrencyLevels = JSON.parse(
     process.env.FAIRAI_GAS_BATCH_SIZES || "[1,5,10,20]"
   );
-  const { ledger, verifierSigner } = await deployFixture();
+  const { ledger, verifierSigners } = await deployFixture();
   const scenarios = [];
   const transactions = [];
   let roundId = 900000;
@@ -122,8 +124,8 @@ async function main() {
           repetition
         );
         const result = mode === "sequential"
-          ? await runSequential(ledger, verifierSigner, argsByClient)
-          : await runConcurrent(ledger, verifierSigner, argsByClient);
+          ? await runSequential(ledger, verifierSigners[0], argsByClient)
+          : await runConcurrent(ledger, verifierSigners, argsByClient);
         const failures = result.transactionRows.filter(
           (row) => row.status !== 1
         ).length;
