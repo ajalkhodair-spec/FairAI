@@ -718,12 +718,105 @@ def run_ipfs_benchmark(config, output_dir):
     }
 
 
+def run_gas_benchmark(config, output_dir):
+    import os
+    import subprocess
+
+    raw_path = output_dir / "raw" / "gas_receipts.json"
+    environment = {
+        **os.environ,
+        "FAIRAI_GAS_OUTPUT": str(raw_path),
+        "FAIRAI_GAS_REPETITIONS": str(config["repetitions"]),
+        "FAIRAI_GAS_BATCH_SIZES": json.dumps(config["batch_sizes"]),
+    }
+    subprocess.run(
+        ["npx", "hardhat", "run", "scripts/gas_benchmark.js"],
+        cwd=REPO_ROOT / "hardhat",
+        env=environment,
+        check=True,
+    )
+    payload = json.loads(raw_path.read_text(encoding="utf-8"))
+    rows = payload["rows"]
+    write_csv(
+        output_dir / "blockchain" / "gas_by_transaction.csv",
+        rows,
+        list(rows[0]),
+    )
+    grouped = {}
+    for row in rows:
+        key = (row["batch_size"], row["operation"])
+        grouped.setdefault(key, []).append(row["gas_used"])
+    summary_rows = []
+    for (batch_size, operation), values in sorted(grouped.items()):
+        summary_rows.append(
+            {
+                "batch_size": batch_size,
+                "operation": operation,
+                "n": len(values),
+                "mean_gas": mean(values),
+                "median_gas": statistics.median(values),
+                "min_gas": min(values),
+                "max_gas": max(values),
+            }
+        )
+    write_csv(
+        output_dir / "blockchain" / "gas_summary.csv",
+        summary_rows,
+        list(summary_rows[0]),
+    )
+    cost_rows = []
+    for gas_price_gwei in config["modeled_gas_price_gwei"]:
+        for eth_usd in config["modeled_eth_usd"]:
+            for row in summary_rows:
+                mean_cost = (
+                    row["mean_gas"]
+                    * gas_price_gwei
+                    * 1e-9
+                    * eth_usd
+                )
+                cost_rows.append(
+                    {
+                        "evidence_type": "modeled",
+                        "batch_size": row["batch_size"],
+                        "operation": row["operation"],
+                        "mean_gas_measured": row["mean_gas"],
+                        "gas_price_gwei_assumption": gas_price_gwei,
+                        "eth_usd_assumption": eth_usd,
+                        "modeled_cost_usd": mean_cost,
+                    }
+                )
+    write_csv(
+        output_dir / "derived" / "modeled_transaction_costs.csv",
+        cost_rows,
+        list(cost_rows[0]),
+    )
+    receipt_checksum = __import__("hashlib").sha256(
+        canonical_json_bytes(payload)
+    ).hexdigest()
+    return {
+        "dataset_checksum": receipt_checksum,
+        "partition_checksum": receipt_checksum,
+        "summary": {
+            "chain_id": payload["chain_id"],
+            "hardhat_network": payload["hardhat_network"],
+            "transactions_measured": len(rows),
+            "repetitions": config["repetitions"],
+            "batch_sizes": config["batch_sizes"],
+            "modeled_cost_assumptions": {
+                "gas_price_gwei": config["modeled_gas_price_gwei"],
+                "eth_usd": config["modeled_eth_usd"],
+            },
+        },
+    }
+
+
 EXECUTORS = {
     "smoke": run_smoke,
     "legacy_mvp": run_legacy,
     "partition_analysis": run_partition_analysis,
     "federated_core": run_federated_core,
     "ipfs_benchmark": run_ipfs_benchmark,
+    "gas_benchmark": run_gas_benchmark,
 }
 
 
