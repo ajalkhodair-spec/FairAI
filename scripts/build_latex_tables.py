@@ -67,9 +67,7 @@ def main():
     )
     export(
         "fairness_sensitivity",
-        pd.read_csv(
-            ROOT / "expanded-analysis-466cb07" / "threshold_approval.csv"
-        ),
+        pd.read_csv(ROOT / "threshold_approval.csv"),
     )
     export(
         "trust_and_proof_claims",
@@ -85,16 +83,16 @@ def main():
     )
     export(
         "attack_outcomes",
-        pd.read_csv(ROOT / "expanded-analysis-466cb07" / "experiment_summary.csv").query(
+        pd.read_csv(ROOT / "descriptive_statistics.csv").query(
             "suite == 'adversarial' and metric in ['accuracy', 'equalized_odds_gap']"
         ),
         ["attack_type", "method", "metric", "n", "mean", "ci95_low", "ci95_high"],
     )
     export(
         "scalability_and_gas",
-        pd.read_csv(
-            ROOT / "gas-benchmark-30rep-6f80450" / "blockchain" / "gas_summary.csv"
-        ).query("operation in ['submit_model', 'publish_global_model']"),
+        pd.read_csv(ROOT / "gas_by_function.csv").query(
+            "operation in ['submit_model', 'publish_global_model']"
+        ),
         ["batch_size", "operation", "n", "mean_gas", "median_gas", "min_gas", "max_gas"],
     )
 

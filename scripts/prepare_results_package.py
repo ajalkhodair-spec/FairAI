@@ -114,6 +114,9 @@ def main():
     parser.add_argument(
         "--analysis-run", default="expanded-analysis-bootstrap-7dff9b5"
     )
+    parser.add_argument(
+        "--core-analysis-run", default="core-statistics-bootstrap"
+    )
     args = parser.parse_args()
     root = Path(args.output_root)
     csv_root = root / "primary_csv"
@@ -131,6 +134,7 @@ def main():
         "legacy": root / "legacy_mvp",
     }
     analysis_root = root / args.analysis_run
+    core_analysis_root = root / args.core_analysis_run
     measured_runs = [
         "adult_core",
         "compas_core",
@@ -239,10 +243,10 @@ def main():
         ]
     )
     workbook["Baseline_Comparison"] = add_trace(
-        read_csv(root / "core-statistics-a8fe359" / "summary_statistics.csv"),
-        "core-statistics-a8fe359",
+        read_csv(core_analysis_root / "summary_statistics.csv"),
+        core_analysis_root.name,
         "derived",
-        str(root / "core-statistics-a8fe359" / "summary_statistics.csv"),
+        str(core_analysis_root / "summary_statistics.csv"),
     )
     workbook["FairFed_Comparison"] = missing_frame("BLK-003", "B5 FairFed")
     workbook["Scaling"] = add_trace(
@@ -406,6 +410,12 @@ def main():
         "fairness_metrics_by_client.csv": workbook["Local_Metrics"],
         "fairness_metrics_global.csv": workbook["Global_Metrics"],
         "threshold_sensitivity.csv": workbook["Threshold_Sensitivity"],
+        "threshold_approval.csv": add_trace(
+            read_csv(analysis_root / "threshold_approval.csv"),
+            analysis_root.name,
+            "derived",
+            str(analysis_root / "threshold_approval.csv"),
+        ),
         "entropy_by_client.csv": workbook["Entropy"],
         "entropy_correlations.csv": add_trace(
             read_csv(analysis_root / "entropy_correlations.csv"),

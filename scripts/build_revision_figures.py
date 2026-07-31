@@ -232,12 +232,8 @@ def main():
     for directory in (DATA, INDEPENDENT, GROUPED):
         directory.mkdir(parents=True, exist_ok=True)
 
-    summary = pd.read_csv(
-        ROOT / "expanded-analysis-466cb07" / "experiment_summary.csv"
-    )
-    core = pd.read_csv(
-        ROOT / "core-statistics-a8fe359" / "summary_statistics.csv"
-    )
+    summary = pd.read_csv(ROOT / "descriptive_statistics.csv")
+    core = pd.read_csv(ROOT / "primary_csv" / "Baseline_Comparison.csv")
     baseline = core[
         (core["metric"] == "accuracy") & core["method"].isin(["B0", "B3"])
     ].copy()
@@ -300,9 +296,9 @@ def main():
         threshold_accuracy["ci95_high"] - threshold_accuracy["mean"]
     )
     threshold_accuracy["series"] = "Test accuracy"
-    approval = pd.read_csv(
-        ROOT / "expanded-analysis-466cb07" / "threshold_approval.csv"
-    ).rename(columns={"mean": "approval_mean", "std": "approval_std"})
+    approval = pd.read_csv(ROOT / "threshold_approval.csv").rename(
+        columns={"mean": "approval_mean", "std": "approval_std"}
+    )
     threshold_data = threshold_accuracy.merge(approval, on="policy_profile")
     threshold_data.to_csv(DATA / "threshold_sensitivity.csv", index=False)
     grouped_bars(
