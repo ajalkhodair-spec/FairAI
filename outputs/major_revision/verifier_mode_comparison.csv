@@ -1,0 +1,3 @@
+mode,status,signature_threshold,compromised_single_key_accepted,evidence_type,source_file
+single_authorized_verifier,tested,1,True,tested,outputs/major_revision/security-evidence/compromised_verifier_results.csv
+two_of_three_committee,not_implemented_optional,2,,missing_optional,docs/revision/verifier_trust_model.md

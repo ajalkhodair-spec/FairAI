@@ -1,0 +1,5 @@
+run_id,policy_profile,count,mean,std,min,max,evidence_type,source_file
+expanded-analysis-bootstrap-aae4091,lenient,10,0.55,0.135400640077266,0.3,0.7,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/threshold_approval.csv
+expanded-analysis-bootstrap-aae4091,moderate,10,0.27,0.105934990547138,0.1,0.4,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/threshold_approval.csv
+expanded-analysis-bootstrap-aae4091,strict,10,0.07,0.0823272602348564,0.0,0.2,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/threshold_approval.csv
+expanded-analysis-bootstrap-aae4091,submitted,10,0.42,0.1398411797560202,0.2,0.6,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/threshold_approval.csv

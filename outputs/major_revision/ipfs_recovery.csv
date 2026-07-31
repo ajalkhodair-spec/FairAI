@@ -1,0 +1,2 @@
+status,scope,value,blocker,evidence_type,source_file
+blocked,two-peer publisher restart and replica recovery,,BLK-002,missing,BLOCKERS.md

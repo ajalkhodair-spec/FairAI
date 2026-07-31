@@ -1,5 +1,5 @@
-policy_profile,mean,ci95_low,ci95_high,error,series,count,approval_mean,approval_std,min,max
-lenient,0.7651859229747675,0.7612673318672635,0.7691045140822715,0.0039185911075040325,Test accuracy,10,0.55,0.135400640077266,0.3,0.7
-moderate,0.7465537848605578,0.7089531624049307,0.7841544073161849,0.03760062245562712,Test accuracy,10,0.27,0.105934990547138,0.1,0.4
-strict,0.5006772908366534,0.3083980450794308,0.6929565365938759,0.19227924575722255,Test accuracy,10,0.07,0.0823272602348564,0.0,0.2
-submitted,0.7599933598937583,0.7585885004274462,0.7613982193600703,0.0014048594663120806,Test accuracy,10,0.42,0.1398411797560202,0.2,0.6
+policy_profile,mean,ci95_low,ci95_high,error,series,run_id,count,approval_mean,approval_std,min,max,evidence_type,source_file
+lenient,0.7651859229747675,0.761925464807437,0.7683467795484729,0.0031608565737053507,Test accuracy,expanded-analysis-bootstrap-aae4091,10,0.55,0.135400640077266,0.3,0.7,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/threshold_approval.csv
+moderate,0.7465537848605578,0.7117528220451527,0.7666467463479416,0.02009296148738382,Test accuracy,expanded-analysis-bootstrap-aae4091,10,0.27,0.105934990547138,0.1,0.4,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/threshold_approval.csv
+strict,0.5006772908366534,0.347609561752988,0.6538645418326693,0.15318725099601593,Test accuracy,expanded-analysis-bootstrap-aae4091,10,0.07,0.0823272602348564,0.0,0.2,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/threshold_approval.csv
+submitted,0.7599933598937583,0.7588512616201859,0.7611885790172643,0.0011952191235060639,Test accuracy,expanded-analysis-bootstrap-aae4091,10,0.42,0.1398411797560202,0.2,0.6,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/threshold_approval.csv

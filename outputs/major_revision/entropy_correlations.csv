@@ -1,0 +1,13 @@
+run_id,entropy_metric,outcome,n,spearman_rho,p_value,evidence_type,source_file
+expanded-analysis-bootstrap-aae4091,mean_label_entropy,accuracy,30,0.6873127402962969,2.720512421027912e-05,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_label_entropy,macro_f1,30,0.6971620445071995,1.862100928403899e-05,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_label_entropy,demographic_parity_gap,30,0.6986316652420032,1.757446921361904e-05,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_label_entropy,equal_opportunity_gap,30,-0.1549766813774855,0.4135105132799034,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_label_entropy,equalized_odds_gap,30,-0.1549766813774855,0.4135105132799034,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_label_entropy,subgroup_accuracy_gap,30,-0.598865060628205,0.0004716087425125,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_group_entropy,accuracy,30,0.665924726335699,5.9072994112387766e-05,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_group_entropy,macro_f1,30,0.6775738389144046,3.9027816189278704e-05,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_group_entropy,demographic_parity_gap,30,0.7039715251037255,1.420203551444168e-05,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_group_entropy,equal_opportunity_gap,30,-0.1053217963959061,0.579644888312218,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_group_entropy,equalized_odds_gap,30,-0.1053217963959061,0.579644888312218,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv
+expanded-analysis-bootstrap-aae4091,mean_group_entropy,subgroup_accuracy_gap,30,-0.6264604777660339,0.0002125766059658,derived,outputs/major_revision/expanded-analysis-bootstrap-aae4091/entropy_correlations.csv

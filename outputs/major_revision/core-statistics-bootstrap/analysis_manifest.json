@@ -1,0 +1,33 @@
+{
+  "confidence_interval": "two-sided percentile bootstrap 95% CI of the mean; 10000 deterministic resamples",
+  "created_at": "2026-07-31T22:05:38.802448+00:00",
+  "evidence_type": "derived",
+  "input_rows": 120,
+  "inputs": [
+    {
+      "configuration_hash": "df10fbf78a508531c346c39530d167562cff1c3b65faaf2f09e6bbd8ba6b3ab0",
+      "git_commit": "e01b72a9f528fc6c5e6bc23cafa1ed6f247933c3",
+      "metrics_sha256": "2209ade80546db401c4ffaab6de0c8222e85872e4e599b59a73039b7b7f1747a",
+      "rows": 60,
+      "run_id": "adult-core-10seed-e01b72a"
+    },
+    {
+      "configuration_hash": "ae2a560c0ec6f8fb3a9f0b600d7c90a071ab536b59ba7698836c2c4b31c7b2b2",
+      "git_commit": "e01b72a9f528fc6c5e6bc23cafa1ed6f247933c3",
+      "metrics_sha256": "1eb9715795ec579ae6087b330186560f68e53260404f38b74d4e2e6de485ff2f",
+      "rows": 60,
+      "run_id": "compas-core-10seed-e01b72a"
+    }
+  ],
+  "multiple_testing_correction": "Holm across reported paired t tests",
+  "output_hashes": {
+    "combined_test_metrics.csv": "04909106e647aae3d5f0ee935a065f3fda4ba700691916a7fd94bbb504c605df",
+    "paired_tests.csv": "9a8825d134d84cb3530bacda9c15eca6b9b16ad611b040f97d5e6d60ea2a8f79",
+    "summary_statistics.csv": "a700620d27f56a0d8cc244e50c892e1debd1b164a89fdb6ac6156ccb091d0e92"
+  },
+  "paired_primary_test": "paired t test",
+  "paired_robustness_test": "Wilcoxon signed-rank",
+  "paired_test_rows": 24,
+  "schema_version": "fairai.statistical_analysis.v1",
+  "summary_rows": 84
+}
