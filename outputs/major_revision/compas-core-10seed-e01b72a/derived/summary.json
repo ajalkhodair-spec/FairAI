@@ -1,0 +1,531 @@
+{
+  "dataset": "compas",
+  "experiment_seeds": [
+    3001,
+    3002,
+    3003,
+    3004,
+    3005,
+    3006,
+    3007,
+    3008,
+    3009,
+    3010
+  ],
+  "methods_executed": [
+    "B0",
+    "B1",
+    "B3"
+  ],
+  "methods_not_executed": {
+    "B2": "strict IPFS and blockchain integration pending for the real-data executor",
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version",
+    "B5": "faithful FairFed implementation is blocked and no heuristic is substituted"
+  },
+  "partitions": {
+    "seed_3001/iid": "c8298574d2c03ea60e400d94717f723210a67c69940e882dd7568715d4f0dcef",
+    "seed_3001/joint_dirichlet_0.3": "92edb7c635576289d01e3486a25fceeb5dc81502861a14811c3a76d1b12a046d",
+    "seed_3002/iid": "ea2c36620ba44336f61a13c76ad15a8e4f120207db2f187dc67057e54c3b5825",
+    "seed_3002/joint_dirichlet_0.3": "dd689e9a5678c51128cf8a4a054ca2b90c5dafd47ddf257c1c454dcd859721ae",
+    "seed_3003/iid": "cac2a39206041fa5e72f9c3939453ae074daf2daf14c3e3595f2b1bf08ebe138",
+    "seed_3003/joint_dirichlet_0.3": "a7d78f1f526a71d7b5138223dc1d16a7af91d9c43d7fa37fa591da3d4fca7a29",
+    "seed_3004/iid": "0db394cd3db41cf3b7b63ce80ebbf1a789c5ccab6365c6a72704d50262bd4c71",
+    "seed_3004/joint_dirichlet_0.3": "edc4a916ad020fba0e1a1f1853dd27c1752fec4864bf1c04e592cd7bc784980e",
+    "seed_3005/iid": "0790617be5bcb752d56a34a14c35c706fdec5038497f56b9ce23e29f871716e8",
+    "seed_3005/joint_dirichlet_0.3": "8022ef32d14d515d32f526d0db960b1561b34f6907331ac20896627e81727ad4",
+    "seed_3006/iid": "1484b000d229adf55025d3312259d6f519d325316f577a21f5ee67b86ee8d4b1",
+    "seed_3006/joint_dirichlet_0.3": "43ed5ece1ef250e73101bb33f2a2da415952daf3473f690f12df2d27c32d5b8f",
+    "seed_3007/iid": "dd3bc5a5b021e3fad212c65babb29ba56a062eb2b9de29ad2421094ee65718cc",
+    "seed_3007/joint_dirichlet_0.3": "28042f5578b420b99aff92b6eb363f2f848230657d7ddf7c761410769f8408c2",
+    "seed_3008/iid": "dbe9249ceef638b7a17a63186e53a91cb3bcf527f418c25342b25dd867ed3de7",
+    "seed_3008/joint_dirichlet_0.3": "c57d8b78e879497e94c7ce76f653bd35b367afa46fe21b5bd5bb3a2a0ed2f5da",
+    "seed_3009/iid": "51c16602113765a871b5c7f44bf3c9e22330f5f77e89388863db69729ba0bb0c",
+    "seed_3009/joint_dirichlet_0.3": "04c3e6422246f493459b74626bb938d81b49b17bb29c18f12caaa499ba2dfdac",
+    "seed_3010/iid": "6c757a54346dee521c1f8e86064e9a38de1265f1e2c820dfd216451dbbdbb298",
+    "seed_3010/joint_dirichlet_0.3": "73f1fe7502cc93e5749ea8730e9107a73183dbf2510cae10df1e9f1dbdc257ef"
+  },
+  "results": [
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 37.31625000364147,
+      "seed": 3001,
+      "test_accuracy": 0.6603535353535354
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 36.37208300642669,
+      "seed": 3001,
+      "test_accuracy": 0.6603535353535354
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 36.595874989870936,
+      "seed": 3001,
+      "test_accuracy": 0.6616161616161617
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 35.285624995594844,
+      "seed": 3001,
+      "test_accuracy": 0.6527777777777778
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.75170899764635,
+      "seed": 3001,
+      "test_accuracy": 0.6527777777777778
+    },
+    {
+      "final_validation_accuracy": 0.6237373737373737,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 35.97304198774509,
+      "seed": 3001,
+      "test_accuracy": 0.6098484848484849
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 34.85483300755732,
+      "seed": 3002,
+      "test_accuracy": 0.6628787878787878
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 34.75949997664429,
+      "seed": 3002,
+      "test_accuracy": 0.6628787878787878
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 35.082083981251344,
+      "seed": 3002,
+      "test_accuracy": 0.6515151515151515
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 35.19295799196698,
+      "seed": 3002,
+      "test_accuracy": 0.6641414141414141
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.672874986426905,
+      "seed": 3002,
+      "test_accuracy": 0.6641414141414141
+    },
+    {
+      "final_validation_accuracy": 0.625,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 35.751165996771306,
+      "seed": 3002,
+      "test_accuracy": 0.6300505050505051
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 38.936166994972154,
+      "seed": 3003,
+      "test_accuracy": 0.6641414141414141
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 38.30087499227375,
+      "seed": 3003,
+      "test_accuracy": 0.6641414141414141
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 35.84662501816638,
+      "seed": 3003,
+      "test_accuracy": 0.6628787878787878
+    },
+    {
+      "final_validation_accuracy": 0.648989898989899,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.46741699008271,
+      "seed": 3003,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.648989898989899,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.37812501215376,
+      "seed": 3003,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.269124997081235,
+      "seed": 3003,
+      "test_accuracy": 0.6792929292929293
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 34.53316699597053,
+      "seed": 3004,
+      "test_accuracy": 0.6540404040404041
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 34.272333985427395,
+      "seed": 3004,
+      "test_accuracy": 0.6540404040404041
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 34.44824999314733,
+      "seed": 3004,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.648989898989899,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.66654202505015,
+      "seed": 3004,
+      "test_accuracy": 0.6704545454545454
+    },
+    {
+      "final_validation_accuracy": 0.648989898989899,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.522292003501207,
+      "seed": 3004,
+      "test_accuracy": 0.6704545454545454
+    },
+    {
+      "final_validation_accuracy": 0.5505050505050505,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.297417008318007,
+      "seed": 3004,
+      "test_accuracy": 0.5492424242424242
+    },
+    {
+      "final_validation_accuracy": 0.6439393939393939,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 35.204999992856756,
+      "seed": 3005,
+      "test_accuracy": 0.6578282828282829
+    },
+    {
+      "final_validation_accuracy": 0.6439393939393939,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 38.62054200726561,
+      "seed": 3005,
+      "test_accuracy": 0.6578282828282829
+    },
+    {
+      "final_validation_accuracy": 0.6439393939393939,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 34.617875004187226,
+      "seed": 3005,
+      "test_accuracy": 0.6628787878787878
+    },
+    {
+      "final_validation_accuracy": 0.5871212121212122,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.768874992849305,
+      "seed": 3005,
+      "test_accuracy": 0.5795454545454546
+    },
+    {
+      "final_validation_accuracy": 0.5871212121212122,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.53462501359172,
+      "seed": 3005,
+      "test_accuracy": 0.5795454545454546
+    },
+    {
+      "final_validation_accuracy": 0.5467171717171717,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.373667006846517,
+      "seed": 3005,
+      "test_accuracy": 0.5429292929292929
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 35.554165981011465,
+      "seed": 3006,
+      "test_accuracy": 0.6654040404040404
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 36.652165988925844,
+      "seed": 3006,
+      "test_accuracy": 0.6654040404040404
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 34.8647499922663,
+      "seed": 3006,
+      "test_accuracy": 0.6603535353535354
+    },
+    {
+      "final_validation_accuracy": 0.648989898989899,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 32.11329199257307,
+      "seed": 3006,
+      "test_accuracy": 0.6527777777777778
+    },
+    {
+      "final_validation_accuracy": 0.648989898989899,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 32.36787498462945,
+      "seed": 3006,
+      "test_accuracy": 0.6527777777777778
+    },
+    {
+      "final_validation_accuracy": 0.5555555555555556,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.6423749900423,
+      "seed": 3006,
+      "test_accuracy": 0.5542929292929293
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 34.80145800858736,
+      "seed": 3007,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 34.8324170045089,
+      "seed": 3007,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 35.36362500744872,
+      "seed": 3007,
+      "test_accuracy": 0.6565656565656566
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 36.57812500023283,
+      "seed": 3007,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 35.287832986796275,
+      "seed": 3007,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.5568181818181818,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 35.9412080142647,
+      "seed": 3007,
+      "test_accuracy": 0.553030303030303
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 36.53420798946172,
+      "seed": 3008,
+      "test_accuracy": 0.6603535353535354
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 35.432750009931624,
+      "seed": 3008,
+      "test_accuracy": 0.6603535353535354
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 35.871041007339954,
+      "seed": 3008,
+      "test_accuracy": 0.6540404040404041
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.774292001500726,
+      "seed": 3008,
+      "test_accuracy": 0.6426767676767676
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.794625014299527,
+      "seed": 3008,
+      "test_accuracy": 0.6426767676767676
+    },
+    {
+      "final_validation_accuracy": 0.5441919191919192,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 31.914667022647336,
+      "seed": 3008,
+      "test_accuracy": 0.5441919191919192
+    },
+    {
+      "final_validation_accuracy": 0.648989898989899,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 34.50604202225804,
+      "seed": 3009,
+      "test_accuracy": 0.6666666666666666
+    },
+    {
+      "final_validation_accuracy": 0.648989898989899,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 34.36062499531545,
+      "seed": 3009,
+      "test_accuracy": 0.6666666666666666
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 34.55700000631623,
+      "seed": 3009,
+      "test_accuracy": 0.6578282828282829
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.16983300121501,
+      "seed": 3009,
+      "test_accuracy": 0.6553030303030303
+    },
+    {
+      "final_validation_accuracy": 0.6464646464646465,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.11858400795609,
+      "seed": 3009,
+      "test_accuracy": 0.6553030303030303
+    },
+    {
+      "final_validation_accuracy": 0.5328282828282829,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.931625006720424,
+      "seed": 3009,
+      "test_accuracy": 0.5328282828282829
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 35.57450001244433,
+      "seed": 3010,
+      "test_accuracy": 0.6628787878787878
+    },
+    {
+      "final_validation_accuracy": 0.6477272727272727,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 34.75129199796356,
+      "seed": 3010,
+      "test_accuracy": 0.6628787878787878
+    },
+    {
+      "final_validation_accuracy": 0.6439393939393939,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 34.55262500210665,
+      "seed": 3010,
+      "test_accuracy": 0.6666666666666666
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 35.5439999839291,
+      "seed": 3010,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.6452020202020202,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.43245799280703,
+      "seed": 3010,
+      "test_accuracy": 0.6590909090909091
+    },
+    {
+      "final_validation_accuracy": 0.5909090909090909,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 34.168540994869545,
+      "seed": 3010,
+      "test_accuracy": 0.6136363636363636
+    }
+  ],
+  "split_seed": 3001,
+  "test_set_usage": "evaluated once after final round for each paired method"
+}

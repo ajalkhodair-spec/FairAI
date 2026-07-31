@@ -12,7 +12,7 @@
   explicit undefined results, versioned round-bounded approval policies, and
   initial real-data multi-round B0/B1/B3 engineering-validation runs
 - Tests passed:
-  - Python: 50 tests
+  - Python: 53 tests
   - Solidity: 15 tests
   - Hardhat compile: 7 contracts
   - ZKey verification against R1CS and Powers of Tau
@@ -30,4 +30,7 @@
 - Next action: implement common deterministic federated training and aggregation
   interfaces for the required baselines and ablations
 - Latest commit hash: `3e7d601`
-- Latest output path: `outputs/revision_audit/baseline_manifest.json`
+- Latest output paths:
+  - `outputs/major_revision/adult-core-10seed-e01b72a`
+  - `outputs/major_revision/compas-core-10seed-e01b72a`
+  - `outputs/major_revision/core-statistics-a8fe359`
