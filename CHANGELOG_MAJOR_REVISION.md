@@ -30,6 +30,7 @@
 - Deterministic multi-round real-data federated executor for B0, B1, and B3.
 - Initial manifest-backed Adult and COMPAS IID/non-IID result generation.
 - Predeclared ten-seed paired core experiment support.
+- Derived summary statistics, 95% t intervals, paired tests, effect sizes, and Holm correction.
 
 ### Changed
 
