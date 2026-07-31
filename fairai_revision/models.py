@@ -182,6 +182,111 @@ class FederatedLogisticModel(FederatedModel):
         return self
 
 
+class FederatedMLPModel(FederatedModel):
+    model_type = "federated_mlp"
+
+    def __init__(
+        self,
+        seed=42,
+        epochs=1,
+        hidden_size=16,
+        learning_rate=0.01,
+        l2=1e-4,
+    ):
+        self.seed = seed
+        self.epochs = epochs
+        self.hidden_size = hidden_size
+        self.learning_rate = learning_rate
+        self.l2 = l2
+        self.parameters = None
+
+    def initialize(self, input_dim):
+        rng = np.random.default_rng(self.seed)
+        input_scale = np.sqrt(2.0 / max(1, input_dim))
+        hidden_scale = np.sqrt(2.0 / max(1, self.hidden_size))
+        self.parameters = [
+            rng.normal(0, input_scale, size=(input_dim, self.hidden_size)),
+            np.zeros(self.hidden_size, dtype=float),
+            rng.normal(0, hidden_scale, size=(self.hidden_size, 1)),
+            np.zeros(1, dtype=float),
+        ]
+        return self
+
+    def train_local(self, features, labels):
+        features = np.asarray(features, dtype=float)
+        labels = np.asarray(labels, dtype=float).reshape(-1, 1)
+        if self.parameters is None:
+            self.initialize(features.shape[1])
+        for _ in range(self.epochs):
+            w1, b1, w2, b2 = self.parameters
+            hidden_linear = features @ w1 + b1
+            hidden = np.maximum(hidden_linear, 0)
+            logits = hidden @ w2 + b2
+            probabilities = 1.0 / (1.0 + np.exp(-np.clip(logits, -30, 30)))
+            output_gradient = (probabilities - labels) / len(features)
+            grad_w2 = hidden.T @ output_gradient + self.l2 * w2
+            grad_b2 = output_gradient.sum(axis=0)
+            hidden_gradient = (output_gradient @ w2.T) * (hidden_linear > 0)
+            grad_w1 = features.T @ hidden_gradient + self.l2 * w1
+            grad_b1 = hidden_gradient.sum(axis=0)
+            self.parameters = [
+                w1 - self.learning_rate * grad_w1,
+                b1 - self.learning_rate * grad_b1,
+                w2 - self.learning_rate * grad_w2,
+                b2 - self.learning_rate * grad_b2,
+            ]
+        return self
+
+    def predict(self, features):
+        return (self.predict_proba(features) >= 0.5).astype(int)
+
+    def predict_proba(self, features):
+        w1, b1, w2, b2 = self.parameters
+        hidden = np.maximum(np.asarray(features, dtype=float) @ w1 + b1, 0)
+        logits = (hidden @ w2 + b2).reshape(-1)
+        return 1.0 / (1.0 + np.exp(-np.clip(logits, -30, 30)))
+
+    def serialize(self, path):
+        path = Path(path)
+        path.parent.mkdir(parents=True, exist_ok=True)
+        joblib.dump(
+            {
+                "schema_version": "fairai.federated_mlp.v1",
+                "parameters": self.parameters,
+                "epochs": self.epochs,
+                "hidden_size": self.hidden_size,
+                "learning_rate": self.learning_rate,
+                "l2": self.l2,
+            },
+            path,
+        )
+        return path
+
+    def deserialize(self, path):
+        payload = joblib.load(path)
+        if payload.get("schema_version") != "fairai.federated_mlp.v1":
+            raise ValueError("Unsupported federated MLP artifact")
+        self.parameters = [
+            np.asarray(value, dtype=float) for value in payload["parameters"]
+        ]
+        self.epochs = int(payload["epochs"])
+        self.hidden_size = int(payload["hidden_size"])
+        self.learning_rate = float(payload["learning_rate"])
+        self.l2 = float(payload["l2"])
+        return self
+
+    def get_parameters(self):
+        return [value.copy() for value in self.parameters]
+
+    def set_parameters(self, parameters):
+        if len(parameters) != 4:
+            raise ValueError("Federated MLP requires W1, b1, W2, and b2")
+        self.parameters = [
+            np.asarray(value, dtype=float).copy() for value in parameters
+        ]
+        return self
+
+
 class SmallMLPModel(FederatedModel):
     model_type = "small_mlp"
 
@@ -251,4 +356,6 @@ def create_model(model_type, **kwargs):
         return SmallMLPModel(**kwargs)
     if model_type == "federated_logistic_regression":
         return FederatedLogisticModel(**kwargs)
+    if model_type == "federated_mlp":
+        return FederatedMLPModel(**kwargs)
     raise ValueError(f"Unsupported model type: {model_type}")

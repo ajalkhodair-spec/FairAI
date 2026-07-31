@@ -7,7 +7,11 @@ import pandas as pd
 
 from fairai_revision.data import TabularPreprocessor
 from fairai_revision.datasets import DATASETS, download_dataset, read_adult_rows
-from fairai_revision.models import LogisticRegressionModel, SmallMLPModel
+from fairai_revision.models import (
+    FederatedMLPModel,
+    LogisticRegressionModel,
+    SmallMLPModel,
+)
 
 
 class RevisionDataAndModelTests(unittest.TestCase):
@@ -78,6 +82,24 @@ class RevisionDataAndModelTests(unittest.TestCase):
         restored = SmallMLPModel(seed=11, hidden_layers=(4,), max_iter=40)
         restored.initialize(features.shape[1]).set_parameters(first.get_parameters())
         np.testing.assert_array_equal(first.predict(features), restored.predict(features))
+
+    def test_federated_mlp_transfers_parameters_deterministically(self):
+        features = np.asarray(
+            [[0.0, 0.0], [0.0, 1.0], [1.0, 0.0], [1.0, 1.0]] * 20
+        )
+        labels = np.asarray([0, 1, 1, 1] * 20)
+        first = FederatedMLPModel(
+            seed=19, epochs=10, hidden_size=4, learning_rate=0.05
+        ).initialize(2)
+        initial = first.get_parameters()
+        first.train_local(features, labels)
+        second = FederatedMLPModel(
+            seed=999, epochs=10, hidden_size=4, learning_rate=0.05
+        ).initialize(2)
+        second.set_parameters(initial).train_local(features, labels)
+        for left, right in zip(first.get_parameters(), second.get_parameters()):
+            np.testing.assert_allclose(left, right)
+        self.assertEqual(first.predict(features).shape, (80,))
 
 
 if __name__ == "__main__":

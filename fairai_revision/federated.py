@@ -98,7 +98,8 @@ def _new_model(model_type, seed, local_epochs, input_dim, parameters=None):
         model_type = "federated_logistic_regression"
         kwargs["epochs"] = local_epochs
     elif model_type == "small_mlp":
-        kwargs["max_iter"] = local_epochs
+        model_type = "federated_mlp"
+        kwargs["epochs"] = local_epochs
     model = create_model(model_type, **kwargs).initialize(input_dim)
     if parameters is not None:
         model.set_parameters(copy.deepcopy(parameters))

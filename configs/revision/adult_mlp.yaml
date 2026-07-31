@@ -1,7 +1,7 @@
 {
   "schema_version": "fairai.revision.config.v1",
   "scenario_id": "adult_mlp",
-  "executor": "planned",
+  "executor": "federated_core",
   "evidence_type": "measured",
   "seed": 4001,
   "dataset": "adult",
@@ -12,6 +12,14 @@
   "method": "B0_B1_B4_B5",
   "fairness_policy": "submitted_policy",
   "attack_profile": "none",
-  "partition": "joint_dirichlet_0.3",
+  "partitions": ["joint_dirichlet_0.3"],
+  "minimum_samples_per_client": 50,
+  "minimum_group_samples": 10,
+  "executable_methods": ["B0", "B1"],
+  "methods_not_executed": {
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version",
+    "B5": "faithful FairFed implementation is blocked and no heuristic is substituted"
+  },
+  "experiment_seeds": [4001, 4002, 4003, 4004, 4005],
   "seeds": 5
 }
