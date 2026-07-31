@@ -1,0 +1,15 @@
+stage,notation,time_complexity,space_or_growth,implementation_boundary,evidence_type,source
+local_training,N R E n_i d,O(R sum_i E n_i d),O(d) per model,Full-batch LR or one-hidden-layer MLP changes the parameter-dependent factor,analytical,fairai_revision/models.py
+fairness_metrics,N R n_i,O(R sum_i n_i),O(1) counters per protected group,Binary-group confusion and selection-rate statistics,analytical,fairai_revision/fairness.py
+proof_generation,N R C_circuit,prover-dependent superlinear function of C_circuit,O(C_circuit),Direct V2 cost unavailable until pinned artifacts exist,analytical_and_blocked,BLOCKERS.md
+proof_verification,N R C_circuit,O(NR) Groth16 pairing checks,O(1) per proof,Constant-size proof with curve-operation cost,analytical_and_blocked,BLOCKERS.md
+serialization,N R d,O(NRd),O(d) transient,Model parameters are serialized per completed execution,analytical,fairai_revision/models.py
+ipfs_add,N R B_i,O(sum_i B_i),O(sum_i B_i) replicated storage,Network and chunking constants are implementation-dependent,analytical_and_blocked,fairai_revision/ipfs.py
+ipfs_retrieval,A_t B_i,O(sum_i_in_A_t B_i),O(max_i B_i) transient,Approved artifacts are fetched by CID,analytical_and_blocked,fairai_revision/ipfs.py
+contract_submission,N R m,O(NR m) calldata and storage writes,O(NR m) ledger references,Six artifact CIDs plus statuses are recorded per submission,analytical,hardhat/contracts/FairAIEthicalLedger.sol
+approved_model_retrieval,A_t NR,O(NR + A_t),O(A_t),Current contract scans round records then materializes approved CIDs,analytical,hardhat/contracts/FairAIEthicalLedger.sol
+weighted_fedavg,A_t d,O(A_t d),O(A_t d) stacked implementation,Sample-weighted elementwise parameter reduction,analytical,fairai_revision/aggregation.py
+coordinate_median,A_t d,O(A_t d log A_t) typical selection bound,O(A_t d) stacked implementation,NumPy median is applied coordinate-wise,analytical,fairai_revision/aggregation.py
+signature_verification,N R,O(NR),O(1) per decision,One ECDSA recovery and replay-state writes per decision,analytical,hardhat/contracts/FairAISignedVerifierV2.sol
+committee_verification,V M,O(M),O(V) authorization state,Optional multisignature administration is not the proof-decision path,analytical,hardhat/contracts/FairAIMultisigAdmin.sol
+ledger_growth,N R m,O(NR m),O(NR m),CID references and audit records grow monotonically unless external archival is used,analytical,hardhat/contracts/FairAIEthicalLedger.sol

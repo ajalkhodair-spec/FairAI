@@ -1,0 +1,14 @@
+dimension,classification,direct_measurement,implemented_support,nonclaim,evidence_type,source
+fairness,directly_operationalized,DP EO equalized-odds and subgroup-accuracy gaps,versioned threshold policy and pre-aggregation gate,Metrics do not establish all forms of fairness,measured,fairai_revision/fairness.py
+transparency,supported_as_governance_property,none,manifests CIDs events and reports,Transparency quality or comprehension is not measured,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+accountability,supported_as_governance_property,none,role checks immutable events and decision provenance,Legal or institutional accountability is not established,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+responsibility,not_operationalized,none,role assignment only,Responsible behavior is not mathematically evaluated,scope,docs/revision/ethical_scope.md
+integrity,supported_as_governance_property,artifact and digest validation,CID content addressing canonical digests and signatures,Endpoint and signer honesty still matter,tested,tests/test_revision_binding.py
+honesty,not_operationalized,none,signed identity and audit evidence only,Truthfulness of metrics or private data is not proved,scope,docs/revision/proof_nonclaims.md
+respect,not_operationalized,none,none,No respect metric or institutional judgment is automated,scope,docs/revision/ethical_scope.md
+leadership,not_operationalized,none,none,No leadership property is measured,scope,docs/revision/ethical_scope.md
+compassion,not_operationalized,none,none,No compassion property is measured,scope,docs/revision/ethical_scope.md
+civic_responsibility,not_operationalized,none,none,No civic-responsibility property is measured,scope,docs/revision/ethical_scope.md
+loyalty,not_operationalized,none,none,No loyalty property is measured,scope,docs/revision/ethical_scope.md
+respect_for_law,not_operationalized,none,configurable governance records only,Legal compliance requires external institutional review,scope,docs/revision/ethical_scope.md
+environmental_concern,not_operationalized,none,gas is measured for cost analysis only,Environmental impact is not measured,scope,outputs/major_revision/gas-benchmark-30rep-6f80450/blockchain/gas_summary.csv

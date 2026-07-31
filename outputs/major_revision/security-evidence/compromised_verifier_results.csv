@@ -1,0 +1,2 @@
+scenario,authorized_signature,accepted,detected,scientific_finding,evidence_type,source
+A14,true,true,false,A compromised authorized key can produce an accepted false decision in the single-verifier model,tested,hardhat/test/FairAISignedVerifierV2.js
