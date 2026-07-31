@@ -108,6 +108,12 @@ def missing_frame(blocker, scope):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", default="outputs/major_revision")
+    parser.add_argument(
+        "--gas-run", default="gas-throughput-30rep-7dff9b5"
+    )
+    parser.add_argument(
+        "--analysis-run", default="expanded-analysis-bootstrap-7dff9b5"
+    )
     args = parser.parse_args()
     root = Path(args.output_root)
     csv_root = root / "primary_csv"
@@ -121,9 +127,10 @@ def main():
         "heterogeneity": root / "heterogeneity-10seed-2d2b220",
         "threshold": root / "threshold-sensitivity-10seed-aa165b3",
         "adversarial": root / "adversarial-5seed-e8733cb",
-        "gas": root / "gas-benchmark-30rep-6f80450",
+        "gas": root / args.gas_run,
         "legacy": root / "legacy_mvp",
     }
+    analysis_root = root / args.analysis_run
     measured_runs = [
         "adult_core",
         "compas_core",
@@ -347,10 +354,10 @@ def main():
         str(root / "complexity" / "complexity_analysis.csv"),
     )
     workbook["Statistics"] = add_trace(
-        read_csv(root / "expanded-analysis-466cb07" / "experiment_summary.csv"),
-        "expanded-analysis-466cb07",
+        read_csv(analysis_root / "experiment_summary.csv"),
+        analysis_root.name,
         "derived",
-        str(root / "expanded-analysis-466cb07" / "experiment_summary.csv"),
+        str(analysis_root / "experiment_summary.csv"),
     )
     blockers = pd.read_csv(
         "BLOCKERS.md",
@@ -389,6 +396,99 @@ def main():
     for sheet in SHEETS:
         frame = workbook[sheet]
         frame.to_csv(csv_root / f"{sheet}.csv", index=False, quoting=csv.QUOTE_MINIMAL)
+
+    exact_csv_exports = {
+        "gas_by_function.csv": workbook["Gas_By_Function"],
+        "gas_batching.csv": workbook["Gas_Batching"],
+        "cost_scenarios.csv": workbook["Cost_Scenarios"],
+        "poisoning_results.csv": workbook["Poisoning"],
+        "attack_matrix.csv": workbook["Adversarial_Results"],
+        "fairness_metrics_by_client.csv": workbook["Local_Metrics"],
+        "fairness_metrics_global.csv": workbook["Global_Metrics"],
+        "threshold_sensitivity.csv": workbook["Threshold_Sensitivity"],
+        "entropy_by_client.csv": workbook["Entropy"],
+        "entropy_correlations.csv": add_trace(
+            read_csv(analysis_root / "entropy_correlations.csv"),
+            analysis_root.name,
+            "derived",
+            str(analysis_root / "entropy_correlations.csv"),
+        ),
+        "complexity_analysis.csv": workbook["Complexity"],
+        "stage_timing.csv": add_trace(
+            read_csv(root / "complexity" / "stage_timing.csv"),
+            "complexity",
+            "measured_and_missing",
+            str(root / "complexity" / "stage_timing.csv"),
+        ),
+    }
+    for filename in (
+        "descriptive_statistics.csv",
+        "confidence_intervals.csv",
+        "paired_tests.csv",
+        "corrected_p_values.csv",
+        "effect_sizes.csv",
+    ):
+        exact_csv_exports[filename] = add_trace(
+            read_csv(analysis_root / filename),
+            analysis_root.name,
+            "derived",
+            str(analysis_root / filename),
+        )
+
+    throughput = read_csv(
+        runs["gas"] / "blockchain" / "transaction_throughput.csv"
+    )
+    throughput_summary = (
+        throughput.groupby(["mode", "concurrency"], sort=True)
+        .agg(
+            n=("transactions_per_second", "count"),
+            mean_tps=("transactions_per_second", "mean"),
+            std_tps=("transactions_per_second", "std"),
+            median_tps=("transactions_per_second", "median"),
+            p95_tps=(
+                "transactions_per_second",
+                lambda values: values.quantile(0.95),
+            ),
+            mean_elapsed_ms=("elapsed_ms", "mean"),
+            median_latency_ms=("median_latency_ms", "median"),
+            p95_latency_ms=("p95_latency_ms", lambda values: values.quantile(0.95)),
+            failure_rate=("failure_rate", "mean"),
+            mean_total_gas=("total_gas", "mean"),
+        )
+        .reset_index()
+    )
+    exact_csv_exports["transaction_throughput.csv"] = add_trace(
+        throughput_summary,
+        runs["gas"].name,
+        "measured_hardhat",
+        str(runs["gas"] / "blockchain" / "transaction_throughput.csv"),
+    )
+
+    ipfs_exports = {
+        "ipfs_add_latency.csv": workbook["IPFS_Add"],
+        "ipfs_pin_latency.csv": workbook["IPFS_Pin"],
+        "ipfs_cold_retrieval.csv": workbook["IPFS_Cold_Retrieval"],
+        "ipfs_warm_retrieval.csv": workbook["IPFS_Warm_Retrieval"],
+        "ipfs_availability.csv": workbook["IPFS_Availability"],
+        "ipfs_recovery.csv": missing_frame(
+            "BLK-002", "two-peer publisher restart and replica recovery"
+        ),
+        "ipfs_concurrency.csv": workbook["IPFS_Concurrency"],
+        "ipfs_artifact_sizes.csv": missing_frame(
+            "BLK-002", "two-peer Kubo artifact size accounting"
+        ),
+        "filesystem_baseline.csv": missing_frame(
+            "BLK-002", "paired filesystem baseline"
+        ),
+    }
+    exact_csv_exports.update(ipfs_exports)
+    for filename, frame in exact_csv_exports.items():
+        frame.to_csv(root / filename, index=False, quoting=csv.QUOTE_MINIMAL)
+
+    attack_records = records(workbook["Adversarial_Results"])
+    with (root / "attack_details.jsonl").open("w", encoding="utf-8") as handle:
+        for record in attack_records:
+            handle.write(json.dumps(record, sort_keys=True) + "\n")
 
     payload = {
         "schema_version": "fairai.workbook_payload.v1",

@@ -1,6 +1,7 @@
 import argparse
 import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import numpy as np
@@ -308,6 +309,12 @@ def analyze(args):
     manifest = {
         "schema_version": "fairai.expanded_analysis.v1",
         "evidence_type": "derived",
+        "analysis_git_commit": subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            check=True,
+            capture_output=True,
+            text=True,
+        ).stdout.strip(),
         "inputs": inputs,
         "statistics": {
             "confidence_interval": (
