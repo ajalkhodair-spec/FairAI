@@ -22,6 +22,13 @@ class RevisionInfrastructureTests(unittest.TestCase):
         with self.assertRaises(ValueError):
             experiment_seeds({"seed": 1, "experiment_seeds": []})
 
+    def test_scaling_config_declares_measured_and_blocked_methods(self):
+        config = load_config(ROOT / "configs" / "revision" / "scaling.yaml")
+        self.assertEqual(config["executor"], "federated_core")
+        self.assertEqual(config["client_counts"], [3, 5, 10, 20])
+        self.assertEqual(config["executable_methods"], ["B0"])
+        self.assertEqual(set(config["methods_not_executed"]), {"B2", "B4"})
+
     def test_config_hash_is_canonical(self):
         first = {"b": 2, "a": 1}
         second = {"a": 1, "b": 2}

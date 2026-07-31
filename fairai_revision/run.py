@@ -509,102 +509,119 @@ def run_federated_core(config, output_dir):
     client_rows = []
     test_rows = []
     method_summaries = []
+    client_counts = config.get("client_counts", [config["clients"]])
+    if not client_counts or not all(
+        isinstance(client_count, int) and client_count > 1
+        for client_count in client_counts
+    ):
+        raise ValueError("client_counts must contain integers greater than one")
+    if len(set(client_counts)) != len(client_counts):
+        raise ValueError("client_counts must be unique")
     for experiment_seed in seeds:
-        for partition_spec in config.get("partitions", ["iid"]):
-            mode, alpha = parse_partition_spec(partition_spec)
-            partition = partition_clients(
-                dataset.train.labels,
-                protected,
-                client_count=config["clients"],
-                mode=mode,
-                seed=experiment_seed,
-                alpha=alpha,
-                minimum_samples=config.get("minimum_samples_per_client", 50),
-            )
-            partition_key = f"seed_{experiment_seed}/{partition_spec}"
-            partition_checksums[partition_key] = partition.checksum
-            export_partition_evidence(
-                output_dir / "partitions" / f"seed_{experiment_seed}" / partition_spec,
-                partition,
-                dataset.train.labels,
-                protected,
-            )
-            for method in methods:
-                result = run_federated_method(
-                    dataset=dataset,
-                    partition=partition,
-                    method=method,
-                    policy=policy,
-                    model_type=config["model"],
-                    rounds=config["rounds"],
-                    local_epochs=config["local_epochs"],
+        for client_count in client_counts:
+            for partition_spec in config.get("partitions", ["iid"]):
+                mode, alpha = parse_partition_spec(partition_spec)
+                partition = partition_clients(
+                    dataset.train.labels,
+                    protected,
+                    client_count=client_count,
+                    mode=mode,
                     seed=experiment_seed,
-                    minimum_group_samples=config.get("minimum_group_samples", 10),
+                    alpha=alpha,
+                    minimum_samples=config.get("minimum_samples_per_client", 50),
                 )
-                global_rows.extend(
-                    {
-                        "scenario_id": config["scenario_id"],
-                        "seed": experiment_seed,
-                        "partition": partition_spec,
-                        **row,
-                    }
-                    for row in result["round_metrics"]
+                partition_key = (
+                    f"seed_{experiment_seed}/clients_{client_count}/{partition_spec}"
                 )
-                client_rows.extend(
-                    {
-                        "scenario_id": config["scenario_id"],
-                        "seed": experiment_seed,
-                        "partition": partition_spec,
-                        **row,
-                    }
-                    for row in result["client_metrics"]
-                )
-                test_metrics = result["test_metrics"]
-                test_rows.append(
-                    {
-                        "scenario_id": config["scenario_id"],
-                        "seed": experiment_seed,
-                        "partition": partition_spec,
-                        "method": method,
-                        "accuracy": test_metrics["accuracy"],
-                        "macro_f1": test_metrics["macro_f1"],
-                        "demographic_parity_gap": test_metrics[
-                            "demographic_parity_gap"
-                        ],
-                        "equal_opportunity_gap": test_metrics[
-                            "equal_opportunity_gap"
-                        ],
-                        "equalized_odds_gap": test_metrics["equalized_odds_gap"],
-                        "subgroup_accuracy_gap": test_metrics[
-                            "subgroup_accuracy_gap"
-                        ],
-                        "runtime_ms": result["runtime_ms"],
-                    }
-                )
-                model_path = (
+                partition_checksums[partition_key] = partition.checksum
+                export_partition_evidence(
                     output_dir
-                    / "models"
-                    / f"seed_{experiment_seed}-{partition_spec}-{method}-final_parameters.npz"
+                    / "partitions"
+                    / f"seed_{experiment_seed}"
+                    / f"clients_{client_count}"
+                    / partition_spec,
+                    partition,
+                    dataset.train.labels,
+                    protected,
                 )
-                np.savez_compressed(
-                    model_path,
-                    **{
-                        f"parameter_{index}": value
-                        for index, value in enumerate(result["final_parameters"])
-                    },
-                )
-                method_summaries.append(
-                    {
+                for method in methods:
+                    result = run_federated_method(
+                        dataset=dataset,
+                        partition=partition,
+                        method=method,
+                        policy=policy,
+                        model_type=config["model"],
+                        rounds=config["rounds"],
+                        local_epochs=config["local_epochs"],
+                        seed=experiment_seed,
+                        minimum_group_samples=config.get(
+                            "minimum_group_samples", 10
+                        ),
+                    )
+                    dimensions = {
+                        "scenario_id": config["scenario_id"],
                         "seed": experiment_seed,
+                        "client_count": client_count,
                         "partition": partition_spec,
-                        "method": method,
-                        "runtime_ms": result["runtime_ms"],
-                        "final_validation_accuracy": result["round_metrics"][-1][
-                            "global_accuracy"
-                        ],
-                        "test_accuracy": test_metrics["accuracy"],
                     }
-                )
+                    global_rows.extend(
+                        {**dimensions, **row} for row in result["round_metrics"]
+                    )
+                    client_rows.extend(
+                        {**dimensions, **row} for row in result["client_metrics"]
+                    )
+                    test_metrics = result["test_metrics"]
+                    test_rows.append(
+                        {
+                            **dimensions,
+                            "method": method,
+                            "accuracy": test_metrics["accuracy"],
+                            "macro_f1": test_metrics["macro_f1"],
+                            "demographic_parity_gap": test_metrics[
+                                "demographic_parity_gap"
+                            ],
+                            "equal_opportunity_gap": test_metrics[
+                                "equal_opportunity_gap"
+                            ],
+                            "equalized_odds_gap": test_metrics[
+                                "equalized_odds_gap"
+                            ],
+                            "subgroup_accuracy_gap": test_metrics[
+                                "subgroup_accuracy_gap"
+                            ],
+                            "runtime_ms": result["runtime_ms"],
+                        }
+                    )
+                    model_path = (
+                        output_dir
+                        / "models"
+                        / (
+                            f"seed_{experiment_seed}-clients_{client_count}-"
+                            f"{partition_spec}-{method}-final_parameters.npz"
+                        )
+                    )
+                    np.savez_compressed(
+                        model_path,
+                        **{
+                            f"parameter_{index}": value
+                            for index, value in enumerate(
+                                result["final_parameters"]
+                            )
+                        },
+                    )
+                    method_summaries.append(
+                        {
+                            "seed": experiment_seed,
+                            "client_count": client_count,
+                            "partition": partition_spec,
+                            "method": method,
+                            "runtime_ms": result["runtime_ms"],
+                            "final_validation_accuracy": result[
+                                "round_metrics"
+                            ][-1]["global_accuracy"],
+                            "test_accuracy": test_metrics["accuracy"],
+                        }
+                    )
     write_csv(
         output_dir / "metrics" / "fairness_metrics_by_client.csv",
         client_rows,
@@ -630,6 +647,7 @@ def run_federated_core(config, output_dir):
             "dataset": config["dataset"],
             "split_seed": config["seed"],
             "experiment_seeds": seeds,
+            "client_counts": client_counts,
             "methods_executed": methods,
             "methods_not_executed": config.get("methods_not_executed", {}),
             "partitions": partition_checksums,

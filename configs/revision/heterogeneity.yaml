@@ -1,7 +1,7 @@
 {
   "schema_version": "fairai.revision.config.v1",
   "scenario_id": "heterogeneity_entropy",
-  "executor": "partition_analysis",
+  "executor": "federated_core",
   "evidence_type": "measured",
   "seed": 6001,
   "dataset": "adult",
@@ -14,12 +14,26 @@
   "attack_profile": "none",
   "partitions": [
     "iid",
-    "label_dirichlet_1.0",
-    "label_dirichlet_0.3",
     "joint_dirichlet_1.0",
     "joint_dirichlet_0.3"
   ],
   "minimum_samples_per_client": 50,
-  "partition_max_attempts": 1000,
+  "minimum_group_samples": 10,
+  "executable_methods": ["B0"],
+  "methods_not_executed": {
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version"
+  },
+  "experiment_seeds": [
+    6001,
+    6002,
+    6003,
+    6004,
+    6005,
+    6006,
+    6007,
+    6008,
+    6009,
+    6010
+  ],
   "seeds": 10
 }

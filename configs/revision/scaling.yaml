@@ -1,7 +1,7 @@
 {
   "schema_version": "fairai.revision.config.v1",
   "scenario_id": "client_scaling",
-  "executor": "planned",
+  "executor": "federated_core",
   "evidence_type": "measured",
   "seed": 5001,
   "dataset": "adult",
@@ -13,6 +13,14 @@
   "fairness_policy": "submitted_policy",
   "attack_profile": "none",
   "client_counts": [3, 5, 10, 20],
-  "partition": "joint_dirichlet_0.3",
+  "partitions": ["joint_dirichlet_0.3"],
+  "minimum_samples_per_client": 50,
+  "minimum_group_samples": 10,
+  "executable_methods": ["B0"],
+  "methods_not_executed": {
+    "B2": "strict Kubo and on-chain registration are unavailable to this local executor",
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version"
+  },
+  "experiment_seeds": [5001, 5002, 5003, 5004, 5005],
   "seeds": 5
 }
