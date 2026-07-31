@@ -116,6 +116,8 @@ def run_federated_method(
     local_epochs,
     seed,
     minimum_group_samples=10,
+    attack_type="none",
+    malicious_client_ratio=0.0,
 ):
     if method not in {"B0", "B1", "B3", "B6"}:
         raise FederatedExperimentError(
@@ -123,6 +125,13 @@ def run_federated_method(
             "the local federated executor"
         )
     prepared = prepare_federated_data(dataset)
+    supported_attacks = {"none", "label_flip", "sign_flip", "random_weights"}
+    if attack_type not in supported_attacks:
+        raise FederatedExperimentError(f"Unsupported attack type: {attack_type}")
+    if not 0 <= malicious_client_ratio < 1:
+        raise FederatedExperimentError(
+            "malicious_client_ratio must be in [0, 1)"
+        )
     input_dim = prepared.train_features.shape[1]
     global_model = _new_model(model_type, seed, local_epochs, input_dim)
     global_parameters = global_model.get_parameters()
@@ -135,6 +144,17 @@ def run_federated_method(
         )
         for client_id, indices in enumerate(partition.client_indices)
     ]
+    malicious_count = (
+        0
+        if attack_type == "none"
+        else max(1, int(round(len(local_splits) * malicious_client_ratio)))
+    )
+    attack_rng = np.random.default_rng(seed + 1_000_003)
+    malicious_clients = set(
+        attack_rng.choice(
+            len(local_splits), size=malicious_count, replace=False
+        ).tolist()
+    )
     round_rows = []
     client_rows = []
     started = time.perf_counter()
@@ -142,6 +162,7 @@ def run_federated_method(
         updates = []
         for client_id, (train_indices, evaluation_indices) in enumerate(local_splits):
             local_started = time.perf_counter()
+            is_malicious = client_id in malicious_clients
             local_model = _new_model(
                 model_type,
                 seed + client_id,
@@ -151,9 +172,12 @@ def run_federated_method(
             )
             valid = len(np.unique(prepared.train_labels[train_indices])) == 2
             if valid:
+                training_labels = prepared.train_labels[train_indices]
+                if is_malicious and attack_type == "label_flip":
+                    training_labels = 1 - training_labels
                 local_model.train_local(
                     prepared.train_features[train_indices],
-                    prepared.train_labels[train_indices],
+                    training_labels,
                 )
                 metrics = _model_metrics(
                     local_model,
@@ -165,6 +189,13 @@ def run_federated_method(
                 )
                 decision = evaluate_policy(metrics, policy, round_id)
                 parameters = tuple(local_model.get_parameters())
+                if is_malicious and attack_type == "sign_flip":
+                    parameters = tuple(-value for value in parameters)
+                elif is_malicious and attack_type == "random_weights":
+                    parameters = tuple(
+                        attack_rng.normal(size=np.asarray(value).shape)
+                        for value in parameters
+                    )
             else:
                 metrics = None
                 decision = {
@@ -186,6 +217,8 @@ def run_federated_method(
                     "method": method,
                     "round": round_id,
                     "client_id": client_id,
+                    "attack_type": attack_type,
+                    "malicious_client": is_malicious,
                     "train_samples": len(train_indices),
                     "evaluation_samples": len(evaluation_indices),
                     "valid_update": valid,

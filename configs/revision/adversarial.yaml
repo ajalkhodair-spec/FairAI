@@ -1,7 +1,7 @@
 {
   "schema_version": "fairai.revision.config.v1",
   "scenario_id": "adversarial",
-  "executor": "planned",
+  "executor": "federated_core",
   "evidence_type": "measured",
   "seed": 10001,
   "dataset": "adult",
@@ -13,5 +13,15 @@
   "fairness_policy": "submitted_policy",
   "attack_profile": "mandatory_A1_A14",
   "malicious_client_ratio": 0.2,
+  "partitions": ["joint_dirichlet_0.3"],
+  "minimum_samples_per_client": 50,
+  "minimum_group_samples": 10,
+  "attack_profiles": ["none", "label_flip", "sign_flip", "random_weights"],
+  "executable_methods": ["B0", "B6"],
+  "methods_not_executed": {
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version",
+    "B7": "B7 requires the unavailable V2 Groth16 approval path"
+  },
+  "experiment_seeds": [10001, 10002, 10003, 10004, 10005],
   "seeds": 5
 }

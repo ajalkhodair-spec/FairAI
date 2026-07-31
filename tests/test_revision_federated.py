@@ -94,6 +94,32 @@ class RevisionFederatedTests(unittest.TestCase):
         )
         self.assertEqual(gated["round_metrics"][0]["included_clients"], 0)
 
+        attacked = run_federated_method(
+            dataset,
+            partition,
+            "B6",
+            policy,
+            "logistic_regression",
+            2,
+            2,
+            12,
+            2,
+            attack_type="sign_flip",
+            malicious_client_ratio=0.25,
+        )
+        malicious_ids = {
+            row["client_id"]
+            for row in attacked["client_metrics"]
+            if row["malicious_client"]
+        }
+        self.assertEqual(len(malicious_ids), 1)
+        self.assertTrue(
+            all(
+                row["attack_type"] == "sign_flip"
+                for row in attacked["client_metrics"]
+            )
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

@@ -502,10 +502,14 @@ def run_federated_core(config, output_dir):
     methods = config.get("executable_methods", [])
     if not methods:
         raise ValueError("federated_core requires executable_methods")
+    attack_profiles = config.get(
+        "attack_profiles", [config.get("attack_profile", "none")]
+    )
     executions = [
-        (profile_name, policy, method)
+        (profile_name, policy, method, attack_type)
         for profile_name, policy in selected_profiles.items()
         for method in methods
+        for attack_type in attack_profiles
     ]
 
     seeds = experiment_seeds(config)
@@ -552,7 +556,7 @@ def run_federated_core(config, output_dir):
                     dataset.train.labels,
                     protected,
                 )
-                for profile_name, policy, method in executions:
+                for profile_name, policy, method, attack_type in executions:
                     result = run_federated_method(
                         dataset=dataset,
                         partition=partition,
@@ -565,6 +569,10 @@ def run_federated_core(config, output_dir):
                         minimum_group_samples=config.get(
                             "minimum_group_samples", 10
                         ),
+                        attack_type=attack_type,
+                        malicious_client_ratio=config.get(
+                            "malicious_client_ratio", 0.0
+                        ),
                     )
                     dimensions = {
                         "scenario_id": config["scenario_id"],
@@ -572,6 +580,7 @@ def run_federated_core(config, output_dir):
                         "client_count": client_count,
                         "partition": partition_spec,
                         "policy_profile": profile_name,
+                        "attack_type": attack_type,
                     }
                     global_rows.extend(
                         {**dimensions, **row} for row in result["round_metrics"]
@@ -606,7 +615,8 @@ def run_federated_core(config, output_dir):
                         / "models"
                         / (
                             f"seed_{experiment_seed}-clients_{client_count}-"
-                            f"{partition_spec}-{profile_name}-{method}-"
+                            f"{partition_spec}-{profile_name}-{attack_type}-"
+                            f"{method}-"
                             "final_parameters.npz"
                         )
                     )
@@ -625,6 +635,7 @@ def run_federated_core(config, output_dir):
                             "client_count": client_count,
                             "partition": partition_spec,
                             "policy_profile": profile_name,
+                            "attack_type": attack_type,
                             "method": method,
                             "runtime_ms": result["runtime_ms"],
                             "final_validation_accuracy": result[
@@ -661,6 +672,7 @@ def run_federated_core(config, output_dir):
             "client_counts": client_counts,
             "methods_executed": methods,
             "policy_profiles": profile_names,
+            "attack_profiles": attack_profiles,
             "methods_not_executed": config.get("methods_not_executed", {}),
             "partitions": partition_checksums,
             "results": method_summaries,
