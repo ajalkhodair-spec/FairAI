@@ -1,12 +1,17 @@
 import argparse
 import hashlib
 import json
-import math
 from pathlib import Path
 
 import numpy as np
 import pandas as pd
 from scipy import stats
+
+from fairai_revision.statistics import (
+    BOOTSTRAP_REPETITIONS,
+    bootstrap_mean_ci,
+    paired_rank_biserial,
+)
 
 
 METRICS = [
@@ -28,6 +33,11 @@ def sha256_file(path):
     return digest.hexdigest()
 
 
+def stable_seed(*parts):
+    payload = "|".join(str(part) for part in parts).encode("utf-8")
+    return int.from_bytes(hashlib.sha256(payload).digest()[:8], "big")
+
+
 def summarize(frame, suite, dimensions):
     rows = []
     for keys, group in frame.groupby(dimensions, dropna=False, sort=True):
@@ -39,11 +49,9 @@ def summarize(frame, suite, dimensions):
                 continue
             mean = values.mean()
             std = values.std(ddof=1) if len(values) > 1 else 0.0
-            sem = std / math.sqrt(len(values)) if len(values) > 1 else 0.0
-            critical = (
-                stats.t.ppf(0.975, len(values) - 1)
-                if len(values) > 1
-                else 0.0
+            ci_low, ci_high = bootstrap_mean_ci(
+                values,
+                seed=stable_seed(suite, *keys, metric),
             )
             rows.append(
                 {
@@ -53,8 +61,9 @@ def summarize(frame, suite, dimensions):
                     "n": len(values),
                     "mean": mean,
                     "std": std,
-                    "ci95_low": mean - critical * sem,
-                    "ci95_high": mean + critical * sem,
+                    "median": np.median(values),
+                    "ci95_low": ci_low,
+                    "ci95_high": ci_high,
                     "minimum": values.min(),
                     "maximum": values.max(),
                 }
@@ -101,6 +110,9 @@ def paired_rows(frame, suite, dimensions, left, right):
                     "n": len(paired),
                     "mean_difference": differences.mean(),
                     "paired_effect_size_dz": effect,
+                    "rank_biserial_correlation": paired_rank_biserial(
+                        differences
+                    ),
                     "paired_t_statistic": t_statistic,
                     "paired_t_p": t_p,
                     "wilcoxon_statistic": wilcoxon_statistic,
@@ -237,9 +249,58 @@ def analyze(args):
     pd.DataFrame(summary_rows).to_csv(
         output / "experiment_summary.csv", index=False
     )
-    pd.DataFrame(paired).to_csv(
-        output / "paired_comparisons.csv", index=False
-    )
+    summary_frame = pd.DataFrame(summary_rows)
+    paired_frame = pd.DataFrame(paired)
+    summary_frame.to_csv(output / "descriptive_statistics.csv", index=False)
+    summary_frame[
+        [
+            "suite",
+            *[
+                column
+                for column in summary_frame.columns
+                if column
+                not in {
+                    "suite",
+                    "n",
+                    "mean",
+                    "std",
+                    "median",
+                    "ci95_low",
+                    "ci95_high",
+                    "minimum",
+                    "maximum",
+                }
+            ],
+            "n",
+            "mean",
+            "ci95_low",
+            "ci95_high",
+        ]
+    ].to_csv(output / "confidence_intervals.csv", index=False)
+    paired_frame.to_csv(output / "paired_comparisons.csv", index=False)
+    paired_frame.to_csv(output / "paired_tests.csv", index=False)
+    paired_frame[
+        [
+            "suite",
+            "comparison",
+            "metric",
+            "n",
+            "paired_t_p",
+            "paired_t_p_holm",
+            "wilcoxon_p",
+        ]
+    ].to_csv(output / "corrected_p_values.csv", index=False)
+    paired_frame[
+        [
+            "suite",
+            "comparison",
+            "metric",
+            "n",
+            "mean_difference",
+            "paired_effect_size_dz",
+            "rank_biserial_correlation",
+        ]
+    ].to_csv(output / "effect_sizes.csv", index=False)
     pd.DataFrame(entropy).to_csv(
         output / "entropy_correlations.csv", index=False
     )
@@ -249,7 +310,10 @@ def analyze(args):
         "evidence_type": "derived",
         "inputs": inputs,
         "statistics": {
-            "confidence_interval": "two-sided 95% Student t",
+            "confidence_interval": (
+                "two-sided percentile bootstrap 95% CI of the mean; "
+                f"{BOOTSTRAP_REPETITIONS} deterministic resamples"
+            ),
             "paired_primary": "paired t test",
             "paired_robustness": "Wilcoxon signed-rank",
             "multiple_testing": "Holm across expanded paired tests",

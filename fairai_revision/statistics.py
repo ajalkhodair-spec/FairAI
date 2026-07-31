@@ -22,6 +22,9 @@ METRICS = (
     "runtime_ms",
 )
 
+BOOTSTRAP_REPETITIONS = 10_000
+BOOTSTRAP_SEED = 20_260_731
+
 
 def _write_csv(path, rows):
     if not rows:
@@ -44,6 +47,37 @@ def _holm_adjust(p_values):
     return adjusted
 
 
+def _stable_seed(*parts):
+    payload = "|".join(str(part) for part in parts).encode("utf-8")
+    digest = hashlib.sha256(payload).digest()
+    return BOOTSTRAP_SEED ^ int.from_bytes(digest[:8], "big")
+
+
+def bootstrap_mean_ci(values, *, seed, repetitions=BOOTSTRAP_REPETITIONS):
+    values = np.asarray(values, dtype=float)
+    if values.size == 0:
+        raise ValueError("Bootstrap confidence interval requires observations")
+    if values.size == 1 or np.allclose(values, values[0]):
+        value = float(values.mean())
+        return value, value
+    rng = np.random.default_rng(seed)
+    sampled = rng.choice(values, size=(repetitions, values.size), replace=True)
+    means = sampled.mean(axis=1)
+    low, high = np.quantile(means, [0.025, 0.975])
+    return float(low), float(high)
+
+
+def paired_rank_biserial(differences):
+    differences = np.asarray(differences, dtype=float)
+    nonzero = differences[~np.isclose(differences, 0)]
+    if nonzero.size == 0:
+        return 0.0
+    ranks = stats.rankdata(np.abs(nonzero))
+    positive = ranks[nonzero > 0].sum()
+    negative = ranks[nonzero < 0].sum()
+    return float((positive - negative) / ranks.sum())
+
+
 def summarize(frame):
     rows = []
     grouped = frame.groupby(["scenario_id", "partition", "method"], sort=True)
@@ -54,8 +88,10 @@ def summarize(frame):
                 continue
             mean = float(values.mean())
             std = float(values.std(ddof=1)) if len(values) > 1 else 0.0
-            sem = std / math.sqrt(len(values)) if len(values) > 1 else 0.0
-            critical = float(stats.t.ppf(0.975, len(values) - 1)) if len(values) > 1 else 0.0
+            ci_low, ci_high = bootstrap_mean_ci(
+                values,
+                seed=_stable_seed(scenario_id, partition, method, metric),
+            )
             rows.append(
                 {
                     "scenario_id": scenario_id,
@@ -65,8 +101,9 @@ def summarize(frame):
                     "n": len(values),
                     "mean": mean,
                     "std": std,
-                    "ci95_low": mean - critical * sem,
-                    "ci95_high": mean + critical * sem,
+                    "median": float(np.median(values)),
+                    "ci95_low": ci_low,
+                    "ci95_high": ci_high,
                     "minimum": float(values.min()),
                     "maximum": float(values.max()),
                 }
@@ -119,6 +156,9 @@ def paired_b3_vs_b0(frame):
                     "n": len(paired),
                     "mean_difference": float(differences.mean()),
                     "paired_effect_size_dz": effect,
+                    "rank_biserial_correlation": paired_rank_biserial(
+                        differences
+                    ),
                     "paired_t_statistic": t_statistic,
                     "paired_t_p": t_p,
                     "wilcoxon_statistic": wilcoxon_statistic,
@@ -170,7 +210,10 @@ def analyze(input_dirs, output_dir):
         "input_rows": len(combined),
         "summary_rows": len(summary_rows),
         "paired_test_rows": len(paired_rows),
-        "confidence_interval": "two-sided 95% Student t",
+        "confidence_interval": (
+            "two-sided percentile bootstrap 95% CI of the mean; "
+            f"{BOOTSTRAP_REPETITIONS} deterministic resamples"
+        ),
         "paired_primary_test": "paired t test",
         "paired_robustness_test": "Wilcoxon signed-rank",
         "multiple_testing_correction": "Holm across reported paired t tests",

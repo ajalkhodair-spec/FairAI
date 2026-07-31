@@ -3,7 +3,13 @@ import unittest
 import numpy as np
 import pandas as pd
 
-from fairai_revision.statistics import _holm_adjust, paired_b3_vs_b0, summarize
+from fairai_revision.statistics import (
+    _holm_adjust,
+    bootstrap_mean_ci,
+    paired_b3_vs_b0,
+    paired_rank_biserial,
+    summarize,
+)
 
 
 class RevisionStatisticsTests(unittest.TestCase):
@@ -35,6 +41,9 @@ class RevisionStatisticsTests(unittest.TestCase):
         )
         self.assertEqual(accuracy["n"], 3)
         self.assertAlmostEqual(accuracy["mean"], 0.8)
+        self.assertAlmostEqual(accuracy["median"], 0.8)
+        self.assertLessEqual(accuracy["ci95_low"], accuracy["mean"])
+        self.assertGreaterEqual(accuracy["ci95_high"], accuracy["mean"])
         paired = paired_b3_vs_b0(frame)
         difference = next(row for row in paired if row["metric"] == "accuracy")
         self.assertAlmostEqual(difference["mean_difference"], -0.1)
@@ -45,6 +54,15 @@ class RevisionStatisticsTests(unittest.TestCase):
         self.assertTrue(np.all((adjusted >= 0) & (adjusted <= 1)))
         order = np.argsort([0.01, 0.04, 0.03])
         self.assertTrue(np.all(np.diff(adjusted[order]) >= 0))
+
+    def test_bootstrap_and_rank_biserial_are_deterministic(self):
+        values = np.asarray([0.7, 0.8, 0.9])
+        first = bootstrap_mean_ci(values, seed=17, repetitions=1_000)
+        second = bootstrap_mean_ci(values, seed=17, repetitions=1_000)
+        self.assertEqual(first, second)
+        self.assertEqual(paired_rank_biserial([1, 2, 3]), 1.0)
+        self.assertEqual(paired_rank_biserial([-1, -2, -3]), -1.0)
+        self.assertEqual(paired_rank_biserial([0, 0, 0]), 0.0)
 
 
 if __name__ == "__main__":

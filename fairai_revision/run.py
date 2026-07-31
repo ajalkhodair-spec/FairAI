@@ -735,6 +735,17 @@ def run_gas_benchmark(config, output_dir):
         env=environment,
         check=True,
     )
+    throughput_raw_path = output_dir / "raw" / "transaction_throughput.json"
+    throughput_environment = {
+        **environment,
+        "FAIRAI_THROUGHPUT_OUTPUT": str(throughput_raw_path),
+    }
+    subprocess.run(
+        ["npx", "hardhat", "run", "scripts/throughput_benchmark.js"],
+        cwd=REPO_ROOT / "hardhat",
+        env=throughput_environment,
+        check=True,
+    )
     payload = json.loads(raw_path.read_text(encoding="utf-8"))
     rows = payload["rows"]
     write_csv(
@@ -790,6 +801,15 @@ def run_gas_benchmark(config, output_dir):
         cost_rows,
         list(cost_rows[0]),
     )
+    throughput_payload = json.loads(
+        throughput_raw_path.read_text(encoding="utf-8")
+    )
+    throughput_rows = throughput_payload["scenarios"]
+    write_csv(
+        output_dir / "blockchain" / "transaction_throughput.csv",
+        throughput_rows,
+        list(throughput_rows[0]),
+    )
     receipt_checksum = __import__("hashlib").sha256(
         canonical_json_bytes(payload)
     ).hexdigest()
@@ -800,6 +820,10 @@ def run_gas_benchmark(config, output_dir):
             "chain_id": payload["chain_id"],
             "hardhat_network": payload["hardhat_network"],
             "transactions_measured": len(rows),
+            "throughput_scenarios_measured": len(throughput_rows),
+            "throughput_transactions_measured": len(
+                throughput_payload["transactions"]
+            ),
             "repetitions": config["repetitions"],
             "batch_sizes": config["batch_sizes"],
             "modeled_cost_assumptions": {

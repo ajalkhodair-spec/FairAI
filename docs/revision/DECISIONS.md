@@ -124,3 +124,17 @@ prevents future signatures only after compromise is detected.
 The federated logistic path uses deterministic full-batch gradient updates.
 One local epoch is one complete gradient pass over the client's local training
 subset. LBFGS optimizer iterations are not reported as epochs.
+
+## D-021 Use deterministic bootstrap intervals for primary reporting
+
+Primary 95% confidence intervals are percentile bootstrap intervals over the
+seed-level experimental units with 10,000 deterministic resamples. Student
+t-tests remain paired comparison tests, with Wilcoxon checks, Holm correction,
+paired Cohen's `dz`, and rank-biserial effect sizes reported separately.
+
+## D-022 Bound throughput claims to local Hardhat
+
+Sequential and concurrent submission throughput is measured on an ephemeral
+in-process Hardhat network. These values characterize contract execution in the
+test environment and are not public-chain or permissioned-network throughput
+claims.
