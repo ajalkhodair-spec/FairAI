@@ -1,0 +1,6 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Georgia,'Times New Roman',serif;fill:#18252B}.axis{stroke:#18252B;stroke-width:3}.grid{stroke:#D9E2E7;stroke-width:2}.tick{font-size:30px}.label{font-size:36px}.legend{font-size:30px}</style>
+<text class="label" x="900" y="580" text-anchor="middle">Panel-ready source figures are provided independently; IPFS panel omitted because BLK-002 prevents measurement.</text>
+<text class="legend" x="900" y="640" text-anchor="middle">See figures_independent and figure_data.</text>
+</svg>

@@ -31,9 +31,20 @@
 - Initial manifest-backed Adult and COMPAS IID/non-IID result generation.
 - Predeclared ten-seed paired core experiment support.
 - Derived summary statistics, 95% t intervals, paired tests, effect sizes, and Holm correction.
+- Deterministic federated small-MLP execution with five-seed Adult evidence.
+- B0 client-scaling measurements at 3, 5, 10, and 20 clients.
+- Ten-seed IID and joint-Dirichlet heterogeneity experiments with entropy correlations.
+- Four-profile threshold-sensitivity experiments with explicit empty-gate handling.
+- Random-weight, sign-flip, and label-flip poisoning experiments for B0 and B6.
+- Strict two-peer Kubo Compose topology and fail-closed benchmark harness.
+- Thirty-repeat Hardhat gas measurements for 2,825 transaction receipts.
+- A1-A14 security matrix, privacy inventory, ethical-scope matrix, and complexity analysis.
+- Expanded statistical tables, 37-sheet workbook, figure-data CSVs, vector figures, and 300-dpi PNG figures.
+- Anonymous repository checker and bounded clean-environment protocol.
 
 ### Changed
 
 - No implementation behavior changed during Phase 0.
 - Legacy commands and behavior remain unchanged by the G1 runner.
 - Scientific dependencies are version-pinned for Python 3.13.
+- The public README now distinguishes demonstrated results, missing measurements, and nonclaims.

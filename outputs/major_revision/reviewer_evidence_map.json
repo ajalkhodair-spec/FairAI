@@ -1,0 +1,167 @@
+[
+  {
+    "reviewer": "Editor",
+    "comment_id": "E1",
+    "concern": "Methodology detail",
+    "current_evidence": "Configuration runner schemas runbook and manifest",
+    "gap": "Scientific scenario protocols still pending",
+    "planned_phase": "1-10",
+    "status": "in_progress",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Editor",
+    "comment_id": "E2",
+    "concern": "Experimental design",
+    "current_evidence": "Three repeated synthetic trials",
+    "gap": "Too small for independent assessment",
+    "planned_phase": "3-10",
+    "status": "open",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 1",
+    "comment_id": "R1.1",
+    "concern": "Scale",
+    "current_evidence": "Legacy reproduction plus verified Adult and COMPAS loaders and LR and MLP interfaces",
+    "gap": "Expanded clients rounds partitions and independent seeds remain",
+    "planned_phase": "4-10",
+    "status": "in_progress",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 1",
+    "comment_id": "R1.2",
+    "concern": "Proof semantics",
+    "current_evidence": "V2 source canonical digest binding verifier and explicit claim boundaries implemented",
+    "gap": "V2 compilation ceremony and cryptographic negative tests blocked by Circom version",
+    "planned_phase": "7",
+    "status": "in_progress",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 1",
+    "comment_id": "R1.3",
+    "concern": "Verifier trust",
+    "current_evidence": "EIP-712 V2 signer registry revocation nonce digest expiration and compromise tests implemented",
+    "gap": "Ledger-integrated measured security CSV suite remains",
+    "planned_phase": "8-9",
+    "status": "in_progress",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 1",
+    "comment_id": "R1.4",
+    "concern": "Baselines",
+    "current_evidence": "Approved-only FedAvg only",
+    "gap": "Comparative baselines absent",
+    "planned_phase": "6",
+    "status": "open",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 1",
+    "comment_id": "R1.5",
+    "concern": "Fairness",
+    "current_evidence": "Protected-group DP EO equalized-odds SAG and versioned undefined handling implemented",
+    "gap": "Measured sensitivity and global outcomes remain",
+    "planned_phase": "5 and 9",
+    "status": "in_progress",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 1",
+    "comment_id": "R1.6",
+    "concern": "Privacy",
+    "current_evidence": "Raw-data locality statement",
+    "gap": "Formal privacy is not provided and exposure inventory missing",
+    "planned_phase": "10",
+    "status": "open",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 1",
+    "comment_id": "R1.7",
+    "concern": "Scalability and cost",
+    "current_evidence": "Selected timing and gas fields",
+    "gap": "Scaling throughput availability recovery and per-operation gas missing",
+    "planned_phase": "9",
+    "status": "open",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 1",
+    "comment_id": "R1.8",
+    "concern": "Adversarial behavior",
+    "current_evidence": "Some contract rejection tests",
+    "gap": "Targeted attacks and poisoning experiments missing",
+    "planned_phase": "8-9",
+    "status": "open",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 2",
+    "comment_id": "R2.1",
+    "concern": "IPFS overhead",
+    "current_evidence": "Single-node add retrieval and pin instrumentation",
+    "gap": "Cold warm concurrency and recovery missing",
+    "planned_phase": "9",
+    "status": "open",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 2",
+    "comment_id": "R2.2",
+    "concern": "Complexity",
+    "current_evidence": "Stage-addressable output schema now exists",
+    "gap": "Theory and measured stage timing missing",
+    "planned_phase": "10",
+    "status": "in_progress",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 2",
+    "comment_id": "R2.3",
+    "concern": "Public repository",
+    "current_evidence": "LICENSE and CITATION exist",
+    "gap": "Expected URL returns 404 and local remote is absent",
+    "planned_phase": "11",
+    "status": "blocked",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 3",
+    "comment_id": "R3.1",
+    "concern": "Ethical scope",
+    "current_evidence": "Fairness gate and audit trail",
+    "gap": "Broader ethical scope classification missing",
+    "planned_phase": "10",
+    "status": "open",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  },
+  {
+    "reviewer": "Reviewer 3",
+    "comment_id": "R3.2",
+    "concern": "Entropy",
+    "current_evidence": "Deterministic label group and source entropy outputs for IID and Dirichlet partitions",
+    "gap": "Outcome correlations await training and fairness suites",
+    "planned_phase": "4 and 9",
+    "status": "in_progress",
+    "evidence_type": "evidence_map",
+    "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
+  }
+]

@@ -1,0 +1,69 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Georgia,'Times New Roman',serif;fill:#18252B}.axis{stroke:#18252B;stroke-width:3}.grid{stroke:#D9E2E7;stroke-width:2}.tick{font-size:30px}.label{font-size:36px}.legend{font-size:30px}</style>
+<line class="axis" x1="180" y1="90" x2="180" y2="1010"/>
+<line class="axis" x1="180" y1="1010" x2="1680" y2="1010"/>
+<line class="grid" x1="180" y1="1010.0" x2="1680" y2="1010.0"/>
+<text class="tick" x="158" y="1020.0" text-anchor="end">0.772</text>
+<line class="grid" x1="180" y1="826.0" x2="1680" y2="826.0"/>
+<text class="tick" x="158" y="836.0" text-anchor="end">0.773</text>
+<line class="grid" x1="180" y1="642.0" x2="1680" y2="642.0"/>
+<text class="tick" x="158" y="652.0" text-anchor="end">0.774</text>
+<line class="grid" x1="180" y1="458.0" x2="1680" y2="458.0"/>
+<text class="tick" x="158" y="468.0" text-anchor="end">0.775</text>
+<line class="grid" x1="180" y1="274.0" x2="1680" y2="274.0"/>
+<text class="tick" x="158" y="284.0" text-anchor="end">0.777</text>
+<line class="grid" x1="180" y1="90.0" x2="1680" y2="90.0"/>
+<text class="tick" x="158" y="100.0" text-anchor="end">0.778</text>
+<text class="tick" x="305.0" y="1065" text-anchor="middle"></text>
+<text class="tick" x="555.0" y="1065" text-anchor="middle"></text>
+<text class="tick" x="805.0" y="1065" text-anchor="middle"></text>
+<text class="tick" x="1055.0" y="1065" text-anchor="middle"></text>
+<text class="tick" x="1305.0" y="1065" text-anchor="middle"></text>
+<text class="tick" x="1555.0" y="1065" text-anchor="middle"></text>
+<text class="label" transform="translate(48 550.0) rotate(-90)" text-anchor="middle">Test accuracy</text>
+<text class="tick" x="180.0" y="1065" text-anchor="middle">0.42</text>
+<text class="tick" x="480.0" y="1065" text-anchor="middle">0.50</text>
+<text class="tick" x="780.0" y="1065" text-anchor="middle">0.58</text>
+<text class="tick" x="1080.0" y="1065" text-anchor="middle">0.67</text>
+<text class="tick" x="1380.0" y="1065" text-anchor="middle">0.75</text>
+<text class="tick" x="1680.0" y="1065" text-anchor="middle">0.84</text>
+<circle cx="1575.0031336342477" cy="617.1005385996399" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="1320.0755945799722" cy="637.7468581687639" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="362.8326546668379" cy="813.2405745062916" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1575.9048643346612" cy="596.454219030516" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="987.2123328496323" cy="740.9784560143664" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="637.681709692966" cy="833.8868940753983" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1575.5036720920623" cy="627.4236983841934" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="1148.4358261961183" cy="710.0089766606891" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="727.4274884476183" cy="782.2710951525971" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1575.990637103342" cy="637.7468581687639" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="1077.9896992767735" cy="730.6552962297958" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="767.8076021439163" cy="844.210053859969" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1576.551724137931" cy="617.1005385996399" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="1278.0926325124058" cy="606.7773788150865" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="950.9290292800889" cy="710.0089766606891" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1575.6969633626252" cy="596.454219030516" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="1198.4675992486955" cy="658.3931777378879" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="417.9004143471843" cy="771.9479353680438" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1574.9749432444075" cy="679.0394973069945" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="832.3875696307763" cy="740.9784560143664" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="283.44827586206895" cy="782.2710951525971" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1574.9518968037476" cy="555.1615798922853" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="1142.428204633456" cy="668.7163375224412" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="432.3692625046011" cy="245.46678635547767" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1576.3467204707053" cy="617.1005385996399" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="1022.1812204464336" cy="802.9174147217211" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="1060.177497182116" cy="854.5332136445223" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<circle cx="1576.1733125719659" cy="575.807899461392" r="13" fill="#176B87" fill-opacity="0.8"/>
+<circle cx="963.5105853896304" cy="740.9784560143664" r="13" fill="#3B7A57" fill-opacity="0.8"/>
+<circle cx="1107.2490943683074" cy="802.9174147217211" r="13" fill="#C35A21" fill-opacity="0.8"/>
+<text class="label" x="930" y="1135" text-anchor="middle">Mean normalized label entropy</text>
+<text class="legend" x="1250" y="145">Spearman rho=0.687; p=2.72e-05</text>
+<circle cx="250" cy="1128" r="12" fill="#176B87"/>
+<text class="legend" x="275" y="1138">iid</text>
+<circle cx="640" cy="1128" r="12" fill="#C35A21"/>
+<text class="legend" x="665" y="1138">joint_dirichlet_0.3</text>
+<circle cx="1030" cy="1128" r="12" fill="#3B7A57"/>
+<text class="legend" x="1055" y="1138">joint_dirichlet_1.0</text>
+</svg>

@@ -1,0 +1,10 @@
+\begin{tabular}{lrrll}
+\toprule
+scenario & detected & rejected & limitation & evidence\_type \\
+\midrule
+A1\_invalid\_groth16\_proof & True & True & V2 direct Groth16 artifacts unavailable & tested \\
+A12\_false\_metric\_reporting & False & False & Known undetected threat under current trust assumptions & analytical\_and\_tested \\
+A13\_metrics\_modified\_after\_proof & True & True & SHA-256 is recomputed off circuit & tested \\
+A14\_compromised\_authorized\_verifier & False & False & Single-verifier trust limitation & tested \\
+\bottomrule
+\end{tabular}

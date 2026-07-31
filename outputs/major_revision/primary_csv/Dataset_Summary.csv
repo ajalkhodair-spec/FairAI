@@ -1,0 +1,3 @@
+dataset,task,primary_protected_attribute,source_checksum_manifest,evidence_type,source_file
+Adult,income classification,sex,data/raw/adult/download_manifest.json,dataset_manifest,data/raw/adult/download_manifest.json
+COMPAS,two-year recidivism classification,race,data/raw/compas/download_manifest.json,dataset_manifest,data/raw/compas/download_manifest.json

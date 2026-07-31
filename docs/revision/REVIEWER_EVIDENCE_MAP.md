@@ -1,21 +1,20 @@
 # Reviewer Evidence Map
 
-This map is provisional. No reviewer response should claim completion until the
-referenced measured evidence exists.
+No response should claim completion for rows marked partial or blocked.
 
-| Reviewer | Concern | Current evidence | Planned evidence | Status |
-|---|---|---|---|---|
-| Editor | Methodology and assessability | Legacy source and Q1 package | Configs, manifests, protocol, statistics | Open |
-| Reviewer 1 | Scale | Three-node synthetic run | Adult, COMPAS, MLP, non-IID, 3/5/10/20 clients | Open |
-| Reviewer 1 | Proof claims | Legacy threshold circuit | V2 binding tests and false-metric scenario | Open |
-| Reviewer 1 | Verifier trust | Single signed verifier | Replay, revocation, expiry, compromise evidence | Open |
-| Reviewer 1 | Baselines | Approved-only FedAvg | B0-B7 bounded comparisons | Open |
-| Reviewer 1 | Fairness | DP and EO legacy outputs | DP, EO, EOdds, SAG and sensitivity | Open |
-| Reviewer 1 | Privacy | Raw-data locality | Exposure inventory and explicit nonclaims | Open |
-| Reviewer 1 | Security | Contract unit rejections | Attack matrix and poisoning comparisons | Open |
-| Reviewer 2 | IPFS | Kubo mode and generic retrieval timing | Two-peer cold/warm/recovery/concurrency | Open |
-| Reviewer 2 | Complexity | None | Complexity analysis and stage timing | Open |
-| Reviewer 2 | GitHub | Local release files | Anonymous public access and clean clone | Blocked |
-| Reviewer 3 | Ethics | Fairness gate | Ethics scope matrix | Open |
-| Reviewer 3 | Entropy | None | Label, group, and source entropy | Open |
-
+| Reviewer | ID | Concern | Code or protocol change | Experiment | Result file | Table or figure | Supported claim | Remaining limitation | Status |
+|---|---|---|---|---|---|---|---|---|---|
+| Editor | E1 | Assessable methodology | Versioned configs, manifests, locks, output schema | Legacy and expanded suites | `outputs/major_revision/experiment_summary.json` | Workbook Experiment_Matrix | Runs are configuration- and commit-traceable | Remote reproduction blocked | Partial |
+| Reviewer 1 | R1.1 | Real scale | Adult/COMPAS loaders, LR/MLP, deterministic partitions | Core, MLP, scaling, heterogeneity | `outputs/major_revision/expanded-analysis-466cb07/experiment_summary.csv` | Figures A-C | Adult/COMPAS and 3/5/10/20 clients are evaluated | B2/B4 scaling unavailable | Supported bounded |
+| Reviewer 1 | R1.2 | Proof semantics | V2 circuit, canonical digest field mapping, binding tests | Negative binding suite | `outputs/major_revision/security-evidence/false_metric_reporting_results.csv` | Proof_Semantics | Node, round, policy, nonce, manifest, and metrics fields are bound | Correct metric derivation is not proved; V2 artifacts blocked | Partial |
+| Reviewer 1 | R1.3 | Verifier trust | EIP-712 domain, expiry, nonce/digest replay, revocation | A2-A4 and A14 | `outputs/major_revision/security-evidence/signature_attack_results.csv` | Figure F | Unauthorized, tampered, expired, and replayed decisions are rejected | Compromised authorized signer remains trusted | Supported bounded |
+| Reviewer 1 | R1.4 | Baselines | B0/B1/B3/B6/B7 semantics, FedAvg, coordinate median | Core and adversarial | `outputs/major_revision/core-statistics-a8fe359/combined_test_metrics.csv` | Baseline and adversarial figures | B0/B1/B3 and robust B6 are evaluated | B2/B4 infrastructure path blocked; B5 blocked; B7 proof path blocked | Partial |
+| Reviewer 1 | R1.5 | Fairness breadth | DP, EO, EOdds, SAG and policy profiles | Core and threshold sensitivity | `outputs/major_revision/threshold-sensitivity-10seed-aa165b3/metrics/test_metrics.csv` | Figure D | Multiple group metrics and gate sensitivity are measured | One primary protected attribute per dataset | Supported bounded |
+| Reviewer 1 | R1.6 | Privacy | Exposure inventory and exact nonclaim | Qualitative scope analysis | `outputs/major_revision/governance/privacy_exposure_inventory.csv` | Privacy_Exposure | Raw data stay local | No formal inference, inversion, update, or metadata privacy | Supported bounded |
+| Reviewer 1 | R1.7 | Scalability and cost | Client scaling and repeated gas receipts | Scaling and gas 30 repetitions | `outputs/major_revision/gas-benchmark-30rep-6f80450/blockchain/gas_summary.csv` | Figure B, Gas sheets | Hardhat gas by operation and B0 client scaling are measured | Transaction latency and public-chain deployment not measured | Partial |
+| Reviewer 1 | R1.8 | Adversarial behavior | Deterministic poisoning and A1-A14 matrix | Five-seed poisoning plus contract tests | `outputs/major_revision/security-evidence/attack_matrix.csv` | Figure E | Random, sign, and label attacks are evaluated | Full FairAI/B7 poisoning comparison blocked | Partial |
+| Reviewer 2 | R2.1 | IPFS overhead | Pinned two-peer Compose and strict benchmark | Planned 30-repeat Kubo suite | `outputs/major_revision/figure_data/ipfs_measurement_status.csv` | Missing-data sheet | Benchmark fails closed without Kubo | Docker socket denied; no timings | Blocked |
+| Reviewer 2 | R2.2 | Complexity | Implementation-matched asymptotic analysis and stage export | Measured federated/legacy timing | `outputs/major_revision/complexity/stage_timing.csv` | Complexity sheet | Actual FedAvg, retrieval, ledger, and timing boundaries are documented | V2/IPFS stage timing blocked | Partial |
+| Reviewer 2 | R2.3 | Public GitHub | Anonymous checker and release checklist | Anonymous URL request | `BLOCKERS.md` | Missing_Data | No accessibility claim is made | Configured URL returns 404; no local remote | Blocked |
+| Reviewer 3 | R3.1 | Ethical scope | Ethics classification and nonclaims | Scope analysis | `outputs/major_revision/governance/ethics_scope_matrix.csv` | Ethics_Scope | Fairness is directly operationalized; integrity/transparency/accountability are governance support | Other moral dimensions are not measured | Supported bounded |
+| Reviewer 3 | R3.2 | Entropy | Label/group entropy per client and Spearman relationships | Ten-seed IID/Dirichlet heterogeneity | `outputs/major_revision/expanded-analysis-466cb07/entropy_correlations.csv` | Figure C | Entropy relationships with accuracy and fairness are reported | Correlation is not causal evidence | Supported bounded |

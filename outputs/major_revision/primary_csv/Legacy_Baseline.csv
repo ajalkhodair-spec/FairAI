@@ -1,0 +1,4 @@
+run_id,trial,seed,approved_nodes,rejected_nodes,approval_rate,global_accuracy,global_demographic_parity_gap,runtime_ms,source_file,evidence_type
+legacy_mvp-trial-1,1,1001,2,1,0.666667,0.938889,0.144269,4322.662,outputs/major_revision/legacy_mvp/global_metrics.csv,measured_legacy
+legacy_mvp-trial-2,2,1001,2,1,0.666667,0.938889,0.144269,3562.191,outputs/major_revision/legacy_mvp/global_metrics.csv,measured_legacy
+legacy_mvp-trial-3,3,1001,2,1,0.666667,0.938889,0.144269,3776.483,outputs/major_revision/legacy_mvp/global_metrics.csv,measured_legacy

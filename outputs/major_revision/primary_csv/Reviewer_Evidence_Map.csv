@@ -1,0 +1,16 @@
+reviewer,comment_id,concern,current_evidence,gap,planned_phase,status,evidence_type,source_file
+Editor,E1,Methodology detail,Configuration runner schemas runbook and manifest,Scientific scenario protocols still pending,1-10,in_progress,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Editor,E2,Experimental design,Three repeated synthetic trials,Too small for independent assessment,3-10,open,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 1,R1.1,Scale,Legacy reproduction plus verified Adult and COMPAS loaders and LR and MLP interfaces,Expanded clients rounds partitions and independent seeds remain,4-10,in_progress,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 1,R1.2,Proof semantics,V2 source canonical digest binding verifier and explicit claim boundaries implemented,V2 compilation ceremony and cryptographic negative tests blocked by Circom version,7,in_progress,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 1,R1.3,Verifier trust,EIP-712 V2 signer registry revocation nonce digest expiration and compromise tests implemented,Ledger-integrated measured security CSV suite remains,8-9,in_progress,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 1,R1.4,Baselines,Approved-only FedAvg only,Comparative baselines absent,6,open,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 1,R1.5,Fairness,Protected-group DP EO equalized-odds SAG and versioned undefined handling implemented,Measured sensitivity and global outcomes remain,5 and 9,in_progress,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 1,R1.6,Privacy,Raw-data locality statement,Formal privacy is not provided and exposure inventory missing,10,open,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 1,R1.7,Scalability and cost,Selected timing and gas fields,Scaling throughput availability recovery and per-operation gas missing,9,open,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 1,R1.8,Adversarial behavior,Some contract rejection tests,Targeted attacks and poisoning experiments missing,8-9,open,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 2,R2.1,IPFS overhead,Single-node add retrieval and pin instrumentation,Cold warm concurrency and recovery missing,9,open,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 2,R2.2,Complexity,Stage-addressable output schema now exists,Theory and measured stage timing missing,10,in_progress,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 2,R2.3,Public repository,LICENSE and CITATION exist,Expected URL returns 404 and local remote is absent,11,blocked,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 3,R3.1,Ethical scope,Fairness gate and audit trail,Broader ethical scope classification missing,10,open,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md
+Reviewer 3,R3.2,Entropy,Deterministic label group and source entropy outputs for IID and Dirichlet partitions,Outcome correlations await training and fairness suites,4 and 9,in_progress,evidence_map,docs/revision/REVIEWER_EVIDENCE_MAP.md

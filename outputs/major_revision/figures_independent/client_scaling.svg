@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Georgia,'Times New Roman',serif;fill:#18252B}.axis{stroke:#18252B;stroke-width:3}.grid{stroke:#D9E2E7;stroke-width:2}.tick{font-size:30px}.label{font-size:36px}.legend{font-size:30px}</style>
+<line class="axis" x1="180" y1="90" x2="180" y2="1010"/>
+<line class="axis" x1="180" y1="1010" x2="1680" y2="1010"/>
+<line class="grid" x1="180" y1="1010.0" x2="1680" y2="1010.0"/>
+<text class="tick" x="158" y="1020.0" text-anchor="end">0.767</text>
+<line class="grid" x1="180" y1="826.0" x2="1680" y2="826.0"/>
+<text class="tick" x="158" y="836.0" text-anchor="end">0.769</text>
+<line class="grid" x1="180" y1="642.0" x2="1680" y2="642.0"/>
+<text class="tick" x="158" y="652.0" text-anchor="end">0.771</text>
+<line class="grid" x1="180" y1="458.0" x2="1680" y2="458.0"/>
+<text class="tick" x="158" y="468.0" text-anchor="end">0.773</text>
+<line class="grid" x1="180" y1="274.0" x2="1680" y2="274.0"/>
+<text class="tick" x="158" y="284.0" text-anchor="end">0.775</text>
+<line class="grid" x1="180" y1="90.0" x2="1680" y2="90.0"/>
+<text class="tick" x="158" y="100.0" text-anchor="end">0.777</text>
+<text class="tick" x="367.5" y="1065" text-anchor="middle">3.0</text>
+<text class="tick" x="742.5" y="1065" text-anchor="middle">5.0</text>
+<text class="tick" x="1117.5" y="1065" text-anchor="middle">10.0</text>
+<text class="tick" x="1492.5" y="1065" text-anchor="middle">20.0</text>
+<text class="label" transform="translate(48 550.0) rotate(-90)" text-anchor="middle">Test accuracy</text>
+<line class="axis" x1="367.5" y1="566.4769966316608" x2="367.5" y2="509.6209922253206"/>
+<line class="axis" x1="353.5" y1="566.4769966316608" x2="381.5" y2="566.4769966316608"/>
+<line class="axis" x1="353.5" y1="509.6209922253206" x2="381.5" y2="509.6209922253206"/>
+<line class="axis" x1="742.5" y1="640.8190867600345" x2="742.5" y2="455.3682763386688"/>
+<line class="axis" x1="728.5" y1="640.8190867600345" x2="756.5" y2="640.8190867600345"/>
+<line class="axis" x1="728.5" y1="455.3682763386688" x2="756.5" y2="455.3682763386688"/>
+<line class="axis" x1="1117.5" y1="645.5827962609329" x2="1117.5" y2="571.1408122881235"/>
+<line class="axis" x1="1103.5" y1="645.5827962609329" x2="1131.5" y2="645.5827962609329"/>
+<line class="axis" x1="1103.5" y1="571.1408122881235" x2="1131.5" y2="571.1408122881235"/>
+<line class="axis" x1="1492.5" y1="639.962955069754" x2="1492.5" y2="513.9813589739053"/>
+<line class="axis" x1="1478.5" y1="639.962955069754" x2="1506.5" y2="639.962955069754"/>
+<line class="axis" x1="1478.5" y1="513.9813589739053" x2="1506.5" y2="513.9813589739053"/>
+<polyline fill="none" stroke="#176B87" stroke-width="8" points="367.5,538.0489944284906 742.5,548.0936815493517 1117.5,608.3618042745281 1492.5,576.9721570218296"/>
+<circle cx="367.5" cy="538.0489944284906" r="13" fill="#176B87"/>
+<circle cx="742.5" cy="548.0936815493517" r="13" fill="#176B87"/>
+<circle cx="1117.5" cy="608.3618042745281" r="13" fill="#176B87"/>
+<circle cx="1492.5" cy="576.9721570218296" r="13" fill="#176B87"/>
+<text class="label" x="930" y="1135" text-anchor="middle">Clients</text>
+</svg>

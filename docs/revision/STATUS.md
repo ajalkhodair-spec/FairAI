@@ -1,6 +1,6 @@
 # Major Revision Status
 
-- Current phase: Phase 6, federated baselines and ablations
+- Current phase: Phase 11, clean reproduction and release packaging
 - Completed: Phase 0 audit, baseline commit, annotated submitted-state tag,
   revision branch, strict-Kubo diagnostic legacy reproduction, G1
   configuration runner, schemas, manifests, Make targets, CI smoke step, and
@@ -11,10 +11,13 @@
   partitioning, minimum-size enforcement, canonical partition checksums, and
   normalized entropy exports, protected-group DP/EO/equalized-odds/SAG metrics,
   explicit undefined results, versioned round-bounded approval policies, and
-  real-data multi-round B0/B1/B3 engineering-validation runs and paired
-  ten-seed Adult/COMPAS statistics
+  real-data multi-round B0/B1/B3 engineering-validation runs, paired ten-seed
+  Adult/COMPAS statistics, federated MLP, client scaling, heterogeneity,
+  threshold sensitivity, deterministic poisoning, 2,825 Hardhat gas receipts,
+  expanded statistics, security/privacy/ethics/complexity evidence, workbook,
+  and figures
 - Tests passed:
-  - Python: 54 tests
+  - Python: 57 tests
   - Solidity: 15 tests
   - Hardhat compile: 7 contracts
   - ZKey verification against R1CS and Powers of Tau
@@ -31,10 +34,13 @@
   - Powers of Tau is external and needs a documented acquisition/checksum flow
   - Docker socket access is unavailable to this task, so strict two-node Kubo
     measurements cannot be generated in the current execution environment
-- Next action: execute the five-seed Adult federated-MLP suite, then scaling,
-  heterogeneity, threshold, and adversarial suites
-- Latest commit hash: `4bc99fd`
+- Next action: clean-clone verification and external resolution of BLK-001,
+  BLK-002, BLK-003, and BLK-004
+- Latest commit hash: `4221f16`
 - Latest output paths:
   - `outputs/major_revision/adult-core-10seed-e01b72a`
   - `outputs/major_revision/compas-core-10seed-e01b72a`
   - `outputs/major_revision/core-statistics-a8fe359`
+  - `outputs/major_revision/expanded-analysis-466cb07`
+  - `outputs/major_revision/gas-benchmark-30rep-6f80450`
+  - `outputs/major_revision/FairAI_Major_Revision_Results.xlsx`

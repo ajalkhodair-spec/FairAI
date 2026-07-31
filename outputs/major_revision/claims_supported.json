@@ -1,0 +1,62 @@
+[
+  {
+    "claim": "Adult and COMPAS loaders are checksum pinned",
+    "status": "supported",
+    "evidence_type": "dataset_manifest",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "LR and small MLP execute federated rounds",
+    "status": "supported",
+    "evidence_type": "measured",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "3/5/10/20 clients are evaluated",
+    "status": "supported_B0",
+    "evidence_type": "measured",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "Fairness policy changes approval and outcomes",
+    "status": "supported_B3",
+    "evidence_type": "measured",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "Random-weight poisoning is mitigated by coordinate median in this suite",
+    "status": "supported_bounded",
+    "evidence_type": "measured",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "Direct V2 Groth16 is measured",
+    "status": "not_supported",
+    "evidence_type": "blocked",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "Two-peer IPFS overhead is measured",
+    "status": "not_supported",
+    "evidence_type": "blocked",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "FairFed is compared",
+    "status": "not_supported",
+    "evidence_type": "blocked",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "Raw data locality provides formal privacy",
+    "status": "not_supported",
+    "evidence_type": "nonclaim",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "FairAI operationalizes all ethics dimensions",
+    "status": "not_supported",
+    "evidence_type": "nonclaim",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  }
+]

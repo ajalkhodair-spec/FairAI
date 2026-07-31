@@ -1,0 +1,30 @@
+[
+  {
+    "id": " BLK-001 ",
+    "scope": " V2 Groth16 ",
+    "blocker": " Installed `circom` is 0.5.46; `FairnessEligibilityV2.circom` requires 2.1.6. The pinned V2 R1CS/WASM/ZKey do not exist. ",
+    "effect": " Direct V2 proof generation, verification latency, and pairing-verifier gas cannot be measured. ",
+    "resolution": " Install the pinned Circom 2.1.6 binary, provide the checksum-pinned Powers of Tau file, regenerate artifacts, and run the negative binding suite. "
+  },
+  {
+    "id": " BLK-002 ",
+    "scope": " Two-peer IPFS ",
+    "blocker": " This execution task is denied access to `~/.docker/run/docker.sock`. ",
+    "effect": " Real Kubo add, pin, cold/warm retrieval, concurrency, outage, and recovery measurements cannot be generated here. ",
+    "resolution": " Grant the task Docker socket access, then run `make revision-ipfs`; the benchmark is strict and will not use a fallback. "
+  },
+  {
+    "id": " BLK-003 ",
+    "scope": " FairFed ",
+    "blocker": " A faithful primary-paper weighting implementation has not been independently specified and verified in this repository. ",
+    "effect": " B5 is not measured; no custom heuristic is labeled FairFed. ",
+    "resolution": " Implement the published weighting equations with reference tests against reported examples. "
+  },
+  {
+    "id": " BLK-004 ",
+    "scope": " Public release ",
+    "blocker": " The local repository has no configured remote and anonymous repository access has not been verified. ",
+    "effect": " Public citation and clean-clone-from-GitHub evidence remain unavailable. ",
+    "resolution": " Configure the actual public remote, push the branch, and run the anonymous URL checker and clean-clone protocol. "
+  }
+]
