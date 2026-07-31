@@ -68,3 +68,57 @@ make revision-smoke
 Dataset downloads are checksum-enforced. A mismatch aborts preparation rather
 than substituting another source. Scenario configurations with
 `executor: planned` remain fail-closed until their phase is implemented.
+
+## Gas and Local Throughput
+
+```sh
+.venv/bin/python -m fairai_revision.run \
+  --config configs/revision/gas_benchmark.yaml \
+  --run-id gas-throughput-30rep
+```
+
+The executor runs the per-operation gas benchmark and the sequential/concurrent
+submission benchmark. Results are local Hardhat evidence, not public-chain
+throughput.
+
+## Statistics and Publication Package
+
+```sh
+.venv/bin/python -m fairai_revision.statistics \
+  --input outputs/major_revision/adult-core-10seed-e01b72a \
+  --input outputs/major_revision/compas-core-10seed-e01b72a \
+  --output outputs/major_revision/core-statistics-bootstrap
+
+.venv/bin/python -m scripts.analyze_expanded_results \
+  --mlp outputs/major_revision/adult-mlp-5seed-ee23a65 \
+  --scaling outputs/major_revision/client-scaling-5seed-2d2b220 \
+  --heterogeneity outputs/major_revision/heterogeneity-10seed-2d2b220 \
+  --threshold outputs/major_revision/threshold-sensitivity-10seed-aa165b3 \
+  --adversarial outputs/major_revision/adversarial-5seed-e8733cb \
+  --output outputs/major_revision/expanded-analysis-bootstrap
+
+.venv/bin/python -m scripts.prepare_results_package \
+  --gas-run gas-throughput-30rep \
+  --analysis-run expanded-analysis-bootstrap \
+  --core-analysis-run core-statistics-bootstrap
+.venv/bin/python -m scripts.build_latex_tables
+.venv/bin/python -m scripts.build_revision_figures
+.venv/bin/python scripts/render_revision_png_figures.py
+node scripts/build_results_workbook.mjs
+```
+
+PNG rendering additionally requires `requirements-report.txt`. The workbook
+step requires `@oai/artifact-tool`.
+
+## Strict IPFS Benchmark
+
+```sh
+docker compose -f docker-compose.ipfs.yml down -v
+docker compose -f docker-compose.ipfs.yml up -d --wait
+.venv/bin/python -m fairai_revision.run \
+  --config configs/revision/ipfs_benchmark.yaml \
+  --run-id ipfs-two-peer-30rep
+```
+
+Do not publish IPFS result tables unless the manifest is completed and records
+both real peer IDs and the pinned Kubo version.

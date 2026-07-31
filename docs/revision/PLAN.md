@@ -25,7 +25,7 @@ This file is the source of truth for the acceptance-oriented revision.
 | 7 | V2 proof binding | Versioned circuit, canonical digests, negative tests | Partial: source and negative tests complete; artifacts blocked |
 | 8 | Verifier security | EIP-712, replay, expiry, revocation, compromise test | Complete |
 | 9 | Expanded experiment suites | R1-R7 measured with manifests | Partial: R2-R6 available evidence complete; strict V2/IPFS portions blocked |
-| 10 | Statistics and result freeze | Workbook, CSVs, tables, figures, evidence map | Complete for available evidence |
+| 10 | Statistics and result freeze | Workbook, CSVs, tables, figures, evidence map | Complete for available evidence, including bootstrap CIs and local throughput |
 | 11 | Clean reproduction and release | G6 clean clone and release package | Pending |
 
 ## Dependencies

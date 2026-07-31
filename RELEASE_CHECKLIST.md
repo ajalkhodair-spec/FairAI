@@ -14,5 +14,5 @@
 - [x] One Adult scenario reproduces
 - [x] Tables and figures regenerate
 - [x] Known limitations included
-- [ ] Release asset checksums generated
+- [x] Release asset checksums generated
 - [ ] Author permission received before publication

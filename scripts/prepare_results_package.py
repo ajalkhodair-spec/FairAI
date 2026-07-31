@@ -417,6 +417,7 @@ def main():
             str(analysis_root / "threshold_approval.csv"),
         ),
         "entropy_by_client.csv": workbook["Entropy"],
+        "partition_summary.csv": workbook["Client_Partitions"],
         "entropy_correlations.csv": add_trace(
             read_csv(analysis_root / "entropy_correlations.csv"),
             analysis_root.name,
@@ -430,6 +431,7 @@ def main():
             "measured_and_missing",
             str(root / "complexity" / "stage_timing.csv"),
         ),
+        "verifier_security_results.csv": workbook["Verifier_Security"],
     }
     for filename in (
         "descriptive_statistics.csv",
@@ -492,6 +494,60 @@ def main():
         ),
     }
     exact_csv_exports.update(ipfs_exports)
+
+    signature_attacks = read_csv(
+        root / "security-evidence" / "signature_attack_results.csv"
+    )
+    exact_csv_exports["signer_revocation_results.csv"] = add_trace(
+        signature_attacks[
+            signature_attacks["mutation"] == "revoked_signer"
+        ],
+        "security-evidence",
+        "tested",
+        str(root / "security-evidence" / "signature_attack_results.csv"),
+    )
+    exact_csv_exports["verifier_mode_comparison.csv"] = pd.DataFrame(
+        [
+            {
+                "mode": "single_authorized_verifier",
+                "status": "tested",
+                "signature_threshold": 1,
+                "compromised_single_key_accepted": True,
+                "evidence_type": "tested",
+                "source_file": (
+                    "outputs/major_revision/security-evidence/"
+                    "compromised_verifier_results.csv"
+                ),
+            },
+            {
+                "mode": "two_of_three_committee",
+                "status": "not_implemented_optional",
+                "signature_threshold": 2,
+                "compromised_single_key_accepted": None,
+                "evidence_type": "missing_optional",
+                "source_file": "docs/revision/verifier_trust_model.md",
+            },
+        ]
+    )
+    entropy_summary = (
+        workbook["Entropy"]
+        .groupby("partition", dropna=False, sort=True)
+        .agg(
+            client_rows=("client_id", "count"),
+            mean_label_entropy=("label_entropy", "mean"),
+            std_label_entropy=("label_entropy", "std"),
+            mean_group_entropy=("group_entropy", "mean"),
+            std_group_entropy=("group_entropy", "std"),
+            mean_sample_count=("sample_count", "mean"),
+        )
+        .reset_index()
+    )
+    exact_csv_exports["entropy_summary.csv"] = add_trace(
+        entropy_summary,
+        runs["heterogeneity"].name,
+        "derived",
+        str(runs["heterogeneity"] / "partitions"),
+    )
     for filename, frame in exact_csv_exports.items():
         frame.to_csv(root / filename, index=False, quoting=csv.QUOTE_MINIMAL)
 
@@ -499,6 +555,15 @@ def main():
     with (root / "attack_details.jsonl").open("w", encoding="utf-8") as handle:
         for record in attack_records:
             handle.write(json.dumps(record, sort_keys=True) + "\n")
+    policy_profiles = json.loads(
+        Path("configs/revision/policy_profiles.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    (root / "policy_profiles.json").write_text(
+        json.dumps(policy_profiles, indent=2, sort_keys=True) + "\n",
+        encoding="utf-8",
+    )
 
     payload = {
         "schema_version": "fairai.workbook_payload.v1",

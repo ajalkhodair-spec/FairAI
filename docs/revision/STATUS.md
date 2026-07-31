@@ -14,10 +14,11 @@
   real-data multi-round B0/B1/B3 engineering-validation runs, paired ten-seed
   Adult/COMPAS statistics, federated MLP, client scaling, heterogeneity,
   threshold sensitivity, deterministic poisoning, 2,825 Hardhat gas receipts,
-  expanded statistics, security/privacy/ethics/complexity evidence, workbook,
-  and figures
+  240 local throughput scenarios, deterministic bootstrap statistics,
+  security/privacy/ethics/complexity evidence, exact publication CSVs,
+  workbook, LaTeX tables, and 300-dpi figures
 - Tests passed:
-  - Python: 57 tests
+  - Python: 58 tests
   - Solidity: 15 tests
   - Hardhat compile: 7 contracts
   - ZKey verification against R1CS and Powers of Tau
@@ -25,9 +26,14 @@
 - Tests failed:
   - first end-to-end attempt stopped on the intentionally absent Powers of Tau
     file; rerun succeeded with an externally supplied, hash-recorded artifact
+  - first concurrent throughput attempt failed because one signer could not
+    queue nonces under Hardhat automining; the failed manifest was preserved,
+    distinct authorized signers were used, and the 30-repetition rerun passed
 - Active blockers:
   - local repository has no configured remote
-  - expected public URL returned 404 to anonymous access
+  - expected prompt URL returned 404 to anonymous access; an older local
+    checkout points to `https://github.com/ajalkhodair-spec/FairAI.git`, but
+    the active revision repository is not connected to that remote
   - GitHub CLI token is invalid
   - local `circom` reports version 0.5.46 while regeneration requires a
     compatible Circom 2 binary
@@ -36,11 +42,11 @@
     measurements cannot be generated in the current execution environment
 - Next action: clean-clone verification and external resolution of BLK-001,
   BLK-002, BLK-003, and BLK-004
-- Latest commit hash: `4221f16`
+- Latest implementation commit hash: `095ad70`
 - Latest output paths:
   - `outputs/major_revision/adult-core-10seed-e01b72a`
   - `outputs/major_revision/compas-core-10seed-e01b72a`
-  - `outputs/major_revision/core-statistics-a8fe359`
-  - `outputs/major_revision/expanded-analysis-466cb07`
-  - `outputs/major_revision/gas-benchmark-30rep-6f80450`
+  - `outputs/major_revision/core-statistics-bootstrap`
+  - `outputs/major_revision/expanded-analysis-bootstrap-aae4091`
+  - `outputs/major_revision/gas-throughput-30rep-7dff9b5`
   - `outputs/major_revision/FairAI_Major_Revision_Results.xlsx`

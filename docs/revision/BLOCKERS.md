@@ -1,45 +1,14 @@
 # Major Revision Blockers
 
-## B-005 Faithful FairFed baseline
+The canonical blocker register is the repository-root `BLOCKERS.md`. Its stable
+IDs are `BLK-001` through `BLK-004`; generated missing-data tables and workbook
+rows reference those IDs.
 
-- Status: open
-- Impact: B5 comparative rows cannot be generated.
-- Evidence: `docs/revision/fairfed_blocker.md`
-- Resolution gate: primary-paper equations, parameter mapping, reference trace,
-  and manually verifiable weighting tests.
+The submitted-state tag gap remains documented in
+`docs/revision/submitted_tag_gap.md` but does not block regression execution.
+The four active blockers are:
 
-## B-001 Missing Git baseline
-
-The inspected checkout initially reported `No commits yet on main` and had no
-remote. The staged tree has now been frozen as the closest verified state and
-tagged `v1.0.0-submitted`.
-
-Remaining gap: no older history exists to prove that this tree is byte-for-byte
-the state used for the manuscript submission.
-
-## B-002 Public repository is not anonymously resolvable
-
-`https://github.com/ajalkhodair-spec/FairAI-MVP` returned 404 from an anonymous
-check. This can mean the repository is private, absent, or named differently.
-
-Smallest valid resolution: confirm the exact repository URL and make it public
-manually if publication is intended. Visibility will not be changed
-automatically.
-
-## B-003 GitHub CLI authentication
-
-`gh auth status` reports an invalid token for `ajalkhodair-spec`.
-
-Smallest valid resolution: run `gh auth refresh -h github.com` before any
-authenticated push or release operation.
-
-## B-004 ZK toolchain compatibility
-
-The available `circom --version` is 0.5.46, while regeneration requires a
-compatible Circom 2 binary. The Powers of Tau file is also absent by design.
-
-Existing compiled artifacts were cryptographically verified and allowed the
-diagnostic legacy run to complete. The toolchain lock now pins Circom 2.1.6,
-snarkjs 0.7.5, and the known Powers of Tau checksum. V2 R1CS/WASM/ZKey
-generation and proof tests remain blocked until the local Circom 0.5.46 binary
-is replaced by the pinned compiler.
+- `BLK-001`: Circom 2.1.6, Powers of Tau, and V2 artifacts;
+- `BLK-002`: Docker socket access for strict two-peer Kubo measurements;
+- `BLK-003`: faithful FairFed implementation and reference tests;
+- `BLK-004`: revision remote, anonymous public access, push, and release.

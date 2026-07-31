@@ -1,16 +1,16 @@
 reviewer,comment_id,concern,current_evidence,gap,planned_phase,status
-Editor,E1,Methodology detail,Configuration runner schemas runbook and manifest,Scientific scenario protocols still pending,1-10,in_progress
-Editor,E2,Experimental design,Three repeated synthetic trials,Too small for independent assessment,3-10,open
-Reviewer 1,R1.1,Scale,Legacy reproduction plus verified Adult and COMPAS loaders and LR and MLP interfaces,Expanded clients rounds partitions and independent seeds remain,4-10,in_progress
-Reviewer 1,R1.2,Proof semantics,V2 source canonical digest binding verifier and explicit claim boundaries implemented,V2 compilation ceremony and cryptographic negative tests blocked by Circom version,7,in_progress
-Reviewer 1,R1.3,Verifier trust,EIP-712 V2 signer registry revocation nonce digest expiration and compromise tests implemented,Ledger-integrated measured security CSV suite remains,8-9,in_progress
-Reviewer 1,R1.4,Baselines,Approved-only FedAvg only,Comparative baselines absent,6,open
-Reviewer 1,R1.5,Fairness,Protected-group DP EO equalized-odds SAG and versioned undefined handling implemented,Measured sensitivity and global outcomes remain,5 and 9,in_progress
-Reviewer 1,R1.6,Privacy,Raw-data locality statement,Formal privacy is not provided and exposure inventory missing,10,open
-Reviewer 1,R1.7,Scalability and cost,Selected timing and gas fields,Scaling throughput availability recovery and per-operation gas missing,9,open
-Reviewer 1,R1.8,Adversarial behavior,Some contract rejection tests,Targeted attacks and poisoning experiments missing,8-9,open
-Reviewer 2,R2.1,IPFS overhead,Single-node add retrieval and pin instrumentation,Cold warm concurrency and recovery missing,9,open
-Reviewer 2,R2.2,Complexity,Stage-addressable output schema now exists,Theory and measured stage timing missing,10,in_progress
-Reviewer 2,R2.3,Public repository,LICENSE and CITATION exist,Expected URL returns 404 and local remote is absent,11,blocked
-Reviewer 3,R3.1,Ethical scope,Fairness gate and audit trail,Broader ethical scope classification missing,10,open
-Reviewer 3,R3.2,Entropy,Deterministic label group and source entropy outputs for IID and Dirichlet partitions,Outcome correlations await training and fairness suites,4 and 9,in_progress
+Editor,E1,Methodology detail,"Configuration runner, schemas, runbook, manifests, statistical methodology, and evidence map","Manuscript integration remains an author task",1-10,complete_implementation
+Editor,E2,Experimental design,"Adult and COMPAS, LR and MLP, multi-round paired seeds, IID and non-IID, scaling and attacks","Full B4 and FairFed comparison remain blocked",3-10,partial_blocked
+Reviewer 1,R1.1,Scale,"Adult and COMPAS; LR and MLP; 3/5/10/20 clients; IID and Dirichlet; 5/10 seeds","B4 infrastructure path is not measured at expanded scale",4-10,partial_blocked
+Reviewer 1,R1.2,Proof semantics,"V2 source, canonical digest binding, negative binding tests, false-metric nonclaim","V2 compilation, proof timings, and direct verifier gas blocked by BLK-001",7,partial_blocked
+Reviewer 1,R1.3,Verifier trust,"EIP-712 signer registry, revocation, nonce, digest, expiry, replay, tampering, and compromise tests","Single-verifier compromise remains an accepted limitation",8-9,complete_with_limitation
+Reviewer 1,R1.4,Baselines,"B0, B1, B3, B6 measured; B2/B4/B7 code paths bounded by missing strict infrastructure","B2/B4/B7 expanded evidence blocked by BLK-001/BLK-002; B5 by BLK-003",6,partial_blocked
+Reviewer 1,R1.5,Fairness,"Protected-group DP, EO, equalized odds, SAG, undefined handling, threshold sensitivity and global outcomes","B4 cryptographic policy sensitivity is not measured",5 and 9,complete_B3_surrogate
+Reviewer 1,R1.6,Privacy,"Exposure inventory, exact bounded raw-data-locality claim, privacy nonclaims and threat analysis","No formal privacy or privacy-attack experiment is claimed",10,complete_scope
+Reviewer 1,R1.7,Scalability and cost,"Client scaling, 2825 gas receipts, 240 local throughput scenarios, modeled costs, complexity and stage timing","Strict Kubo scaling and V2 proof scaling blocked",9,partial_blocked
+Reviewer 1,R1.8,Adversarial behavior,"A1-A14 matrix, contract negative tests, poisoning with FedAvg and coordinate median, failed evidence preserved","B4/B7 poisoning unavailable without full infrastructure",8-9,partial_blocked
+Reviewer 2,R2.1,IPFS overhead,"Strict two-peer implementation, pinned Compose, fail-closed tests, measurement protocol","Add/pin/cold/warm/concurrency/recovery measurements blocked by BLK-002",9,blocked
+Reviewer 2,R2.2,Complexity,"Formal code-aligned complexity, measured stage timing, local throughput and gas","Kubo and V2 stages remain missing",10,complete_with_missing_stages
+Reviewer 2,R2.3,Public repository,"LICENSE, CITATION, baseline tag, release package and public checker","Active revision repo has no remote; anonymous revision URL unverified",11,blocked
+Reviewer 3,R3.1,Ethical scope,"Fairness directly operationalized; qualitative ethics-scope matrix and bounded governance properties","Broader ethical principles remain outside computational scope",10,complete_scope
+Reviewer 3,R3.2,Entropy,"Per-client label/group/source entropy and Spearman outcome correlations","No causal claim is made",4 and 9,complete

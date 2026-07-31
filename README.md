@@ -25,7 +25,8 @@ scientific nonclaims.
 - EIP-712 verifier decisions with domain separation, expiry, revocation, and
   nonce/digest replay protection;
 - deterministic poisoning scenarios and A1-A14 security evidence;
-- repeated Hardhat gas measurements and modeled cost scenarios;
+- repeated Hardhat gas and sequential/concurrent throughput measurements, plus
+  modeled cost scenarios;
 - run manifests, statistical tables, a 37-sheet workbook, and figure-data
   exports.
 
@@ -114,14 +115,17 @@ records fallback CIDs as IPFS evidence.
 ## Report Generation
 
 ```sh
-python scripts/prepare_results_package.py
-python scripts/build_revision_figures.py
+python -m scripts.prepare_results_package
+python -m scripts.build_latex_tables
+python -m scripts.build_revision_figures
 python scripts/render_revision_png_figures.py
 node scripts/build_results_workbook.mjs
 ```
 
 The workbook builder uses `@oai/artifact-tool`; install it in the report
 environment before running that command.
+The committed publication package also includes deterministic bootstrap
+statistics and SHA-256 release checksums.
 
 Primary tracked evidence is under `outputs/major_revision/`. Each measured run
 contains a manifest with its commit, configuration hash, dataset checksum,
