@@ -5,7 +5,12 @@ from pathlib import Path
 
 from fairai_revision.config import ConfigError, config_hash, load_config, validate_config
 from fairai_revision.manifest import validate_manifest
-from fairai_revision.run import baseline_comparison, execute, experiment_seeds
+from fairai_revision.run import (
+    baseline_comparison,
+    display_output_dir,
+    execute,
+    experiment_seeds,
+)
 
 
 ROOT = Path(__file__).resolve().parents[1]
@@ -67,6 +72,11 @@ class RevisionInfrastructureTests(unittest.TestCase):
             )
             self.assertEqual(resumed_dir, output_dir)
             self.assertEqual(resumed["completion_status"], "completed")
+
+    def test_external_output_root_has_a_printable_path(self):
+        with tempfile.TemporaryDirectory() as tmp:
+            external = Path(tmp) / "result"
+            self.assertEqual(display_output_dir(external), str(external.resolve()))
 
     def test_baseline_comparison_uses_configured_tolerance(self):
         config = {

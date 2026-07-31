@@ -904,6 +904,14 @@ def execute(config_path, output_root, run_id=None, parent_suite_id=None, resume=
     return output_dir, manifest
 
 
+def display_output_dir(output_dir):
+    output_dir = Path(output_dir)
+    try:
+        return str(output_dir.relative_to(REPO_ROOT))
+    except ValueError:
+        return str(output_dir.resolve())
+
+
 def main(argv=None):
     parser = argparse.ArgumentParser(description="Run a FairAI major-revision scenario")
     parser.add_argument("--config", required=True)
@@ -924,7 +932,7 @@ def main(argv=None):
             {
                 "run_id": manifest["run_id"],
                 "status": manifest["completion_status"],
-                "output_dir": str(output_dir.relative_to(REPO_ROOT)),
+                "output_dir": display_output_dir(output_dir),
             },
             indent=2,
             sort_keys=True,
