@@ -1,7 +1,7 @@
 {
   "schema_version": "fairai.revision.config.v1",
   "scenario_id": "threshold_sensitivity",
-  "executor": "planned",
+  "executor": "federated_core",
   "evidence_type": "measured",
   "seed": 7001,
   "dataset": "adult",
@@ -9,9 +9,28 @@
   "clients": 10,
   "rounds": 5,
   "local_epochs": 3,
-  "method": "B4",
+  "method": "B3_B4",
   "fairness_policy": "sensitivity_profiles",
   "attack_profile": "none",
-  "partition": "joint_dirichlet_0.3",
+  "partitions": ["joint_dirichlet_0.3"],
+  "minimum_samples_per_client": 50,
+  "minimum_group_samples": 10,
+  "policy_profiles": ["lenient", "submitted", "moderate", "strict"],
+  "executable_methods": ["B3"],
+  "methods_not_executed": {
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version; B3 isolates the measured policy-gate effect"
+  },
+  "experiment_seeds": [
+    7001,
+    7002,
+    7003,
+    7004,
+    7005,
+    7006,
+    7007,
+    7008,
+    7009,
+    7010
+  ],
   "seeds": 10
 }

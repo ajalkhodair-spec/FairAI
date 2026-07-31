@@ -72,6 +72,28 @@ class RevisionFederatedTests(unittest.TestCase):
         for left, right in zip(first["final_parameters"], second["final_parameters"]):
             np.testing.assert_allclose(left, right)
 
+        strict_policy = {
+            **policy,
+            "minimum_accuracy": 1.0,
+            "maximum_demographic_parity_gap": 0.0,
+        }
+        gated = run_federated_method(
+            dataset,
+            partition,
+            "B3",
+            strict_policy,
+            "logistic_regression",
+            1,
+            1,
+            12,
+            2,
+        )
+        self.assertEqual(
+            gated["round_metrics"][0]["aggregation_status"],
+            "skipped_no_eligible_clients",
+        )
+        self.assertEqual(gated["round_metrics"][0]["included_clients"], 0)
+
 
 if __name__ == "__main__":
     unittest.main()

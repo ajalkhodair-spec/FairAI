@@ -6,7 +6,7 @@ import numpy as np
 from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
 
-from .aggregation import ClientUpdate, aggregate_for_method
+from .aggregation import AggregationError, ClientUpdate, aggregate_for_method
 from .data import TabularPreprocessor
 from .fairness import evaluate_group_fairness
 from .models import create_model
@@ -210,8 +210,26 @@ def run_federated_method(
                     "runtime_ms": (time.perf_counter() - local_started) * 1000,
                 }
             )
-        aggregation = aggregate_for_method(method, updates)
-        global_parameters = aggregation["parameters"]
+        try:
+            aggregation = aggregate_for_method(method, updates)
+            global_parameters = aggregation["parameters"]
+            aggregation_status = "updated"
+        except AggregationError as exc:
+            if "empty update set" not in str(exc):
+                raise
+            aggregation = {
+                "parameters": global_parameters,
+                "included_clients": [],
+                "excluded_clients": {
+                    update.client_id: (
+                        "invalid_update"
+                        if not update.valid
+                        else "policy_not_approved"
+                    )
+                    for update in updates
+                },
+            }
+            aggregation_status = "skipped_no_eligible_clients"
         global_model.set_parameters(global_parameters)
         validation = _model_metrics(
             global_model,
@@ -225,6 +243,7 @@ def run_federated_method(
             {
                 "method": method,
                 "round": round_id,
+                "aggregation_status": aggregation_status,
                 "included_clients": len(aggregation["included_clients"]),
                 "excluded_clients": len(aggregation["excluded_clients"]),
                 "approval_rate": len(aggregation["included_clients"])

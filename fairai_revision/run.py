@@ -491,14 +491,22 @@ def run_federated_core(config, output_dir):
     profiles = load_policy_profiles(
         REPO_ROOT / "configs" / "revision" / "policy_profiles.json"
     )
-    profile_name = config["fairness_policy"].removesuffix("_policy")
+    default_profile = config["fairness_policy"].removesuffix("_policy")
+    profile_names = config.get("policy_profiles", [default_profile])
     try:
-        policy = profiles[profile_name]
+        selected_profiles = {
+            profile_name: profiles[profile_name] for profile_name in profile_names
+        }
     except KeyError as exc:
-        raise ValueError(f"Unknown fairness policy: {profile_name}") from exc
+        raise ValueError(f"Unknown fairness policy: {exc.args[0]}") from exc
     methods = config.get("executable_methods", [])
     if not methods:
         raise ValueError("federated_core requires executable_methods")
+    executions = [
+        (profile_name, policy, method)
+        for profile_name, policy in selected_profiles.items()
+        for method in methods
+    ]
 
     seeds = experiment_seeds(config)
     protected = dataset.train.protected[
@@ -544,7 +552,7 @@ def run_federated_core(config, output_dir):
                     dataset.train.labels,
                     protected,
                 )
-                for method in methods:
+                for profile_name, policy, method in executions:
                     result = run_federated_method(
                         dataset=dataset,
                         partition=partition,
@@ -563,6 +571,7 @@ def run_federated_core(config, output_dir):
                         "seed": experiment_seed,
                         "client_count": client_count,
                         "partition": partition_spec,
+                        "policy_profile": profile_name,
                     }
                     global_rows.extend(
                         {**dimensions, **row} for row in result["round_metrics"]
@@ -597,7 +606,8 @@ def run_federated_core(config, output_dir):
                         / "models"
                         / (
                             f"seed_{experiment_seed}-clients_{client_count}-"
-                            f"{partition_spec}-{method}-final_parameters.npz"
+                            f"{partition_spec}-{profile_name}-{method}-"
+                            "final_parameters.npz"
                         )
                     )
                     np.savez_compressed(
@@ -614,6 +624,7 @@ def run_federated_core(config, output_dir):
                             "seed": experiment_seed,
                             "client_count": client_count,
                             "partition": partition_spec,
+                            "policy_profile": profile_name,
                             "method": method,
                             "runtime_ms": result["runtime_ms"],
                             "final_validation_accuracy": result[
@@ -649,6 +660,7 @@ def run_federated_core(config, output_dir):
             "experiment_seeds": seeds,
             "client_counts": client_counts,
             "methods_executed": methods,
+            "policy_profiles": profile_names,
             "methods_not_executed": config.get("methods_not_executed", {}),
             "partitions": partition_checksums,
             "results": method_summaries,
