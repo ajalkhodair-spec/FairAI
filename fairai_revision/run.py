@@ -681,11 +681,49 @@ def run_federated_core(config, output_dir):
     }
 
 
+def run_ipfs_benchmark(config, output_dir):
+    from .ipfs import benchmark_two_peer_kubo
+
+    result = benchmark_two_peer_kubo(config)
+    rows = result["rows"]
+    write_csv(
+        output_dir / "raw" / "ipfs_benchmark.csv",
+        rows,
+        list(rows[0]),
+    )
+    suite_checksum = __import__("hashlib").sha256(
+        canonical_json_bytes(
+            {
+                "publisher_id": result["publisher_id"],
+                "consumer_id": result["consumer_id"],
+                "rows": rows,
+            }
+        )
+    ).hexdigest()
+    return {
+        "dataset_checksum": suite_checksum,
+        "partition_checksum": suite_checksum,
+        "manifest_updates": {
+            "environment.kubo_version": result["kubo_version"]
+        },
+        "summary": {
+            "publisher_peer_id": result["publisher_id"],
+            "consumer_peer_id": result["consumer_id"],
+            "kubo_version": result["kubo_version"],
+            "measurements": len(rows),
+            "repetitions": config["repetitions"],
+            "strict_ipfs": True,
+            "fallback_used": False,
+        },
+    }
+
+
 EXECUTORS = {
     "smoke": run_smoke,
     "legacy_mvp": run_legacy,
     "partition_analysis": run_partition_analysis,
     "federated_core": run_federated_core,
+    "ipfs_benchmark": run_ipfs_benchmark,
 }
 
 
