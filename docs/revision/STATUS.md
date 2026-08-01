@@ -40,9 +40,16 @@
   - Powers of Tau is external and needs a documented acquisition/checksum flow
   - Docker socket access is unavailable to this task, so strict two-node Kubo
     measurements cannot be generated in the current execution environment
-- Next action: clean-clone verification and external resolution of BLK-001,
-  BLK-002, BLK-003, and BLK-004
-- Latest implementation commit hash: `095ad70`
+- Clean-clone status:
+  - no-local clone passed;
+  - independent npm installation passed;
+  - 59 Python and 15 Solidity tests passed with the verified Python environment;
+  - smoke and a 10-seed Adult run passed;
+  - CSV, LaTeX, and SVG regeneration was byte-for-byte reproducible;
+  - fresh pip installation remained blocked by sandbox DNS
+- Next action: external resolution of BLK-001, BLK-002, BLK-003, and BLK-004
+- Latest implementation commit hash: `846a068`
+- Latest results/reproducibility commit hash: `f62a3ad`
 - Latest output paths:
   - `outputs/major_revision/adult-core-10seed-e01b72a`
   - `outputs/major_revision/compas-core-10seed-e01b72a`

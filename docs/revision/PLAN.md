@@ -26,7 +26,7 @@ This file is the source of truth for the acceptance-oriented revision.
 | 8 | Verifier security | EIP-712, replay, expiry, revocation, compromise test | Complete |
 | 9 | Expanded experiment suites | R1-R7 measured with manifests | Partial: R2-R6 available evidence complete; strict V2/IPFS portions blocked |
 | 10 | Statistics and result freeze | Workbook, CSVs, tables, figures, evidence map | Complete for available evidence, including bootstrap CIs and local throughput |
-| 11 | Clean reproduction and release | G6 clean clone and release package | Pending |
+| 11 | Clean reproduction and release | G6 clean clone and release package | Partial: source/tests/Adult/report validated; Python install, public remote, and Docker blocked |
 
 ## Dependencies
 
@@ -38,5 +38,5 @@ This file is the source of truth for the acceptance-oriented revision.
 
 ## Current Next Action
 
-Execute the clean-clone protocol and preserve external blockers without
-overstating release readiness.
+Resolve `BLK-001` through `BLK-004`, rerun strict Kubo/V2/FairFed suites, and
+repeat the clean-clone protocol from the anonymously accessible public URL.

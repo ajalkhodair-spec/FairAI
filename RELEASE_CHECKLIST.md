@@ -9,7 +9,8 @@
 - [ ] G4 expanded suites complete (V2 Groth16 and strict two-peer Kubo blocked)
 - [x] G5 available measured results frozen and traced
 - [x] No secrets or user-specific paths in tracked project content
-- [ ] Clean clone test passes
+- [ ] Clean clone fully passes (source/tests/report pass with dependency reuse;
+  fresh Python install blocked by sandbox DNS)
 - [x] Legacy scenario reproduces or gap is documented
 - [x] One Adult scenario reproduces
 - [x] Tables and figures regenerate
