@@ -1,0 +1,122 @@
+[
+  {
+    "block_number": 6,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-1",
+    "state": "Open",
+    "trial": 1,
+    "tx_hash": "0x338cbdfe156d31c26afc396153bc9fc01ead5832af7684984c194d787c30dd69"
+  },
+  {
+    "block_number": 13,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-1",
+    "state": "SubmissionClosed",
+    "trial": 1,
+    "tx_hash": "0xde64852c1186340d5ec7c04dadd4d7f6bc7d2b9476eac2c418a617a510d00dc6"
+  },
+  {
+    "block_number": 14,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-1",
+    "state": "AggregationStarted",
+    "trial": 1,
+    "tx_hash": "0xbfc49eea80a1700e9ba6c02f9da4f38a361a1c7100f0ad4a5437fa86501c37b5"
+  },
+  {
+    "block_number": 15,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-1",
+    "state": "Published",
+    "trial": 1,
+    "tx_hash": "0x77a5d70e49df7031707747236f4bc4d6583d6b19d0f5e0bcb22bc0ebfc4b8350"
+  },
+  {
+    "block_number": 16,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-1",
+    "state": "Archived",
+    "trial": 1,
+    "tx_hash": "0xc5c0a60f5a91aeff836f230be58b3a8ea370f8f0d3a0388badf7cc661fa427b5"
+  },
+  {
+    "block_number": 6,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-2",
+    "state": "Open",
+    "trial": 2,
+    "tx_hash": "0x338cbdfe156d31c26afc396153bc9fc01ead5832af7684984c194d787c30dd69"
+  },
+  {
+    "block_number": 13,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-2",
+    "state": "SubmissionClosed",
+    "trial": 2,
+    "tx_hash": "0xde64852c1186340d5ec7c04dadd4d7f6bc7d2b9476eac2c418a617a510d00dc6"
+  },
+  {
+    "block_number": 14,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-2",
+    "state": "AggregationStarted",
+    "trial": 2,
+    "tx_hash": "0xbfc49eea80a1700e9ba6c02f9da4f38a361a1c7100f0ad4a5437fa86501c37b5"
+  },
+  {
+    "block_number": 15,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-2",
+    "state": "Published",
+    "trial": 2,
+    "tx_hash": "0x0874c8e785eb14298cda0a485437277abad0395d17c41609d2360a6f63a9ebc9"
+  },
+  {
+    "block_number": 16,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-2",
+    "state": "Archived",
+    "trial": 2,
+    "tx_hash": "0xc5c0a60f5a91aeff836f230be58b3a8ea370f8f0d3a0388badf7cc661fa427b5"
+  },
+  {
+    "block_number": 6,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-3",
+    "state": "Open",
+    "trial": 3,
+    "tx_hash": "0x338cbdfe156d31c26afc396153bc9fc01ead5832af7684984c194d787c30dd69"
+  },
+  {
+    "block_number": 13,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-3",
+    "state": "SubmissionClosed",
+    "trial": 3,
+    "tx_hash": "0xde64852c1186340d5ec7c04dadd4d7f6bc7d2b9476eac2c418a617a510d00dc6"
+  },
+  {
+    "block_number": 14,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-3",
+    "state": "AggregationStarted",
+    "trial": 3,
+    "tx_hash": "0xbfc49eea80a1700e9ba6c02f9da4f38a361a1c7100f0ad4a5437fa86501c37b5"
+  },
+  {
+    "block_number": 15,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-3",
+    "state": "Published",
+    "trial": 3,
+    "tx_hash": "0xdbbe01b730e1cffdb823419f3fd50b3669328544562f715b602f95e2db4f54ed"
+  },
+  {
+    "block_number": 16,
+    "round_id": 1,
+    "run_id": "legacy_mvp-trial-3",
+    "state": "Archived",
+    "trial": 3,
+    "tx_hash": "0xc5c0a60f5a91aeff836f230be58b3a8ea370f8f0d3a0388badf7cc661fa427b5"
+  }
+]

@@ -1,0 +1,103 @@
+{
+  "all_matched": true,
+  "comparisons": [
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.95,
+      "field": "node_1.accuracy",
+      "matched": true,
+      "observed": 0.95,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.003127,
+      "field": "node_1.demographic_parity_gap",
+      "matched": true,
+      "observed": 0.003127,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.9625,
+      "field": "node_2.accuracy",
+      "matched": true,
+      "observed": 0.9625,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.0,
+      "field": "node_2.demographic_parity_gap",
+      "matched": true,
+      "observed": 0.0,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.9625,
+      "field": "node_3.accuracy",
+      "matched": true,
+      "observed": 0.9625,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.282132,
+      "field": "node_3.demographic_parity_gap",
+      "matched": true,
+      "observed": 0.282132,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 2,
+      "field": "approved_nodes",
+      "matched": true,
+      "observed": 2,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 1,
+      "field": "rejected_nodes",
+      "matched": true,
+      "observed": 1,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.938889,
+      "field": "global_accuracy",
+      "matched": true,
+      "observed": 0.938889,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.144269,
+      "field": "global_demographic_parity_gap",
+      "matched": true,
+      "observed": 0.144269,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 0.666667,
+      "field": "approval_rate",
+      "matched": true,
+      "observed": 0.666667,
+      "tolerance": 0.0001
+    },
+    {
+      "absolute_difference": 0.0,
+      "expected": 449664,
+      "field": "global_publication_gas",
+      "matched": true,
+      "observed": 449664,
+      "tolerance": 0
+    }
+  ],
+  "numeric_tolerance": 0.0001,
+  "schema_version": "fairai.legacy_baseline_comparison.v1"
+}

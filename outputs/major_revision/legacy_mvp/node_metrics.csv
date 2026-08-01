@@ -1,0 +1,10 @@
+run_id,trial,seed,node_id,accuracy,demographic_parity_gap,equal_opportunity_gap,proof_verified,approval_status,source_file
+legacy_mvp-trial-1,1,1001,1,0.95,0.003127,0.009868,True,Approved,raw/trial_1/metrics.csv
+legacy_mvp-trial-1,1,1001,2,0.9625,0.0,0.012077,True,Approved,raw/trial_1/metrics.csv
+legacy_mvp-trial-1,1,1001,3,0.9625,0.282132,0.0,False,Rejected,raw/trial_1/metrics.csv
+legacy_mvp-trial-2,2,1001,1,0.95,0.003127,0.009868,True,Approved,raw/trial_2/metrics.csv
+legacy_mvp-trial-2,2,1001,2,0.9625,0.0,0.012077,True,Approved,raw/trial_2/metrics.csv
+legacy_mvp-trial-2,2,1001,3,0.9625,0.282132,0.0,False,Rejected,raw/trial_2/metrics.csv
+legacy_mvp-trial-3,3,1001,1,0.95,0.003127,0.009868,True,Approved,raw/trial_3/metrics.csv
+legacy_mvp-trial-3,3,1001,2,0.9625,0.0,0.012077,True,Approved,raw/trial_3/metrics.csv
+legacy_mvp-trial-3,3,1001,3,0.9625,0.282132,0.0,False,Rejected,raw/trial_3/metrics.csv

@@ -1,0 +1,47 @@
+{
+  "all_baseline_values_matched": true,
+  "mean_ipfs_retrieval_ms": 1.051904761904762,
+  "mean_proof_generation_ms": 705.8552222222222,
+  "mean_runtime_ms": 3887.112,
+  "scenario_id": "legacy_mvp_reproduction",
+  "schema_version": "fairai.legacy_reproduction_summary.v1",
+  "trial_summaries": [
+    {
+      "approval_rate": 0.666667,
+      "approved_nodes": 2,
+      "global_accuracy": 0.938889,
+      "global_demographic_parity_gap": 0.144269,
+      "rejected_nodes": 1,
+      "run_id": "legacy_mvp-trial-1",
+      "runtime_ms": 4322.662,
+      "seed": 1001,
+      "source_file": "raw/trial_1/run_summary.json",
+      "trial": 1
+    },
+    {
+      "approval_rate": 0.666667,
+      "approved_nodes": 2,
+      "global_accuracy": 0.938889,
+      "global_demographic_parity_gap": 0.144269,
+      "rejected_nodes": 1,
+      "run_id": "legacy_mvp-trial-2",
+      "runtime_ms": 3562.191,
+      "seed": 1001,
+      "source_file": "raw/trial_2/run_summary.json",
+      "trial": 2
+    },
+    {
+      "approval_rate": 0.666667,
+      "approved_nodes": 2,
+      "global_accuracy": 0.938889,
+      "global_demographic_parity_gap": 0.144269,
+      "rejected_nodes": 1,
+      "run_id": "legacy_mvp-trial-3",
+      "runtime_ms": 3776.483,
+      "seed": 1001,
+      "source_file": "raw/trial_3/run_summary.json",
+      "trial": 3
+    }
+  ],
+  "trials": 3
+}
