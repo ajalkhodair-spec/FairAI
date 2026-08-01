@@ -4,6 +4,6 @@ Evidence boundary,"Measured, derived, modeled, tested, blocked, and missing are 
 Primary datasets,Adult and COMPAS
 Core models,Federated logistic regression and small MLP
 IPFS status,Two-peer benchmark code complete; measurement blocked by Docker socket access
-V2 proof status,Binding and verifier tests complete; direct V2 artifacts blocked by Circom version
+V2 proof status,"V2 compiles with Circom 2.1.9; pinned setup, ZKey, and proof benchmark remain blocked"
 FairFed status,Blocked; no heuristic substitution
 Source of truth,Run manifests and source_file columns

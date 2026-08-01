@@ -1,7 +1,8 @@
 # Known Limitations
 
-- Direct V2 Groth16 generation and on-chain pairing verification are blocked by
-  the unavailable pinned Circom 2.1.6 artifacts.
+- V2 source compiles under a discovered Circom 2.1.9 build, but direct V2
+  Groth16 generation and on-chain pairing verification remain blocked by the
+  missing pinned Circom 2.1.6 setup, Powers of Tau, and V2 ZKey.
 - Two-peer Kubo overhead, outage, recovery, and concurrency are not measured in
   the frozen evidence package because Docker socket access was denied.
 - FairFed is not implemented; no heuristic is substituted under that name.

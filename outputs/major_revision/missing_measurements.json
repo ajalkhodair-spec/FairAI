@@ -2,9 +2,9 @@
   {
     "id": " BLK-001 ",
     "scope": " V2 Groth16 ",
-    "blocker": " Installed `circom` is 0.5.46; `FairnessEligibilityV2.circom` requires 2.1.6. The pinned V2 R1CS/WASM/ZKey do not exist. ",
+    "blocker": " PATH resolves Circom 0.5.46 and the pinned 2.1.6 toolchain/Powers of Tau are absent. A local Circom 2.1.9 binary compiled V2 successfully, but no admissible setup artifact or V2 ZKey exists. ",
     "effect": " Direct V2 proof generation, verification latency, and pairing-verifier gas cannot be measured. ",
-    "resolution": " Install the pinned Circom 2.1.6 binary, provide the checksum-pinned Powers of Tau file, regenerate artifacts, and run the negative binding suite. "
+    "resolution": " Install the pinned Circom 2.1.6 binary, provide the checksum-pinned Powers of Tau file, generate and verify the V2 ZKey, and run the cryptographic negative suite. "
   },
   {
     "id": " BLK-002 ",

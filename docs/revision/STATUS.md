@@ -35,9 +35,9 @@
     checkout points to `https://github.com/ajalkhodair-spec/FairAI.git`, but
     the active revision repository is not connected to that remote
   - GitHub CLI token is invalid
-  - local `circom` reports version 0.5.46 while regeneration requires a
-    compatible Circom 2 binary
-  - Powers of Tau is external and needs a documented acquisition/checksum flow
+  - PATH `circom` reports 0.5.46; a discovered Circom 2.1.9 binary compiles V2,
+    but the pinned 2.1.6 build remains unavailable
+  - Powers of Tau and V2 ZKey are absent, so V2 proof timing/gas is not measured
   - Docker socket access is unavailable to this task, so strict two-node Kubo
     measurements cannot be generated in the current execution environment
 - Clean-clone status:
