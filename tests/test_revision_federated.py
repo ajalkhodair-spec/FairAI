@@ -120,6 +120,24 @@ class RevisionFederatedTests(unittest.TestCase):
             )
         )
 
+        fairfed = run_federated_method(
+            dataset,
+            partition,
+            "B5",
+            policy,
+            "logistic_regression",
+            2,
+            2,
+            12,
+            2,
+            fairfed_beta=1.0,
+        )
+        self.assertEqual(len(fairfed["round_metrics"]), 2)
+        self.assertAlmostEqual(
+            sum(fairfed["round_metrics"][0]["fairfed_weights"].values()),
+            1.0,
+        )
+
 
 if __name__ == "__main__":
     unittest.main()

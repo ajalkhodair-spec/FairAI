@@ -95,11 +95,13 @@ Every enabled metric must pass. An undefined enabled metric rejects by default,
 and policy validity is bounded by an inclusive round range. Alternative
 undefined behavior must be stated in the versioned policy.
 
-## D-016 Do not substitute a heuristic for FairFed
+## D-016 Implement the published FairFed server rule without hidden clipping
 
-B5 remains unavailable until the primary-paper equations, parameters, and
-client-weighting behavior are reproduced and checked. Calls to B5 fail
-explicitly. B0-B4, B6, and B7 remain independently implementable.
+B5 uses the primary-paper stateful client-weight update with signed EOD,
+sample-fraction initialization, accuracy fallback for undefined local fairness,
+and `beta=1.0`. Global values are calculated from sufficient counts. Raw
+weights are not silently clipped; weights and deviations are exported. This is
+the FairFed server rule, not a claim to reproduce every local debiasing variant.
 
 ## D-017 Use strict integer canonical artifacts for V2 binding
 
@@ -138,3 +140,18 @@ Sequential and concurrent submission throughput is measured on an ephemeral
 in-process Hardhat network. These values characterize contract execution in the
 test environment and are not public-chain or permissioned-network throughput
 claims.
+
+## D-023 Use reviewer-derived scope rather than the master prompt literally
+
+The editor decision, exact reviewer reports, and submitted manuscript determine
+acceptance-critical work. Azure is a measurement environment, not the research
+contribution. The default deployment uses the smallest multi-host topology that
+can measure real Kubo, network, verifier, and full-path behavior. Besu, Chaos
+Studio, and a seven-VM topology remain optional unless measured evidence shows
+that the smaller design cannot answer a reviewer concern.
+
+## D-024 Freeze pre-Azure evidence by hash, not duplication
+
+Commit `62d8dd3` and `outputs/major_revision/release_checksums.sha256` define the
+latest verified pre-Azure evidence. New implementations write new run IDs and
+must not overwrite or silently recompute the frozen package.

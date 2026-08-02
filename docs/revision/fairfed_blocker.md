@@ -1,24 +1,33 @@
-# FairFed Baseline Status
+# FairFed Baseline Protocol
 
 ## Status
 
-Blocked for comparative-result generation.
+Implemented and locally unit-tested. Comparative Adult and COMPAS results must
+still be generated under the frozen experiment configuration.
 
-The revision does not currently contain a faithfully reproduced FairFed
-implementation from the primary paper. No custom fairness-weighting heuristic
-is labeled `B5`, and no FairFed result rows are generated.
+`B5` implements the server weighting update in Algorithm 1 of Ezzeldin et al.,
+"FairFed: Enabling Group Fairness in Federated Learning" (AAAI 2023):
 
-## Required Resolution
+1. initialize raw weights from client sample fractions;
+2. evaluate the current global model on each client's local evaluation split;
+3. derive global signed equal-opportunity difference from aggregated TP and
+   positive-label counts;
+4. compute each deviation from the global fairness value, falling back to the
+   local/global accuracy difference if a client's fairness value is undefined;
+5. update raw weights by the published beta-scaled deviation-from-mean rule;
+6. normalize the raw weights and aggregate the trained local parameters.
 
-Before enabling B5:
+The core configurations freeze `beta = 1.0`. Unit tests cover beta zero,
+manually calculated unequal-denominator weights, accuracy fallback, and a
+deterministic multi-round execution.
 
-1. pin the primary paper and any authoritative reference implementation;
-2. transcribe the client-weighting equations and fairness-budget parameters;
-3. document every deviation needed for binary tabular Adult/COMPAS tasks;
-4. add manually verifiable weighting tests;
-5. compare an implementation trace against the reference;
-6. freeze the configuration before test-set evaluation.
+## Claim Boundary
 
-The common baseline API raises an explicit error for `B5` until those steps are
-complete. This blocker does not prevent B0-B4, B6, or B7 implementation and
-testing.
+This baseline reproduces the FairFed server aggregation rule. It does not claim
+to reproduce every local debiasing method evaluated in the paper. The current
+binary tabular protocol uses signed equal-opportunity difference and does not
+centralize client records: only sufficient counts are combined. Negative raw
+weights are not silently clipped because clipping is absent from the published
+equation; every round exports normalized weights and diagnostics for audit.
+
+Primary source: https://ojs.aaai.org/index.php/AAAI/article/view/25911

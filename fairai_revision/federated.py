@@ -6,7 +6,13 @@ import numpy as np
 from sklearn.metrics import f1_score
 from sklearn.model_selection import train_test_split
 
-from .aggregation import AggregationError, ClientUpdate, aggregate_for_method
+from .aggregation import (
+    AggregationError,
+    ClientUpdate,
+    aggregate_for_method,
+    eligible_updates,
+    fairfed_weights,
+)
 from .data import TabularPreprocessor
 from .fairness import evaluate_group_fairness
 from .models import create_model
@@ -118,8 +124,9 @@ def run_federated_method(
     minimum_group_samples=10,
     attack_type="none",
     malicious_client_ratio=0.0,
+    fairfed_beta=1.0,
 ):
-    if method not in {"B0", "B1", "B3", "B6"}:
+    if method not in {"B0", "B1", "B3", "B5", "B6"}:
         raise FederatedExperimentError(
             f"{method} requires infrastructure integration not provided by "
             "the local federated executor"
@@ -157,9 +164,11 @@ def run_federated_method(
     )
     round_rows = []
     client_rows = []
+    fairfed_raw_weights = None
     started = time.perf_counter()
     for round_id in range(1, rounds + 1):
         updates = []
+        fairfed_metrics = {}
         for client_id, (train_indices, evaluation_indices) in enumerate(local_splits):
             local_started = time.perf_counter()
             is_malicious = client_id in malicious_clients
@@ -170,6 +179,15 @@ def run_federated_method(
                 input_dim,
                 global_parameters,
             )
+            if method == "B5":
+                fairfed_metrics[str(client_id)] = _model_metrics(
+                    global_model,
+                    prepared.train_features[evaluation_indices],
+                    prepared.train_labels[evaluation_indices],
+                    prepared.train_protected[evaluation_indices],
+                    dataset,
+                    minimum_group_samples,
+                )
             valid = len(np.unique(prepared.train_labels[train_indices])) == 2
             if valid:
                 training_labels = prepared.train_labels[train_indices]
@@ -244,7 +262,35 @@ def run_federated_method(
                 }
             )
         try:
-            aggregation = aggregate_for_method(method, updates)
+            fairfed_diagnostics = None
+            if method == "B5":
+                selected, exclusions = eligible_updates(method, updates)
+                selected_metrics = {
+                    update.client_id: fairfed_metrics[update.client_id]
+                    for update in selected
+                }
+                previous = (
+                    None
+                    if fairfed_raw_weights is None
+                    else {
+                        update.client_id: fairfed_raw_weights[update.client_id]
+                        for update in selected
+                    }
+                )
+                fairfed_diagnostics = fairfed_weights(
+                    selected,
+                    selected_metrics,
+                    beta=fairfed_beta,
+                    previous_raw_weights=previous,
+                )
+                fairfed_raw_weights = fairfed_diagnostics["raw_weights"]
+                aggregation = aggregate_for_method(
+                    method,
+                    updates,
+                    aggregation_weights=fairfed_diagnostics["weights"],
+                )
+            else:
+                aggregation = aggregate_for_method(method, updates)
             global_parameters = aggregation["parameters"]
             aggregation_status = "updated"
         except AggregationError as exc:
@@ -293,6 +339,20 @@ def run_federated_method(
                 "global_subgroup_accuracy_gap": validation[
                     "subgroup_accuracy_gap"
                 ],
+                "fairfed_beta": None
+                if fairfed_diagnostics is None
+                else fairfed_diagnostics["beta"],
+                "fairfed_global_equal_opportunity_difference": None
+                if fairfed_diagnostics is None
+                else fairfed_diagnostics[
+                    "global_equal_opportunity_difference"
+                ],
+                "fairfed_mean_delta": None
+                if fairfed_diagnostics is None
+                else fairfed_diagnostics["mean_delta"],
+                "fairfed_weights": None
+                if fairfed_diagnostics is None
+                else fairfed_diagnostics["weights"],
             }
         )
     test_metrics = _model_metrics(

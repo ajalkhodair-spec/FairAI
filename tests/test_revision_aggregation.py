@@ -8,7 +8,9 @@ from fairai_revision.aggregation import (
     ClientUpdate,
     aggregate_for_method,
     coordinate_median,
+    fairfed_weights,
     fedavg,
+    weighted_average,
 )
 
 
@@ -103,15 +105,84 @@ class RevisionAggregationTests(unittest.TestCase):
         with self.assertRaises(AggregationError):
             fedavg([update("a", np.nan)])
 
-    def test_fairfed_is_not_substituted_with_a_custom_heuristic(self):
-        with self.assertRaisesRegex(AggregationError, "primary-paper"):
-            aggregate_for_method("B5", [update("a", 1)])
+    def test_fairfed_published_weight_update_and_beta_zero(self):
+        updates = [update("a", 1, samples=1), update("b", 3, samples=3)]
+        metrics = {
+            "a": fairfed_metric(0.0, 0.8, 8, 10, tpr_denominator=10),
+            "b": fairfed_metric(0.6, 0.9, 9, 10, tpr_denominator=30),
+        }
+        unchanged = fairfed_weights(updates, metrics, beta=0)
+        self.assertAlmostEqual(unchanged["weights"]["a"], 0.25)
+        self.assertAlmostEqual(unchanged["weights"]["b"], 0.75)
+        result = fairfed_weights(
+            updates,
+            metrics,
+            beta=1,
+            previous_raw_weights={"a": 0.5, "b": 0.5},
+        )
+        self.assertAlmostEqual(
+            result["global_equal_opportunity_difference"], 0.45
+        )
+        self.assertAlmostEqual(result["deltas"]["a"], 0.45)
+        self.assertAlmostEqual(result["deltas"]["b"], 0.15)
+        self.assertAlmostEqual(result["weights"]["a"], 0.35)
+        self.assertAlmostEqual(result["weights"]["b"], 0.65)
+        self.assertAlmostEqual(sum(result["weights"].values()), 1.0)
+        self.assertEqual(
+            set(result["metric_sources"].values()),
+            {"equal_opportunity_difference"},
+        )
+        averaged = weighted_average(updates, result["weights"])
+        expected = result["weights"]["a"] + 3 * result["weights"]["b"]
+        np.testing.assert_allclose(averaged[0], [expected])
+
+    def test_fairfed_uses_accuracy_when_local_eod_is_undefined(self):
+        updates = [update("a", 1), update("b", 2)]
+        metrics = {
+            "a": fairfed_metric(None, 0.5, 5, 10),
+            "b": fairfed_metric(0.2, 0.9, 9, 10),
+        }
+        result = fairfed_weights(updates, metrics, beta=1)
+        self.assertEqual(result["metric_sources"]["a"], "accuracy_fallback")
 
     def test_required_baseline_registry_is_explicit(self):
-        self.assertEqual(set(BASELINE_SPECS), {"B0", "B1", "B2", "B3", "B4", "B6", "B7"})
+        self.assertEqual(set(BASELINE_SPECS), {"B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7"})
         self.assertFalse(BASELINE_SPECS["B0"].blockchain)
         self.assertTrue(BASELINE_SPECS["B4"].groth16)
         self.assertEqual(BASELINE_SPECS["B6"].aggregation, "coordinate_median")
+
+
+def fairfed_metric(eod, accuracy, correct, count, tpr_denominator=10):
+    if eod is None:
+        privileged_tpr = {"value": None, "numerator": 0, "denominator": 0}
+        unprivileged_tpr = {"value": None, "numerator": 0, "denominator": 0}
+    else:
+        privileged_tpr = {
+            "value": 0.0,
+            "numerator": 0,
+            "denominator": tpr_denominator,
+        }
+        unprivileged_tpr = {
+            "value": eod,
+            "numerator": int(eod * tpr_denominator),
+            "denominator": tpr_denominator,
+        }
+    return {
+        "privileged_value": "P",
+        "unprivileged_value": "U",
+        "equal_opportunity_difference": eod,
+        "accuracy": accuracy,
+        "groups": {
+            "P": {
+                "true_positive_rate": privileged_tpr,
+                "accuracy": {"numerator": correct, "denominator": count},
+            },
+            "U": {
+                "true_positive_rate": unprivileged_tpr,
+                "accuracy": {"numerator": 0, "denominator": 0},
+            },
+        },
+    }
 
 
 if __name__ == "__main__":

@@ -15,11 +15,12 @@
   "partitions": ["iid", "joint_dirichlet_0.3"],
   "minimum_samples_per_client": 50,
   "minimum_group_samples": 10,
-  "executable_methods": ["B0", "B1", "B3"],
+  "fairfed_beta": 1.0,
+  "fairfed_metric": "equal_opportunity_difference",
+  "executable_methods": ["B0", "B1", "B3", "B5"],
   "methods_not_executed": {
     "B2": "strict IPFS and blockchain integration pending for the real-data executor",
-    "B4": "V2 Groth16 artifacts are blocked by the local Circom version",
-    "B5": "faithful FairFed implementation is blocked and no heuristic is substituted"
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version"
   },
   "experiment_seeds": [2001, 2002, 2003, 2004, 2005, 2006, 2007, 2008, 2009, 2010],
   "seeds": 10

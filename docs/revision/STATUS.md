@@ -1,5 +1,13 @@
 # Major Revision Status
 
+- Active branch: `major-revision-azure`
+- Upgrade basis: exact reviewer reports and submitted manuscript, bounded by
+  `docs/revision/acceptance_scope.md`
+- Frozen pre-Azure evidence: commit `62d8dd3`, recorded in
+  `outputs/revision_audit/current_evidence_freeze.json`
+- Current work: acceptance-critical baseline and infrastructure integration
+  gaps; no Azure resources have been created
+
 - Current phase: Phase 11, clean reproduction and release packaging
 - Completed: Phase 0 audit, baseline commit, annotated submitted-state tag,
   revision branch, strict-Kubo diagnostic legacy reproduction, G1

@@ -573,6 +573,7 @@ def run_federated_core(config, output_dir):
                         malicious_client_ratio=config.get(
                             "malicious_client_ratio", 0.0
                         ),
+                        fairfed_beta=config.get("fairfed_beta", 1.0),
                     )
                     dimensions = {
                         "scenario_id": config["scenario_id"],

@@ -38,5 +38,14 @@ This file is the source of truth for the acceptance-oriented revision.
 
 ## Current Next Action
 
-Resolve `BLK-001` through `BLK-004`, rerun strict Kubo/V2/FairFed suites, and
-repeat the clean-clone protocol from the anonymously accessible public URL.
+The pre-Azure evidence is frozen at commit `62d8dd3` by
+`outputs/revision_audit/current_evidence_freeze.json`. Work continues on branch
+`major-revision-azure` in this order:
+
+1. implement and reference-test the established fair-FL baseline;
+2. make B2 and B7 executable without weakening their stated semantics;
+3. complete the V2 research proof setup and verifier measurements;
+4. add the minimal multi-host Azure/IPFS deployment needed for reviewer evidence;
+5. freeze new results and repeat anonymous clean-clone validation.
+
+See `docs/revision/acceptance_scope.md` for the reviewer-derived scope boundary.

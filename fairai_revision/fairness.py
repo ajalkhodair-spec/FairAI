@@ -137,7 +137,7 @@ def evaluate_group_fairness(
             )
 
     if "comparison_groups" in undefined:
-        dp_gap = eo_gap = equalized_odds_gap = None
+        dp_gap = eo_difference = eo_gap = equalized_odds_gap = None
     else:
         dp_gap = _difference(
             unprivileged["predicted_positive_rate"]["value"],
@@ -145,9 +145,16 @@ def evaluate_group_fairness(
             "demographic_parity_gap",
             undefined,
         )
+        unprivileged_tpr = unprivileged["true_positive_rate"]["value"]
+        privileged_tpr = privileged["true_positive_rate"]["value"]
+        eo_difference = (
+            None
+            if unprivileged_tpr is None or privileged_tpr is None
+            else float(unprivileged_tpr - privileged_tpr)
+        )
         eo_gap = _difference(
-            unprivileged["true_positive_rate"]["value"],
-            privileged["true_positive_rate"]["value"],
+            unprivileged_tpr,
+            privileged_tpr,
             "equal_opportunity_gap",
             undefined,
         )
@@ -189,6 +196,7 @@ def evaluate_group_fairness(
         "minimum_group_samples": minimum_group_samples,
         "accuracy": float(np.mean(y_true == y_pred)),
         "demographic_parity_gap": dp_gap,
+        "equal_opportunity_difference": eo_difference,
         "equal_opportunity_gap": eo_gap,
         "equalized_odds_gap": equalized_odds_gap,
         "subgroup_accuracy_gap": subgroup_accuracy_gap,

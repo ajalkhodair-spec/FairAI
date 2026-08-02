@@ -11,6 +11,7 @@ initial model, rounds, local epochs, optimizer, and batch size.
 | B2 | All valid updates | Sample-weighted FedAvg | Blockchain and strict IPFS |
 | B3 | Public-metric policy approval | Sample-weighted FedAvg | Blockchain and strict IPFS; no Groth16 |
 | B4 | Full FairAI checks | Sample-weighted FedAvg | Strict IPFS, Groth16, signed verifier, on-chain approval |
+| B5 | All valid updates | FairFed (`beta=1`, signed EOD) | None; fairness-aware server aggregation |
 | B6 | All valid updates | Coordinate-wise median | Adversarial comparison only |
 | B7 | Full FairAI checks | Coordinate-wise median | B4 gate followed by robust aggregation |
 
@@ -21,8 +22,10 @@ Coordinate-wise median is applied independently to every scalar coordinate of
 each parameter tensor. FedAvg weights each complete client update by its local
 sample count.
 
-B5 is unavailable and fails explicitly. See
-`docs/revision/fairfed_blocker.md`.
+B5 evaluates the current global model on local evaluation splits, constructs
+the global EOD from sufficient counts, and applies the published stateful
+FairFed weighting rule. See `docs/revision/fairfed_blocker.md` for the exact
+protocol and claim boundary.
 
 The method-selection and aggregation primitives are implemented and tested.
 Measured multi-round B0-B4/B6-B7 comparisons remain part of the expanded
