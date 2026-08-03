@@ -8,6 +8,7 @@ __pycache__/
 .pytest_cache/
 .coverage
 .venv/
+.tools/
 
 data/raw/
 data/processed/
@@ -25,9 +26,11 @@ outputs/*
 !outputs/revision_audit/
 !outputs/revision_audit/baseline_manifest.json
 !outputs/revision_audit/current_evidence_freeze.json
+!outputs/revision_audit/v2_proof_benchmark.json
 build/
 *.wtns
 *.zkey
 *.ptau
+!zk/artifacts/v2/FairnessEligibilityV2_final.zkey
 
 results/**/*.zip

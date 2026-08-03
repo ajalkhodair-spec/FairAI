@@ -1,12 +1,12 @@
-# Active Blockers
+# Blocker Register
 
-| ID | Scope | Exact blocker | Scientific effect | Smallest valid resolution |
+| ID | Status | Scope | Exact blocker or resolution | Scientific effect / next step |
 |---|---|---|---|---|
-| BLK-001 | V2 Groth16 | PATH resolves Circom 0.5.46 and the pinned 2.1.6 toolchain/Powers of Tau are absent. A local Circom 2.1.9 binary compiled V2 successfully, but no admissible setup artifact or V2 ZKey exists. | Direct V2 proof generation, verification latency, and pairing-verifier gas cannot be measured. | Install the pinned Circom 2.1.6 binary, provide the checksum-pinned Powers of Tau file, generate and verify the V2 ZKey, and run the cryptographic negative suite. |
-| BLK-002 | Two-peer IPFS | This execution task is denied access to `~/.docker/run/docker.sock`. | Real Kubo add, pin, cold/warm retrieval, concurrency, outage, and recovery measurements cannot be generated here. | Grant the task Docker socket access, then run `make revision-ipfs`; the benchmark is strict and will not use a fallback. |
-| BLK-003 | FairFed | A faithful primary-paper weighting implementation has not been independently specified and verified in this repository. | B5 is not measured; no custom heuristic is labeled FairFed. | Implement the published weighting equations with reference tests against reported examples. |
-| BLK-004 | Public release | The local repository has no configured remote and anonymous repository access has not been verified. | Public citation and clean-clone-from-GitHub evidence remain unavailable. | Configure the actual public remote, push the branch, and run the anonymous URL checker and clean-clone protocol. |
+| BLK-001 | Resolved | V2 Groth16 | Circom 2.1.6 was built from tag `v2.1.6`; the verified phase-2 Powers of Tau, R1CS, ZKey, VKey, real proof, generated Solidity verifier, composite verifier, and negative suite all pass. | Thirty valid proof repetitions and six rejection cases are measured. A multi-party phase-2 ceremony remains required before production deployment. |
+| BLK-002 | Active | Two-peer IPFS | This execution task remains denied access to `~/.docker/run/docker.sock`, and neither Kubo API port is listening. | Real Kubo B2/B4/B7, concurrency, outage, and recovery measurements cannot be generated here. Start the pinned peers in an environment with Docker API access; all strict adapters fail closed. |
+| BLK-003 | Resolved | FairFed | The published stateful server weighting rule, signed EOD sufficient-statistic calculation, beta-zero equivalence, accuracy fallback, and deterministic multi-round tests are implemented. | Execute the enabled B5 Adult/COMPAS/MLP matrix; do not claim reproduction of every local debiasing variant. |
+| BLK-004 | Active | Public release | The local repository has no configured remote and anonymous repository access has not been verified. | Public citation and clean-clone-from-GitHub evidence remain unavailable. Configure the public remote, push, and run the anonymous clean-clone protocol. |
 
 Independent experiment, security, gas, statistics, privacy, ethics, and
-reporting work continues while these blockers remain open. Missing measurements
-must stay labeled missing or blocked.
+reporting work continues while BLK-002 and BLK-004 remain open. Missing
+measurements stay labeled missing or blocked.

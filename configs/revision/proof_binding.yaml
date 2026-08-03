@@ -1,7 +1,7 @@
 {
   "schema_version": "fairai.revision.config.v1",
   "scenario_id": "proof_binding_v2",
-  "executor": "planned",
+  "executor": "proof_v2",
   "evidence_type": "measured",
   "seed": 8001,
   "dataset": "synthetic_unit",
@@ -11,5 +11,6 @@
   "local_epochs": 20,
   "method": "proof_v2",
   "fairness_policy": "multi_metric",
-  "attack_profile": "binding_negative_tests"
+  "attack_profile": "binding_negative_tests",
+  "repetitions": 30
 }

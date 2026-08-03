@@ -181,6 +181,18 @@ describe("FairAIEthicalLedger", function () {
     expect(await ledger.roundStates(1)).to.equal(5);
   });
 
+  it("cancels a closed round when no model is eligible", async function () {
+    const { ledger } = await deployFixture();
+    await ledger.createRound(9);
+    await ledger.closeSubmissions(9);
+    await expect(ledger.cancelRound(9))
+      .to.emit(ledger, "RoundStateChanged")
+      .withArgs(9, 6);
+    expect(await ledger.roundStates(9)).to.equal(6);
+    await expect(ledger.startAggregation(9))
+      .to.be.revertedWithCustomError(ledger, "InvalidRoundState");
+  });
+
   it("hardens role and verifier administration", async function () {
     const { ledger, owner, verifier, otherAccount } = await deployFixture();
     const adminRole = await ledger.ADMIN_ROLE();

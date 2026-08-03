@@ -138,6 +138,60 @@ class RevisionFederatedTests(unittest.TestCase):
             1.0,
         )
 
+        infrastructure = RecordingInfrastructure()
+        b2 = run_federated_method(
+            dataset,
+            partition,
+            "B2",
+            policy,
+            "logistic_regression",
+            2,
+            2,
+            12,
+            2,
+            round_infrastructure=infrastructure,
+        )
+        self.assertEqual(infrastructure.rounds, [1, 2])
+        self.assertEqual(b2["infrastructure"]["status"], "recorded")
+
+        full_path = RecordingInfrastructure()
+        b7 = run_federated_method(
+            dataset,
+            partition,
+            "B7",
+            policy,
+            "logistic_regression",
+            1,
+            2,
+            12,
+            2,
+            round_infrastructure=full_path,
+        )
+        self.assertEqual(b7["method"], "B7")
+        self.assertEqual(full_path.prepared_rounds, [1])
+
+
+class RecordingInfrastructure:
+    def __init__(self):
+        self.rounds = []
+        self.prepared_rounds = []
+
+    def prepare_round(self, **values):
+        self.prepared_rounds.append(values["round_id"])
+        return [
+            update.client_id
+            for update in values["updates"]
+            if update.policy_approved
+        ]
+
+    def record_round(self, **values):
+        self.rounds.append(values["round_id"])
+        assert values["included_clients"]
+        assert values["client_metrics"]
+
+    def finalize(self):
+        return {"status": "recorded"}
+
 
 if __name__ == "__main__":
     unittest.main()

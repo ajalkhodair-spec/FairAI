@@ -36,6 +36,22 @@ def version(command):
     return match.group(0) if match else None
 
 
+def verify_powers_of_tau(path):
+    try:
+        result = subprocess.run(
+            ["snarkjs", "powersoftau", "verify", str(path)],
+            cwd=ROOT,
+            check=False,
+            text=True,
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            timeout=120,
+        )
+    except (FileNotFoundError, subprocess.TimeoutExpired):
+        return False
+    return result.returncode == 0 and "Powers of Tau Ok!" in result.stdout
+
+
 def main():
     lock = json.loads(LOCK.read_text(encoding="utf-8"))
     observed = {
@@ -61,6 +77,9 @@ def main():
         observed["powers_of_tau_sha256"] = sha256_file(ptau_path)
         if observed["powers_of_tau_sha256"] != lock["powers_of_tau"]["sha256"]:
             errors.append("Powers of Tau checksum mismatch")
+        observed["powers_of_tau_verified"] = verify_powers_of_tau(ptau_path)
+        if not observed["powers_of_tau_verified"]:
+            errors.append("Powers of Tau cryptographic verification failed")
     print(
         json.dumps(
             {

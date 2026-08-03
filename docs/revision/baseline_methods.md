@@ -27,6 +27,14 @@ the global EOD from sufficient counts, and applies the published stateful
 FairFed weighting rule. See `docs/revision/fairfed_blocker.md` for the exact
 protocol and claim boundary.
 
+B2 fails closed unless both pinned Kubo peers are reachable. Every local model,
+metrics record, metadata record, explicit proof/public `not_applicable` record,
+manifest, global model, and round report is uploaded to the publisher,
+retrieved and byte-checked through the consumer, and pinned there. One local
+Hardhat ledger deployment records all communication rounds and verifies CID
+agreement before each global publication. Its passthrough verifier is named and
+documented as B2-only; it is not an ethical approval mechanism.
+
 The method-selection and aggregation primitives are implemented and tested.
-Measured multi-round B0-B4/B6-B7 comparisons remain part of the expanded
+Measured multi-round B0-B7 comparisons remain part of the expanded
 experiment phase and must not be inferred from unit tests.

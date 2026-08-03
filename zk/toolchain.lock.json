@@ -4,8 +4,8 @@
   "snarkjs_version": "0.7.5",
   "curve": "bn128",
   "powers_of_tau": {
-    "filename": "powersoftau_final.ptau",
-    "sha256": "8fbb6e44c9e0e28419f9ffaf576ae2cf0b96dfeb897edecf737696e1488604d3",
+    "filename": "pot12_final_phase2.ptau",
+    "sha256": "88d726a18cf777c52f2b6c8a028235ccbcc078e0041b5e9b7607221d8d8b67dd",
     "tracked": false
   },
   "legacy_circuit": "circuits/FairnessEligibility.circom",

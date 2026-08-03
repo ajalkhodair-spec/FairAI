@@ -1,0 +1,43 @@
+{
+  "schema_version": "fairai.v2_proof_benchmark.v1",
+  "run_id": "proof-v2-30rep-c4e7124",
+  "evidence_type": "measured_local",
+  "repetitions": 30,
+  "valid_proofs_verified": 30,
+  "negative_cases_rejected": 6,
+  "timings_ms": {
+    "witness": {
+      "mean": 30.680790232145227,
+      "median": 30.67358299449552,
+      "standard_deviation": 0.9486238336019117,
+      "minimum": 29.20491699478589,
+      "maximum": 32.67245800816454,
+      "p95_nearest_rank_index": 32.150791987078264
+    },
+    "proof": {
+      "mean": 257.5118986297942,
+      "median": 256.176750495797,
+      "standard_deviation": 8.023485251442635,
+      "minimum": 248.2782079896424,
+      "maximum": 293.3236659737304,
+      "p95_nearest_rank_index": 264.58870799979195
+    },
+    "verification": {
+      "mean": 213.59060546868326,
+      "median": 213.3954159944551,
+      "standard_deviation": 4.146036016021444,
+      "minimum": 207.27983402321115,
+      "maximum": 221.64766601053998,
+      "p95_nearest_rank_index": 219.56754199345596
+    }
+  },
+  "artifacts": {
+    "zkey_sha256": "d17d244d5753af8d541758909b097707c71330b3592750a42472dc453f928053",
+    "timings_csv_sha256": "e20c18fe58b97b776934a1da066fe06a9f4fbfce5afbc4b3af63514c48076048",
+    "negative_results_sha256": "d061efdb391c62f61d0bf051d9ca5432d7f735979731ce22f923161584bb71ab",
+    "run_manifest_sha256": "833ddb8e362315f6e6d59700b7f31951f2f21185dd1c88831f691dcdba32e74f"
+  },
+  "setup_type": "single_contributor_experimental",
+  "production_ceremony_required": true,
+  "claim_boundary": "Local cryptographic engineering evidence; not a production trusted-setup ceremony or distributed-network latency result."
+}

@@ -1,6 +1,6 @@
 import copy
 import time
-from dataclasses import dataclass
+from dataclasses import dataclass, replace
 
 import numpy as np
 from sklearn.metrics import f1_score
@@ -125,11 +125,20 @@ def run_federated_method(
     attack_type="none",
     malicious_client_ratio=0.0,
     fairfed_beta=1.0,
+    round_infrastructure=None,
 ):
-    if method not in {"B0", "B1", "B3", "B5", "B6"}:
+    if method not in {"B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7"}:
         raise FederatedExperimentError(
             f"{method} requires infrastructure integration not provided by "
             "the local federated executor"
+        )
+    if method == "B2" and round_infrastructure is None:
+        raise FederatedExperimentError(
+            "B2 requires the strict Kubo and ledger infrastructure adapter"
+        )
+    if method in {"B4", "B7"} and round_infrastructure is None:
+        raise FederatedExperimentError(
+            f"{method} requires the strict Kubo, V2 Groth16, signed-decision, and ledger adapter"
         )
     prepared = prepare_federated_data(dataset)
     supported_attacks = {"none", "label_flip", "sign_flip", "random_weights"}
@@ -169,6 +178,7 @@ def run_federated_method(
     for round_id in range(1, rounds + 1):
         updates = []
         fairfed_metrics = {}
+        metrics_by_client = {}
         for client_id, (train_indices, evaluation_indices) in enumerate(local_splits):
             local_started = time.perf_counter()
             is_malicious = client_id in malicious_clients
@@ -230,6 +240,8 @@ def run_federated_method(
                     policy_approved=decision["approved"],
                 )
             )
+            if metrics is not None:
+                metrics_by_client[str(client_id)] = metrics
             client_rows.append(
                 {
                     "method": method,
@@ -261,6 +273,25 @@ def run_federated_method(
                     "runtime_ms": (time.perf_counter() - local_started) * 1000,
                 }
             )
+        if method in {"B4", "B7"}:
+            approved_clients = set(
+                round_infrastructure.prepare_round(
+                    round_id=round_id,
+                    updates=updates,
+                    client_metrics=metrics_by_client,
+                    policy=policy,
+                )
+            )
+            updates = [
+                replace(
+                    update,
+                    proof_verified=update.client_id in approved_clients,
+                    artifact_binding_valid=update.client_id in approved_clients,
+                    decision_signed=True,
+                    on_chain_approved=update.client_id in approved_clients,
+                )
+                for update in updates
+            ]
         try:
             fairfed_diagnostics = None
             if method == "B5":
@@ -318,6 +349,15 @@ def run_federated_method(
             dataset,
             minimum_group_samples,
         )
+        if round_infrastructure is not None:
+            round_infrastructure.record_round(
+                round_id=round_id,
+                updates=updates,
+                client_metrics=metrics_by_client,
+                global_parameters=global_parameters,
+                global_metrics=validation,
+                included_clients=aggregation["included_clients"],
+            )
         round_rows.append(
             {
                 "method": method,
@@ -363,6 +403,9 @@ def run_federated_method(
         dataset,
         minimum_group_samples,
     )
+    infrastructure = (
+        None if round_infrastructure is None else round_infrastructure.finalize()
+    )
     return {
         "method": method,
         "round_metrics": round_rows,
@@ -370,4 +413,5 @@ def run_federated_method(
         "test_metrics": test_metrics,
         "runtime_ms": (time.perf_counter() - started) * 1000,
         "final_parameters": global_parameters,
+        "infrastructure": infrastructure,
     }

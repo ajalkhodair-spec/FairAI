@@ -1,21 +1,22 @@
 # Direct Groth16 Verification Status
 
-The repository preserves a generated legacy Groth16 verifier and adapter. The
-V2 source compiled successfully with a discovered local Circom 2.1.9 binary:
-751 constraints, 19 public inputs, 2 private inputs, and 2 public outputs. This
-is a compatibility check, not the pinned Circom 2.1.6 build required by the
-toolchain lock.
+V2 compiles with the pinned Circom 2.1.6 build: 751 constraints, 19 public
+inputs, 2 private inputs, and 2 public outputs. The phase-2 Powers of Tau passes
+`snarkjs powersoftau verify`, and the generated ZKey passes verification against
+the R1CS and ceremony artifact.
 
-No checksum-pinned Powers of Tau file or V2 ZKey is available. Therefore direct
-on-chain V2 Groth16 verification remains unavailable and no V2 proving,
-verification-latency, or pairing-gas result is claimed.
+The repository contains checksum-manifested R1CS, WASM, ZKey, verification key,
+generated Solidity verifier, and acceptance proof fixture. Thirty local proof
+runs verified; five out-of-policy witnesses and one tampered public-signal case
+were rejected. The measured summary is
+`outputs/revision_audit/v2_proof_benchmark.json`.
 
-The signed-verifier path performs off-chain proof and artifact checks, then
-places a domain-separated decision on-chain. Its on-chain cost is lower than a
-pairing verifier but it trusts authorized signer honesty. Direct Groth16 would
-remove signature-based proof-validity trust while retaining the off-circuit
-metric-correctness and artifact-retrieval assumptions.
+The `FairAIV2CompositeVerifier` requires both the generated Groth16 verifier and
+a domain-separated EIP-712 decision. It binds node, round, policy version,
+nonce, and reduced SHA-256 manifest/metrics fields. The ledger consumes signed
+nonces, rejects context substitution, and records approved and rejected
+outcomes.
 
-Measured comparison is deferred until V2 R1CS/WASM/ZKey generation and the
-matching Solidity verifier pass clean-toolchain tests. Compilation hashes and
-the exact command are recorded in `docs/revision/v2_compile_check.md`.
+The current phase-2 setup has one experimental contributor. It is suitable for
+validated engineering experiments, not production deployment; a governed
+multi-party ceremony is required before a production trust claim.

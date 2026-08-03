@@ -467,6 +467,8 @@ def run_federated_core(config, output_dir):
 
     from .data import load_adult, load_compas
     from .federated import run_federated_method
+    from .b2_infrastructure import B2KuboLedgerAdapter
+    from .b4_infrastructure import B4KuboLedgerAdapter
     from .partition import (
         export_partition_evidence,
         parse_partition_spec,
@@ -557,6 +559,35 @@ def run_federated_core(config, output_dir):
                     protected,
                 )
                 for profile_name, policy, method, attack_type in executions:
+                    execution_id = (
+                        f"seed_{experiment_seed}-clients_{client_count}-"
+                        f"{partition_spec}-{profile_name}-{attack_type}-{method}"
+                    )
+                    round_infrastructure = None
+                    if method == "B2":
+                        round_infrastructure = B2KuboLedgerAdapter(
+                            output_dir=output_dir / "infrastructure" / execution_id,
+                            repo_root=REPO_ROOT,
+                            publisher_api=config.get(
+                                "publisher_api", "http://127.0.0.1:5001"
+                            ),
+                            consumer_api=config.get(
+                                "consumer_api", "http://127.0.0.1:5002"
+                            ),
+                            kubo_version=config.get("kubo_version", "0.29.0"),
+                        )
+                    elif method in {"B4", "B7"}:
+                        round_infrastructure = B4KuboLedgerAdapter(
+                            output_dir=output_dir / "infrastructure" / execution_id,
+                            repo_root=REPO_ROOT,
+                            publisher_api=config.get(
+                                "publisher_api", "http://127.0.0.1:5001"
+                            ),
+                            consumer_api=config.get(
+                                "consumer_api", "http://127.0.0.1:5002"
+                            ),
+                            kubo_version=config.get("kubo_version", "0.29.0"),
+                        )
                     result = run_federated_method(
                         dataset=dataset,
                         partition=partition,
@@ -574,6 +605,7 @@ def run_federated_core(config, output_dir):
                             "malicious_client_ratio", 0.0
                         ),
                         fairfed_beta=config.get("fairfed_beta", 1.0),
+                        round_infrastructure=round_infrastructure,
                     )
                     dimensions = {
                         "scenario_id": config["scenario_id"],
@@ -643,6 +675,12 @@ def run_federated_core(config, output_dir):
                                 "round_metrics"
                             ][-1]["global_accuracy"],
                             "test_accuracy": test_metrics["accuracy"],
+                            "contract_address": None
+                            if result["infrastructure"] is None
+                            else result["infrastructure"]["contract_address"],
+                            "ipfs_retrieval_checks": 0
+                            if result["infrastructure"] is None
+                            else len(result["infrastructure"]["retrieval_rows"]),
                         }
                     )
     write_csv(
@@ -835,6 +873,89 @@ def run_gas_benchmark(config, output_dir):
     }
 
 
+def run_proof_v2(config, output_dir):
+    import copy
+
+    from .zk_v2 import V2ProofSystem
+
+    proof_system = V2ProofSystem(REPO_ROOT)
+    base_input = json.loads(
+        (REPO_ROOT / "tests" / "fixtures" / "v2_valid_input.json").read_text(
+            encoding="utf-8"
+        )
+    )
+    rows = []
+    last_result = None
+    for repetition in range(1, config.get("repetitions", 30) + 1):
+        last_result = proof_system.prove(
+            base_input,
+            output_dir / "proofs" / f"repetition_{repetition}",
+            name="valid",
+        )
+        rows.append(
+            {
+                "repetition": repetition,
+                "witness_ms": last_result["witness_ms"],
+                "proof_ms": last_result["proof_ms"],
+                "verify_ms": last_result["verify_ms"],
+                "verified": True,
+            }
+        )
+    write_csv(output_dir / "raw" / "v2_proof_timings.csv", rows, list(rows[0]))
+
+    failures = {}
+    mutations = {
+        "accuracy_below_minimum": {"accuracy": base_input["minimumAccuracy"] - 1},
+        "dp_above_maximum": {
+            "demographicParityGap": base_input["maximumDemographicParityGap"] + 1
+        },
+        "eo_above_maximum": {
+            "equalOpportunityGap": base_input["maximumEqualOpportunityGap"] + 1
+        },
+        "equalized_odds_above_maximum": {
+            "equalizedOddsGap": base_input["maximumEqualizedOddsGap"] + 1
+        },
+        "subgroup_accuracy_above_maximum": {
+            "subgroupAccuracyGap": base_input["maximumSubgroupAccuracyGap"] + 1
+        },
+    }
+    for name, mutation in mutations.items():
+        invalid = {**base_input, **mutation}
+        failures[name] = proof_system.expect_constraint_failure(
+            invalid, output_dir / "negative", name
+        )
+
+    tampered_public = copy.deepcopy(last_result["public_signals"])
+    tampered_public[2] += 1
+    tampered_path = output_dir / "negative" / "tampered_public.json"
+    write_json(tampered_path, [str(value) for value in tampered_public])
+    failures["tampered_public_signal"] = proof_system.verify_external(
+        last_result["proof_path"], tampered_path, expected_success=False
+    )
+    write_json(output_dir / "negative" / "negative_results.json", failures)
+
+    checksum = __import__("hashlib").sha256(
+        canonical_json_bytes({"timings": rows, "negative": failures})
+    ).hexdigest()
+    return {
+        "dataset_checksum": checksum,
+        "partition_checksum": checksum,
+        "summary": {
+            "repetitions": len(rows),
+            "valid_proofs_verified": len(rows),
+            "negative_cases_rejected": len(failures),
+            "mean_witness_ms": mean([row["witness_ms"] for row in rows]),
+            "mean_proof_ms": mean([row["proof_ms"] for row in rows]),
+            "mean_verify_ms": mean([row["verify_ms"] for row in rows]),
+            "setup_type": proof_system.manifest["phase2"]["setup_type"],
+            "production_ceremony_required": True,
+            "zkey_sha256": proof_system.manifest["files"][
+                "FairnessEligibilityV2_final.zkey"
+            ],
+        },
+    }
+
+
 EXECUTORS = {
     "smoke": run_smoke,
     "legacy_mvp": run_legacy,
@@ -842,6 +963,7 @@ EXECUTORS = {
     "federated_core": run_federated_core,
     "ipfs_benchmark": run_ipfs_benchmark,
     "gas_benchmark": run_gas_benchmark,
+    "proof_v2": run_proof_v2,
 }
 
 

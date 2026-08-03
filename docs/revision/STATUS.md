@@ -25,8 +25,8 @@
   240 local throughput scenarios, deterministic bootstrap statistics,
   security/privacy/ethics/complexity evidence, exact publication CSVs,
   workbook, LaTeX tables, and 300-dpi figures
-- Tests passed:
-  - Python: 58 tests
+- Tests passed before the current branch:
+  - Python: 59 tests in the clean-clone evidence
   - Solidity: 15 tests
   - Hardhat compile: 7 contracts
   - ZKey verification against R1CS and Powers of Tau
@@ -43,11 +43,9 @@
     checkout points to `https://github.com/ajalkhodair-spec/FairAI.git`, but
     the active revision repository is not connected to that remote
   - GitHub CLI token is invalid
-  - PATH `circom` reports 0.5.46; a discovered Circom 2.1.9 binary compiles V2,
-    but the pinned 2.1.6 build remains unavailable
-  - Powers of Tau and V2 ZKey are absent, so V2 proof timing/gas is not measured
-  - Docker socket access is unavailable to this task, so strict two-node Kubo
-    measurements cannot be generated in the current execution environment
+  - Docker socket API calls remain denied after explicit sandbox grants and no
+    Kubo ports are listening, so the new strict B2 adapter cannot yet generate
+    measured two-peer evidence in this task
 - Clean-clone status:
   - no-local clone passed;
   - independent npm installation passed;
@@ -55,7 +53,15 @@
   - smoke and a 10-seed Adult run passed;
   - CSV, LaTeX, and SVG regeneration was byte-for-byte reproducible;
   - fresh pip installation remained blocked by sandbox DNS
-- Next action: external resolution of BLK-001, BLK-002, BLK-003, and BLK-004
+- Current-branch verification:
+  - 61 Python and 20 Solidity tests pass on the current branch
+  - 30/30 V2 proofs verify and six negative cryptographic cases reject
+  - the real V2 proof passes the composite Groth16 plus EIP-712 ledger path;
+    context substitution, replay, and rejected-decision recording are tested
+  - the B2-only verifier and multi-round ledger runner compile
+  - B2 unit boundaries pass; real Kubo execution is pending the Docker boundary
+- Next action: run strict B2/B4/B7 Kubo integration as soon as Docker is
+  reachable, then execute the reviewer-derived local and Azure matrices
 - Latest implementation commit hash: `846a068`
 - Latest results/reproducibility commit hash: `f62a3ad`
 - Latest output paths:

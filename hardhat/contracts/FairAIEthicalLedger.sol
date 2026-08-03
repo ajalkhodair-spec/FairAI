@@ -5,7 +5,7 @@ interface IFairAIVerifier {
     function verifyProof(
         bytes calldata proof,
         uint256[] calldata publicSignals
-    ) external view returns (bool);
+    ) external returns (bool);
 }
 
 contract FairAIEthicalLedger {
@@ -27,7 +27,8 @@ contract FairAIEthicalLedger {
         SubmissionClosed,
         AggregationStarted,
         Published,
-        Archived
+        Archived,
+        Cancelled
     }
 
     struct ModelRecord {
@@ -119,6 +120,7 @@ contract FairAIEthicalLedger {
     error ZeroAddress();
     error NoAdminRemaining();
     error ContractAddressRequired(address account);
+    error PublicSignalContextMismatch();
 
     constructor() {
         owner = msg.sender;
@@ -185,6 +187,11 @@ contract FairAIEthicalLedger {
         emit RoundStateChanged(roundId, RoundState.AggregationStarted);
     }
 
+    function cancelRound(uint256 roundId) external onlyRole(ADMIN_ROLE) inRoundState(roundId, RoundState.SubmissionClosed) {
+        roundStates[roundId] = RoundState.Cancelled;
+        emit RoundStateChanged(roundId, RoundState.Cancelled);
+    }
+
     function archiveRound(uint256 roundId) external onlyRole(ADMIN_ROLE) inRoundState(roundId, RoundState.Published) {
         roundStates[roundId] = RoundState.Archived;
         emit RoundStateChanged(roundId, RoundState.Archived);
@@ -217,6 +224,10 @@ contract FairAIEthicalLedger {
             _isEmpty(metricsCid) ||
             _isEmpty(manifestCid)
         ) revert EmptyCid();
+        if (
+            publicSignals.length == 21 &&
+            (nodeId != bytes32(publicSignals[17]) || roundId != publicSignals[18])
+        ) revert PublicSignalContextMismatch();
 
         bytes32 key = getRecordKey(nodeId, roundId);
         if (records[key].timestamp != 0) revert DuplicateSubmission(nodeId, roundId);

@@ -16,11 +16,11 @@
   "partitions": ["joint_dirichlet_0.3"],
   "minimum_samples_per_client": 50,
   "minimum_group_samples": 10,
-  "executable_methods": ["B0"],
-  "methods_not_executed": {
-    "B2": "strict Kubo and on-chain registration are unavailable to this local executor",
-    "B4": "V2 Groth16 artifacts are blocked by the local Circom version"
-  },
+  "executable_methods": ["B0", "B2", "B4"],
+  "kubo_version": "0.29.0",
+  "publisher_api": "http://127.0.0.1:5001",
+  "consumer_api": "http://127.0.0.1:5002",
+  "methods_not_executed": {},
   "experiment_seeds": [5001, 5002, 5003, 5004, 5005],
   "seeds": 5
 }

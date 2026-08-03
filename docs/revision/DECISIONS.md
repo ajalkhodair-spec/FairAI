@@ -155,3 +155,28 @@ that the smaller design cannot answer a reviewer concern.
 Commit `62d8dd3` and `outputs/major_revision/release_checksums.sha256` define the
 latest verified pre-Azure evidence. New implementations write new run IDs and
 must not overwrite or silently recompute the frozen package.
+
+## D-025 Keep B2 infrastructure-only verification explicit
+
+B2 uses real two-peer Kubo and the actual ledger lifecycle but intentionally
+has no fairness or ZK gate. Its dedicated `FairAIInfrastructureVerifier` is a
+passthrough contract, and proof/public artifacts state `not_applicable`. The B2
+adapter cannot be used for B3/B4/B7 and missing Kubo fails the run. This
+isolates infrastructure overhead without misrepresenting B2 as ethical proof.
+
+## D-026 Require proof and signature in the V2 approval path
+
+B4/B7 use a composite verifier. Approval requires a valid V2 Groth16 proof and
+an EIP-712 decision bound to node, round, policy version, nonce, manifest hash,
+and metrics hash. Rejected decisions remain signed and consume a nonce but do
+not claim a valid proof. The ledger checks V2 node/round signals against the
+transaction context and supports a terminal `Cancelled` state when no model is
+eligible.
+
+## D-027 Separate proof-bound and submission manifests
+
+A proof cannot bind a manifest that contains the proof's own CID without a
+content-addressing cycle. V2 therefore binds a canonical pre-proof manifest
+containing model, metrics, and metadata CIDs. A submission manifest then wraps
+that bound-manifest CID together with proof and public-input CIDs; the wrapper
+CID is recorded on-chain. Both layers are retrieved and byte-validated.

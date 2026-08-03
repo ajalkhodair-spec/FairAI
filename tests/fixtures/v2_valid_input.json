@@ -1,0 +1,23 @@
+{
+  "accuracy": 800000,
+  "demographicParityGap": 100000,
+  "equalOpportunityGap": 90000,
+  "equalizedOddsGap": 120000,
+  "subgroupAccuracyGap": 80000,
+  "minimumAccuracy": 620000,
+  "maximumDemographicParityGap": 280000,
+  "maximumEqualOpportunityGap": 280000,
+  "maximumEqualizedOddsGap": 280000,
+  "maximumSubgroupAccuracyGap": 280000,
+  "enableAccuracy": 1,
+  "enableDemographicParity": 1,
+  "enableEqualOpportunity": 1,
+  "enableEqualizedOdds": 1,
+  "enableSubgroupAccuracy": 1,
+  "nodeId": 1,
+  "roundId": 1,
+  "policyVersion": 4294967296,
+  "nonce": 1,
+  "manifestDigestFieldIn": 123,
+  "metricsDigestFieldIn": 456
+}
