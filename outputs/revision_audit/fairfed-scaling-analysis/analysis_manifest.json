@@ -1,0 +1,41 @@
+{
+  "analysis_git_commit": "e8e02023b978f3f505cfba039ee4485a85fd710e",
+  "evidence_type": "derived",
+  "inputs": {
+    "adult": {
+      "configuration_hash": "b4b9b47c10a53c06e69f513e4bc18dbe2d3d6a41e5c3e9bdebaa7e2d9139fbf0",
+      "git_commit": "4a08a15e4dadf4a00df083531ae303e9d2ab5e2f",
+      "metrics_sha256": "e264d3ad23d61ad7e4026aebb8602362dffd1d761428b33214ab9759bc07825a",
+      "run_id": "adult-fairfed-10seed-4a08a15"
+    },
+    "compas": {
+      "configuration_hash": "3e857bc05ce3a1cd1e60999936e6356ab3b7e1c758d747467a3b6b629908c84b",
+      "git_commit": "4a08a15e4dadf4a00df083531ae303e9d2ab5e2f",
+      "metrics_sha256": "32093c41dcdcb43653b6aa28967e35222c4bf7752971d80685133f361dd53ff3",
+      "run_id": "compas-fairfed-10seed-4a08a15"
+    },
+    "scaling": {
+      "configuration_hash": "74d8f4b6eb1420f3d115ed46a7666fab273167116cc076816fafb0e30ac11c03",
+      "git_commit": "4a08a15e4dadf4a00df083531ae303e9d2ab5e2f",
+      "metrics_sha256": "8e9427588e61291c4d5c4b66e4d3326ab809c37adbdfe62b82a67656bd33d5e7",
+      "run_id": "scaling-algorithmic-5seed-4a08a15"
+    }
+  },
+  "outputs": {
+    "descriptive_statistics.csv": "894d032d5cd74825b58945d3de6ff591df920736ebeb72d0c46e2da4d1e02920",
+    "paired_tests.csv": "5b021375550c83bc9835f9b65ecaab214fd9afe081167e19246fc310e6e87b6b"
+  },
+  "row_counts": {
+    "descriptive_statistics": 217,
+    "paired_tests": 84
+  },
+  "schema_version": "fairai.fairfed_scaling_analysis.v1",
+  "statistics": {
+    "confidence_interval": "two-sided deterministic percentile bootstrap 95% CI of the mean",
+    "difference_direction": "right method minus left method; negative fairness gap is favorable",
+    "effect_sizes": "paired Cohen dz and rank-biserial correlation",
+    "multiple_testing": "Holm correction across all reported paired t tests",
+    "paired_primary": "paired t test",
+    "paired_robustness": "Wilcoxon signed-rank"
+  }
+}
