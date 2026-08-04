@@ -532,6 +532,8 @@ def run_federated_core(config, output_dir):
     client_rows = []
     test_rows = []
     method_summaries = []
+    observed_kubo_versions = set()
+    v2_infrastructure_executed = False
     client_counts = config.get("client_counts", [config["clients"]])
     if not client_counts or not all(
         isinstance(client_count, int) and client_count > 1
@@ -654,6 +656,12 @@ def run_federated_core(config, output_dir):
                                     }
                                 ),
                             )
+                    if result["infrastructure"] is not None:
+                        kubo_version = result["infrastructure"].get("kubo_version")
+                        if kubo_version:
+                            observed_kubo_versions.add(kubo_version)
+                        if method in {"B4", "B7"}:
+                            v2_infrastructure_executed = True
                     dimensions = {
                         "scenario_id": config["scenario_id"],
                         "seed": experiment_seed,
@@ -748,9 +756,19 @@ def run_federated_core(config, output_dir):
     partition_checksum = __import__("hashlib").sha256(
         canonical_json_bytes(partition_checksums)
     ).hexdigest()
+    if len(observed_kubo_versions) > 1:
+        raise ValueError("A run cannot combine multiple Kubo versions")
+    manifest_updates = {}
+    if observed_kubo_versions:
+        manifest_updates["environment.kubo_version"] = next(
+            iter(observed_kubo_versions)
+        )
+    if v2_infrastructure_executed:
+        manifest_updates["environment.circom_version"] = "2.1.6"
     return {
         "dataset_checksum": download_manifest["archive_sha256"],
         "partition_checksum": partition_checksum,
+        "manifest_updates": manifest_updates,
         "summary": {
             "dataset": config["dataset"],
             "split_seed": config["seed"],
@@ -762,6 +780,12 @@ def run_federated_core(config, output_dir):
             "methods_not_executed": config.get("methods_not_executed", {}),
             "partitions": partition_checksums,
             "results": method_summaries,
+            "infrastructure_executions": sum(
+                row["contract_address"] is not None for row in method_summaries
+            ),
+            "ipfs_retrieval_checks": sum(
+                row["ipfs_retrieval_checks"] for row in method_summaries
+            ),
             "test_set_usage": "evaluated once after final round for each paired method",
         },
     }
@@ -1120,6 +1144,10 @@ def execute(config_path, output_root, run_id=None, parent_suite_id=None, resume=
             manifest["contract_addresses"] = updates["contract_addresses"]
         if "environment.kubo_version" in updates:
             manifest["environment"]["kubo_version"] = updates["environment.kubo_version"]
+        if "environment.circom_version" in updates:
+            manifest["environment"]["circom_version"] = updates[
+                "environment.circom_version"
+            ]
         write_json(output_dir / "derived" / "summary.json", result["summary"])
         manifest["completion_status"] = "completed"
     except Exception as exc:
