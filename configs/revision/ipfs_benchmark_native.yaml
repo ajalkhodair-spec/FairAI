@@ -3,7 +3,7 @@
   "scenario_id": "ipfs_benchmark_native",
   "executor": "ipfs_benchmark",
   "evidence_type": "measured",
-  "seed": 11101,
+  "seed": 11201,
   "dataset": "artifact_payloads",
   "model": "not_applicable",
   "clients": 1,
