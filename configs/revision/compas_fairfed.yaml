@@ -1,0 +1,28 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "compas_fairfed_comparison",
+  "executor": "federated_core",
+  "evidence_type": "measured",
+  "seed": 3101,
+  "dataset": "compas",
+  "model": "logistic_regression",
+  "clients": 10,
+  "rounds": 5,
+  "local_epochs": 3,
+  "method": "B0_B1_B3_B5",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "none",
+  "partitions": ["iid", "joint_dirichlet_0.3"],
+  "minimum_samples_per_client": 50,
+  "minimum_group_samples": 10,
+  "fairfed_beta": 1.0,
+  "fairfed_metric": "equal_opportunity_difference",
+  "executable_methods": ["B0", "B1", "B3", "B5"],
+  "methods_not_executed": {
+    "B2": "requires strict two-peer Kubo evidence",
+    "B4": "requires strict two-peer Kubo plus V2 ledger evidence",
+    "B7": "requires strict two-peer Kubo plus V2 ledger evidence"
+  },
+  "experiment_seeds": [3101, 3102, 3103, 3104, 3105, 3106, 3107, 3108, 3109, 3110],
+  "seeds": 10
+}

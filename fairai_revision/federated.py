@@ -126,6 +126,7 @@ def run_federated_method(
     malicious_client_ratio=0.0,
     fairfed_beta=1.0,
     round_infrastructure=None,
+    remote_trainer=None,
 ):
     if method not in {"B0", "B1", "B2", "B3", "B4", "B5", "B6", "B7"}:
         raise FederatedExperimentError(
@@ -160,6 +161,8 @@ def run_federated_method(
         )
         for client_id, indices in enumerate(partition.client_indices)
     ]
+    if remote_trainer is not None:
+        remote_trainer.prepare(prepared, local_splits)
     malicious_count = (
         0
         if attack_type == "none"
@@ -190,33 +193,59 @@ def run_federated_method(
                 global_parameters,
             )
             if method == "B5":
-                fairfed_metrics[str(client_id)] = _model_metrics(
-                    global_model,
-                    prepared.train_features[evaluation_indices],
-                    prepared.train_labels[evaluation_indices],
-                    prepared.train_protected[evaluation_indices],
-                    dataset,
-                    minimum_group_samples,
-                )
+                if remote_trainer is None:
+                    fairfed_metrics[str(client_id)] = _model_metrics(
+                        global_model,
+                        prepared.train_features[evaluation_indices],
+                        prepared.train_labels[evaluation_indices],
+                        prepared.train_protected[evaluation_indices],
+                        dataset,
+                        minimum_group_samples,
+                    )
+                else:
+                    fairfed_metrics[str(client_id)] = remote_trainer.evaluate(
+                        client_id=client_id,
+                        round_id=round_id,
+                        global_parameters=global_parameters,
+                        model_type=model_type,
+                        seed=seed + client_id,
+                        dataset=dataset,
+                        minimum_group_samples=minimum_group_samples,
+                    )
             valid = len(np.unique(prepared.train_labels[train_indices])) == 2
             if valid:
-                training_labels = prepared.train_labels[train_indices]
-                if is_malicious and attack_type == "label_flip":
-                    training_labels = 1 - training_labels
-                local_model.train_local(
-                    prepared.train_features[train_indices],
-                    training_labels,
-                )
-                metrics = _model_metrics(
-                    local_model,
-                    prepared.train_features[evaluation_indices],
-                    prepared.train_labels[evaluation_indices],
-                    prepared.train_protected[evaluation_indices],
-                    dataset,
-                    minimum_group_samples,
-                )
+                if remote_trainer is None:
+                    training_labels = prepared.train_labels[train_indices]
+                    if is_malicious and attack_type == "label_flip":
+                        training_labels = 1 - training_labels
+                    local_model.train_local(
+                        prepared.train_features[train_indices],
+                        training_labels,
+                    )
+                    metrics = _model_metrics(
+                        local_model,
+                        prepared.train_features[evaluation_indices],
+                        prepared.train_labels[evaluation_indices],
+                        prepared.train_protected[evaluation_indices],
+                        dataset,
+                        minimum_group_samples,
+                    )
+                    parameters = tuple(local_model.get_parameters())
+                else:
+                    remote_result = remote_trainer.train(
+                        client_id=client_id,
+                        round_id=round_id,
+                        global_parameters=global_parameters,
+                        model_type=model_type,
+                        seed=seed + client_id,
+                        local_epochs=local_epochs,
+                        dataset=dataset,
+                        minimum_group_samples=minimum_group_samples,
+                        label_flip=is_malicious and attack_type == "label_flip",
+                    )
+                    metrics = remote_result["metrics"]
+                    parameters = remote_result["parameters"]
                 decision = evaluate_policy(metrics, policy, round_id)
-                parameters = tuple(local_model.get_parameters())
                 if is_malicious and attack_type == "sign_flip":
                     parameters = tuple(-value for value in parameters)
                 elif is_malicious and attack_type == "random_weights":
@@ -414,4 +443,7 @@ def run_federated_method(
         "runtime_ms": (time.perf_counter() - started) * 1000,
         "final_parameters": global_parameters,
         "infrastructure": infrastructure,
+        "remote_training": None
+        if remote_trainer is None
+        else remote_trainer.evidence(),
     }

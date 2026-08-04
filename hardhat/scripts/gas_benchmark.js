@@ -1,6 +1,8 @@
 const fs = require("fs");
 const path = require("path");
 const { ethers } = require("hardhat");
+const v2Proof = require("../test/fixtures/v2_valid_proof.json");
+const v2PublicSignals = require("../test/fixtures/v2_valid_public.json");
 
 const nodeId = (value) => ethers.keccak256(ethers.toUtf8Bytes(value));
 
@@ -20,6 +22,43 @@ async function main() {
   );
   const [owner, verifierSigner, secondarySigner] = await ethers.getSigners();
   const rows = [];
+
+  const V2Verifier = await ethers.getContractFactory(
+    "FairnessEligibilityV2Groth16Verifier"
+  );
+  const v2Verifier = await V2Verifier.deploy();
+  rows.push({
+    batch_size: 0,
+    repetition: 0,
+    operation: "deploy_v2_groth16_verifier",
+    gas_used: await gasOf(v2Verifier.deploymentTransaction()),
+  });
+  const pA = [v2Proof.pi_a[0], v2Proof.pi_a[1]];
+  const pB = [
+    [v2Proof.pi_b[0][1], v2Proof.pi_b[0][0]],
+    [v2Proof.pi_b[1][1], v2Proof.pi_b[1][0]],
+  ];
+  const pC = [v2Proof.pi_c[0], v2Proof.pi_c[1]];
+  if (!(await v2Verifier.verifyProof(pA, pB, pC, v2PublicSignals))) {
+    throw new Error("Tracked V2 proof failed before gas measurement");
+  }
+  const verificationData = v2Verifier.interface.encodeFunctionData(
+    "verifyProof",
+    [pA, pB, pC, v2PublicSignals]
+  );
+  for (let repetition = 1; repetition <= repetitions; repetition += 1) {
+    rows.push({
+      batch_size: 0,
+      repetition,
+      operation: "verify_v2_groth16",
+      gas_used: await gasOf(
+        await owner.sendTransaction({
+          to: await v2Verifier.getAddress(),
+          data: verificationData,
+        })
+      ),
+    });
+  }
 
   const MockVerifier = await ethers.getContractFactory("FairAIZKVerifierMock");
   const proofVerifier = await MockVerifier.deploy();

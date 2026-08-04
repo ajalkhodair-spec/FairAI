@@ -9,6 +9,7 @@ __pycache__/
 .coverage
 .venv/
 .tools/
+azure/runtime_topology.json
 
 data/raw/
 data/processed/

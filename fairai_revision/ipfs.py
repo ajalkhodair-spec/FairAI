@@ -1,4 +1,5 @@
 import hashlib
+import ipaddress
 import json
 import time
 import urllib.error
@@ -89,9 +90,13 @@ def verify_payload(expected, observed, cid):
         )
 
 
-def connect_two_peers(publisher, consumer):
+def connect_two_peers(publisher, consumer, publisher_host="ipfs-publisher"):
     publisher_id = publisher.identity()["ID"]
-    address = f"/dns4/ipfs-publisher/tcp/4001/p2p/{publisher_id}"
+    try:
+        protocol = "ip4" if ipaddress.ip_address(publisher_host).version == 4 else "ip6"
+    except ValueError:
+        protocol = "dns4"
+    address = f"/{protocol}/{publisher_host}/tcp/4001/p2p/{publisher_id}"
     consumer.connect(address)
     return publisher_id, consumer.identity()["ID"]
 
@@ -112,7 +117,9 @@ def benchmark_two_peer_kubo(config):
             f"publisher={publisher_version}, consumer={consumer_version}, "
             f"expected={expected_version}"
         )
-    publisher_id, consumer_id = connect_two_peers(publisher, consumer)
+    publisher_id, consumer_id = connect_two_peers(
+        publisher, consumer, config.get("publisher_swarm_host", "ipfs-publisher")
+    )
     rows = []
     for size_bytes in config["payload_bytes"]:
         for repetition in range(1, config["repetitions"] + 1):

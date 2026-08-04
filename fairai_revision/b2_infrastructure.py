@@ -39,6 +39,7 @@ class B2KuboLedgerAdapter:
         publisher_api="http://127.0.0.1:5001",
         consumer_api="http://127.0.0.1:5002",
         kubo_version="0.29.0",
+        publisher_swarm_host="ipfs-publisher",
     ):
         self.output_dir = Path(output_dir)
         self.repo_root = Path(repo_root)
@@ -50,7 +51,7 @@ class B2KuboLedgerAdapter:
                 f"Kubo version mismatch: publisher={versions[0]}, consumer={versions[1]}, expected={kubo_version}"
             )
         self.publisher_id, self.consumer_id = connect_two_peers(
-            self.publisher, self.consumer
+            self.publisher, self.consumer, publisher_swarm_host
         )
         self.kubo_version = kubo_version
         self.rounds = []

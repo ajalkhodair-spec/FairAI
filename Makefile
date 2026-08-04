@@ -1,5 +1,6 @@
 .PHONY: test revision-smoke revision-baseline revision-partitions revision-core revision-scaling \
-	revision-fairness revision-security revision-ipfs revision-report revision-all
+	revision-algorithmic-scaling revision-fairfed revision-fairness revision-security revision-ipfs \
+	revision-proof azure-validate revision-report revision-all
 
 PYTHON ?= python3
 
@@ -30,6 +31,13 @@ revision-core:
 revision-scaling:
 	$(PYTHON) -m fairai_revision.run --config configs/revision/scaling.yaml
 
+revision-algorithmic-scaling:
+	$(PYTHON) -m fairai_revision.run --config configs/revision/scaling_algorithmic.yaml
+
+revision-fairfed:
+	$(PYTHON) -m fairai_revision.run --config configs/revision/adult_fairfed.yaml
+	$(PYTHON) -m fairai_revision.run --config configs/revision/compas_fairfed.yaml
+
 revision-fairness:
 	$(PYTHON) -m fairai_revision.run --config configs/revision/threshold_sensitivity.yaml
 
@@ -39,6 +47,14 @@ revision-security:
 
 revision-ipfs:
 	$(PYTHON) -m fairai_revision.run --config configs/revision/ipfs_benchmark.yaml
+
+revision-proof:
+	$(PYTHON) -m fairai_revision.run --config configs/revision/proof_binding.yaml
+
+BICEP ?= bicep
+azure-validate:
+	DOTNET_BUNDLE_EXTRACT_BASE_DIR=$${DOTNET_BUNDLE_EXTRACT_BASE_DIR:-/tmp/bicep-cache} \
+		$(BICEP) build azure/main.bicep --outfile /tmp/fairai-azure-template.json
 
 revision-report:
 	$(PYTHON) -m fairai_revision.run --config configs/revision/full_revision_matrix.yaml

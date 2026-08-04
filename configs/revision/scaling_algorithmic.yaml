@@ -1,0 +1,29 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "client_scaling_algorithmic",
+  "executor": "federated_core",
+  "evidence_type": "measured",
+  "seed": 5101,
+  "dataset": "adult",
+  "model": "logistic_regression",
+  "clients": 50,
+  "rounds": 3,
+  "local_epochs": 3,
+  "method": "B0_B5_B6",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "none",
+  "client_counts": [3, 5, 10, 20, 50],
+  "partitions": ["joint_dirichlet_0.3"],
+  "minimum_samples_per_client": 50,
+  "minimum_group_samples": 10,
+  "fairfed_beta": 1.0,
+  "fairfed_metric": "equal_opportunity_difference",
+  "executable_methods": ["B0", "B5", "B6"],
+  "methods_not_executed": {
+    "B2": "infrastructure scaling is isolated in scaling.yaml",
+    "B4": "infrastructure scaling is isolated in scaling.yaml",
+    "B7": "infrastructure scaling is isolated in scaling.yaml"
+  },
+  "experiment_seeds": [5101, 5102, 5103, 5104, 5105],
+  "seeds": 5
+}

@@ -3,7 +3,7 @@
 FairAI is a manifest-driven research implementation of fairness-gated
 federated learning with smart-contract governance and IPFS artifact
 traceability. It preserves the submitted three-node MVP and adds real-data,
-multi-seed, multi-round validation infrastructure.
+multi-seed, multi-round, and bounded multi-host validation infrastructure.
 
 This repository is not a security-audited production deployment. It is a
 tested research prototype with production-oriented controls and explicit
@@ -15,15 +15,21 @@ scientific nonclaims.
 - train-only tabular preprocessing;
 - federated logistic regression and a deterministic small MLP;
 - IID and label/group Dirichlet client partitions;
-- 3, 5, 10, and 20-client experiments;
+- 3, 5, 10, 20, and 50 logical-client experiments;
 - demographic parity, equal opportunity, equalized odds, and subgroup
   accuracy gaps;
 - versioned fairness-policy profiles and approved-only aggregation;
 - sample-weighted FedAvg and coordinate-wise median;
+- the published FairFed server weighting rule with signed EOD and accuracy
+  fallback;
 - Solidity roles, node registration, duplicate-CID rejection, round lifecycle,
   eligible-model retrieval, global-model publication, and audit events;
 - EIP-712 verifier decisions with domain separation, expiry, revocation, and
   nonce/digest replay protection;
+- packaged Circom 2.1.6 V2 R1CS/WASM/ZKey/VKey artifacts, direct Groth16
+  verification, composite proof/signature approval, and cryptographic negative
+  tests;
+- strict B2/B4/B7 two-peer Kubo adapters and a three-host Azure deployment;
 - deterministic poisoning scenarios and A1-A14 security evidence;
 - repeated Hardhat gas and sequential/concurrent throughput measurements, plus
   modeled cost scenarios;
@@ -32,14 +38,13 @@ scientific nonclaims.
 
 ## Boundaries
 
-- V2 proof binding source and negative tests exist, but direct V2 Groth16
-  artifacts are blocked until Circom 2.1.6 and the pinned Powers of Tau file are
-  available.
+- The V2 phase-2 setup has one experimental contributor. A governed multi-party
+  ceremony is required before production deployment.
 - The two-peer Kubo benchmark is strict and implemented, but current repository
   evidence does not include its timings because Docker socket access was
   unavailable during the recorded run.
-- FairFed is not labeled as implemented; no custom heuristic substitutes for a
-  faithful primary-paper implementation.
+- FairFed implements the published server aggregation rule; it does not claim
+  to reproduce every local debiasing variant from the paper.
 - Raw training data stay local, but the implementation does not provide a
   formal guarantee against membership inference, model inversion,
   model-update leakage, or metadata leakage.
@@ -111,6 +116,26 @@ make revision-ipfs
 
 The benchmark fails if either real Kubo endpoint is unavailable. It never
 records fallback CIDs as IPFS evidence.
+
+Run the measured V2 proof benchmark without Docker:
+
+```sh
+make revision-proof
+```
+
+The tracked V2 bundle is checksum-validated before every proof. The benchmark
+labels its single-contributor setup and does not imply a production ceremony.
+
+## Azure Matrix
+
+The bounded Azure topology uses three physical hosts and distributes 5, 10, or
+20 logical clients across two workers. The local scaling experiment reaches 50
+logical clients; neither count should be described as a VM count.
+
+Deployment, private Kubo setup, remote-worker configuration, matrix execution,
+result upload, and teardown are documented in [azure/README.md](azure/README.md).
+The Bicep template compiles locally, but no Azure resources or Azure results are
+claimed in the repository until a subscription owner runs and records them.
 
 ## Report Generation
 

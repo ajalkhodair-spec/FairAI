@@ -21,10 +21,10 @@ This file is the source of truth for the acceptance-oriented revision.
 | 3 | Adult/COMPAS and model interfaces | Licensed loaders, checksums, LR and MLP tests | Complete |
 | 4 | IID/non-IID partitioning and entropy | Deterministic partitions and entropy outputs | Complete |
 | 5 | Group fairness metrics and policy engine | DP, EO, EOdds, SAG and policy tests | Complete |
-| 6 | Baselines and ablations | B0-B4, B6-B7; B5 or documented blocker | Partial: B0/B1/B3/B6 measured; B2/B4/B7 infrastructure blocked; B5 documented |
-| 7 | V2 proof binding | Versioned circuit, canonical digests, negative tests | Partial: source and negative tests complete; artifacts blocked |
+| 6 | Baselines and ablations | B0-B7 implemented and reference-tested | Partial evidence: B0/B1/B3/B6 measured; B5 implemented; B2/B4/B7 await strict Kubo runs |
+| 7 | V2 proof binding | Versioned circuit, canonical digests, generated artifacts, negative tests | Complete implementation; 30-repeat proof benchmark complete; direct verifier gas pending |
 | 8 | Verifier security | EIP-712, replay, expiry, revocation, compromise test | Complete |
-| 9 | Expanded experiment suites | R1-R7 measured with manifests | Partial: R2-R6 available evidence complete; strict V2/IPFS portions blocked |
+| 9 | Expanded experiment suites | R1-R7 measured with manifests | Partial: available local evidence complete; expanded FairFed, strict Kubo, and Azure matrix pending |
 | 10 | Statistics and result freeze | Workbook, CSVs, tables, figures, evidence map | Complete for available evidence, including bootstrap CIs and local throughput |
 | 11 | Clean reproduction and release | G6 clean clone and release package | Partial: source/tests/Adult/report validated; Python install, public remote, and Docker blocked |
 
@@ -42,10 +42,10 @@ The pre-Azure evidence is frozen at commit `62d8dd3` by
 `outputs/revision_audit/current_evidence_freeze.json`. Work continues on branch
 `major-revision-azure` in this order:
 
-1. implement and reference-test the established fair-FL baseline;
-2. make B2 and B7 executable without weakening their stated semantics;
-3. complete the V2 research proof setup and verifier measurements;
-4. add the minimal multi-host Azure/IPFS deployment needed for reviewer evidence;
+1. generate paired FairFed and algorithmic scaling evidence locally;
+2. measure V2 on-chain verifier gas and preserve the receipts;
+3. run strict Kubo B2/B4/B7 suites when two peers are available;
+4. deploy and measure the bounded multi-host Azure matrix;
 5. freeze new results and repeat anonymous clean-clone validation.
 
 See `docs/revision/acceptance_scope.md` for the reviewer-derived scope boundary.

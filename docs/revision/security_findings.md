@@ -13,9 +13,12 @@ compared under FedAvg and coordinate-wise median. These attacks are evaluated
 for impact; they are not automatically classified as invalid merely because a
 client is malicious.
 
-Direct V2 Groth16 rejection evidence remains blocked by the missing Circom 2.1.6
-toolchain artifacts. The legacy/mock invalid-proof path is tested, but it is not
-reported as direct V2 pairing-verifier evidence.
+Direct V2 Groth16 generation and Solidity pairing verification now use pinned,
+checksum-verified artifacts. Thirty valid proofs and six negative binding cases
+were exercised in the proof benchmark, and contract tests reject invalid proofs,
+tampered signed decisions, replay, expiry, revocation, and context mismatch. The
+experimental phase-2 ZKey has one contributor; no production ceremony or external
+cryptographic audit is claimed.
 
 Sources:
 
@@ -23,4 +26,6 @@ Sources:
 - `outputs/major_revision/adversarial-5seed-e8733cb/metrics/test_metrics.csv`
 - `hardhat/test/FairAIEthicalLedger.js`
 - `hardhat/test/FairAISignedVerifierV2.js`
+- `hardhat/test/FairAIV2CompositeVerifier.js`
 - `tests/test_revision_binding.py`
+- `outputs/revision_audit/v2_proof_benchmark.json`

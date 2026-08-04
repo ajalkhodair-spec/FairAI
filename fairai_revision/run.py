@@ -469,6 +469,7 @@ def run_federated_core(config, output_dir):
     from .federated import run_federated_method
     from .b2_infrastructure import B2KuboLedgerAdapter
     from .b4_infrastructure import B4KuboLedgerAdapter
+    from .remote import SSHRemoteTrainer, validate_remote_topology
     from .partition import (
         export_partition_evidence,
         parse_partition_spec,
@@ -504,6 +505,14 @@ def run_federated_core(config, output_dir):
     methods = config.get("executable_methods", [])
     if not methods:
         raise ValueError("federated_core requires executable_methods")
+    topology = None
+    if config.get("remote_topology_file"):
+        topology_path = Path(config["remote_topology_file"])
+        if not topology_path.is_absolute():
+            topology_path = REPO_ROOT / topology_path
+        topology = validate_remote_topology(
+            json.loads(topology_path.read_text(encoding="utf-8"))
+        )
     attack_profiles = config.get(
         "attack_profiles", [config.get("attack_profile", "none")]
     )
@@ -564,29 +573,44 @@ def run_federated_core(config, output_dir):
                         f"{partition_spec}-{profile_name}-{attack_type}-{method}"
                     )
                     round_infrastructure = None
+                    remote_trainer = None
+                    if topology is not None:
+                        remote_trainer = SSHRemoteTrainer(
+                            topology,
+                            output_dir / "remote" / execution_id,
+                        )
+                    publisher_api = (
+                        topology.get("kubo_publisher_api")
+                        if topology is not None
+                        else config.get("publisher_api", "http://127.0.0.1:5001")
+                    )
+                    consumer_api = (
+                        topology.get("kubo_consumer_api")
+                        if topology is not None
+                        else config.get("consumer_api", "http://127.0.0.1:5002")
+                    )
+                    publisher_swarm_host = (
+                        topology.get("kubo_publisher_swarm_host")
+                        if topology is not None
+                        else config.get("publisher_swarm_host", "ipfs-publisher")
+                    )
                     if method == "B2":
                         round_infrastructure = B2KuboLedgerAdapter(
                             output_dir=output_dir / "infrastructure" / execution_id,
                             repo_root=REPO_ROOT,
-                            publisher_api=config.get(
-                                "publisher_api", "http://127.0.0.1:5001"
-                            ),
-                            consumer_api=config.get(
-                                "consumer_api", "http://127.0.0.1:5002"
-                            ),
+                            publisher_api=publisher_api,
+                            consumer_api=consumer_api,
                             kubo_version=config.get("kubo_version", "0.29.0"),
+                            publisher_swarm_host=publisher_swarm_host,
                         )
                     elif method in {"B4", "B7"}:
                         round_infrastructure = B4KuboLedgerAdapter(
                             output_dir=output_dir / "infrastructure" / execution_id,
                             repo_root=REPO_ROOT,
-                            publisher_api=config.get(
-                                "publisher_api", "http://127.0.0.1:5001"
-                            ),
-                            consumer_api=config.get(
-                                "consumer_api", "http://127.0.0.1:5002"
-                            ),
+                            publisher_api=publisher_api,
+                            consumer_api=consumer_api,
                             kubo_version=config.get("kubo_version", "0.29.0"),
+                            publisher_swarm_host=publisher_swarm_host,
                         )
                     result = run_federated_method(
                         dataset=dataset,
@@ -606,7 +630,30 @@ def run_federated_core(config, output_dir):
                         ),
                         fairfed_beta=config.get("fairfed_beta", 1.0),
                         round_infrastructure=round_infrastructure,
+                        remote_trainer=remote_trainer,
                     )
+                    if result["remote_training"] is not None:
+                        remote_dir = output_dir / "remote" / execution_id
+                        remote_dir.mkdir(parents=True, exist_ok=True)
+                        write_json(
+                            remote_dir / "remote_training_evidence.json",
+                            result["remote_training"],
+                        )
+                        communication_rows = result["remote_training"][
+                            "communication_rows"
+                        ]
+                        if communication_rows:
+                            write_csv(
+                                remote_dir / "communication.csv",
+                                communication_rows,
+                                sorted(
+                                    {
+                                        key
+                                        for row in communication_rows
+                                        for key in row
+                                    }
+                                ),
+                            )
                     dimensions = {
                         "scenario_id": config["scenario_id"],
                         "seed": experiment_seed,
@@ -865,10 +912,77 @@ def run_gas_benchmark(config, output_dir):
             ),
             "repetitions": config["repetitions"],
             "batch_sizes": config["batch_sizes"],
+            "v2_groth16_verifications_measured": sum(
+                row["operation"] == "verify_v2_groth16" for row in rows
+            ),
             "modeled_cost_assumptions": {
                 "gas_price_gwei": config["modeled_gas_price_gwei"],
                 "eth_usd": config["modeled_eth_usd"],
             },
+        },
+    }
+
+
+def parse_mocha_passes(output):
+    passes = []
+    for line in output.splitlines():
+        stripped = line.strip()
+        if stripped.startswith("✔"):
+            passes.append(stripped.removeprefix("✔").strip())
+    return passes
+
+
+def run_verifier_security(config, output_dir):
+    import hashlib
+    import subprocess
+
+    test_files = [
+        "test/FairAISignedVerifierV2.js",
+        "test/FairAIV2CompositeVerifier.js",
+        "test/FairAIEthicalLedger.js",
+    ]
+    command = ["npx", "hardhat", "test", *test_files]
+    started = time.perf_counter()
+    completed = subprocess.run(
+        command,
+        cwd=REPO_ROOT / "hardhat",
+        check=False,
+        stdout=subprocess.PIPE,
+        stderr=subprocess.STDOUT,
+        text=True,
+    )
+    runtime_ms = (time.perf_counter() - started) * 1000
+    log_path = output_dir / "logs" / "verifier_security.log"
+    log_path.write_text(completed.stdout, encoding="utf-8")
+    passed_cases = parse_mocha_passes(completed.stdout)
+    if completed.returncode != 0:
+        raise RuntimeError(
+            f"Verifier security tests failed; inspect {log_path}"
+        )
+    if not passed_cases:
+        raise RuntimeError("Verifier security tests reported no passing cases")
+    evidence = {
+        "schema_version": "fairai.verifier_security.v1",
+        "evidence_type": "measured",
+        "command": command,
+        "test_files": test_files,
+        "runtime_ms": runtime_ms,
+        "passed_count": len(passed_cases),
+        "passed_cases": passed_cases,
+        "log_sha256": hashlib.sha256(
+            completed.stdout.encode("utf-8")
+        ).hexdigest(),
+    }
+    write_json(output_dir / "raw" / "verifier_security.json", evidence)
+    checksum = hashlib.sha256(canonical_json_bytes(evidence)).hexdigest()
+    return {
+        "dataset_checksum": checksum,
+        "partition_checksum": checksum,
+        "summary": {
+            "passed_security_cases": len(passed_cases),
+            "runtime_ms": runtime_ms,
+            "test_files": test_files,
+            "log_sha256": evidence["log_sha256"],
         },
     }
 
@@ -963,6 +1077,7 @@ EXECUTORS = {
     "federated_core": run_federated_core,
     "ipfs_benchmark": run_ipfs_benchmark,
     "gas_benchmark": run_gas_benchmark,
+    "verifier_security": run_verifier_security,
     "proof_v2": run_proof_v2,
 }
 

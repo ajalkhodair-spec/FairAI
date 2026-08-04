@@ -30,7 +30,7 @@ class RevisionInfrastructureTests(unittest.TestCase):
     def test_scaling_config_declares_measured_and_blocked_methods(self):
         config = load_config(ROOT / "configs" / "revision" / "scaling.yaml")
         self.assertEqual(config["executor"], "federated_core")
-        self.assertEqual(config["client_counts"], [3, 5, 10, 20])
+        self.assertEqual(config["client_counts"], [3, 5, 10, 20, 50])
         self.assertEqual(config["executable_methods"], ["B0", "B2", "B4"])
         self.assertEqual(config["methods_not_executed"], {})
 
