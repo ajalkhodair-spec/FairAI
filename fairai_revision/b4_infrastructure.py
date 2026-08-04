@@ -75,13 +75,15 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             "roundId": round_id,
             "policyVersion": policy_version_to_uint64(policy["policy_version"]),
             "nonce": nonce,
-            "manifestDigestFieldIn": binding["manifest_digest_field"],
-            "metricsDigestFieldIn": binding["metrics_digest_field"],
+            # Circom's JavaScript witness generator parses JSON numbers as IEEE-754.
+            # Decimal strings preserve full BN254 field precision.
+            "manifestDigestFieldIn": str(binding["manifest_digest_field"]),
+            "metricsDigestFieldIn": str(binding["metrics_digest_field"]),
         }
 
     @staticmethod
     def _expected_public(circuit_input):
-        return [
+        return [int(value) for value in [
             circuit_input["manifestDigestFieldIn"],
             circuit_input["metricsDigestFieldIn"],
             circuit_input["accuracy"],
@@ -103,7 +105,7 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             circuit_input["roundId"],
             circuit_input["policyVersion"],
             circuit_input["nonce"],
-        ]
+        ]]
 
     def prepare_round(self, round_id, updates, client_metrics, policy):
         scale = 1_000_000

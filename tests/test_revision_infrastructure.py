@@ -17,6 +17,50 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RevisionInfrastructureTests(unittest.TestCase):
+    def test_v2_digest_inputs_preserve_bn254_precision(self):
+        from fairai_revision.b4_infrastructure import B4KuboLedgerAdapter
+
+        large_manifest = 2**200 + 12345
+        large_metrics = 2**199 + 67890
+        metrics = {
+            "accuracy": 800000,
+            "demographic_parity_gap": 100000,
+            "equal_opportunity_gap": 90000,
+            "equalized_odds_gap": 120000,
+            "subgroup_accuracy_gap": 80000,
+        }
+        policy = {
+            "policy_version": "1.0.0",
+            "minimum_accuracy": 0.62,
+            "maximum_demographic_parity_gap": 0.28,
+            "maximum_equal_opportunity_gap": 0.28,
+            "maximum_equalized_odds_gap": 0.28,
+            "maximum_subgroup_accuracy_gap": 0.28,
+            "enabled_metrics": {
+                "accuracy": True,
+                "demographic_parity_gap": True,
+                "equal_opportunity_gap": True,
+                "equalized_odds_gap": True,
+                "subgroup_accuracy_gap": True,
+            },
+        }
+        circuit_input = B4KuboLedgerAdapter._circuit_input(
+            metrics,
+            policy,
+            node_id=1,
+            round_id=1,
+            nonce=1,
+            binding={
+                "manifest_digest_field": large_manifest,
+                "metrics_digest_field": large_metrics,
+            },
+            scale=1_000_000,
+        )
+        self.assertEqual(circuit_input["manifestDigestFieldIn"], str(large_manifest))
+        self.assertEqual(circuit_input["metricsDigestFieldIn"], str(large_metrics))
+        public = B4KuboLedgerAdapter._expected_public(circuit_input)
+        self.assertEqual(public[:2], [large_manifest, large_metrics])
+
     def test_experiment_seed_validation(self):
         self.assertEqual(
             experiment_seeds({"seed": 1, "experiment_seeds": [2, 3]}),
