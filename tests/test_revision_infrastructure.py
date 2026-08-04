@@ -19,6 +19,7 @@ ROOT = Path(__file__).resolve().parents[1]
 class RevisionInfrastructureTests(unittest.TestCase):
     def test_v2_digest_inputs_preserve_bn254_precision(self):
         from fairai_revision.b4_infrastructure import B4KuboLedgerAdapter
+        from fairai_revision.binding import artifact_binding_fields
 
         large_manifest = 2**200 + 12345
         large_metrics = 2**199 + 67890
@@ -60,6 +61,18 @@ class RevisionInfrastructureTests(unittest.TestCase):
         self.assertEqual(circuit_input["metricsDigestFieldIn"], str(large_metrics))
         public = B4KuboLedgerAdapter._expected_public(circuit_input)
         self.assertEqual(public[:2], [large_manifest, large_metrics])
+        serialized = B4KuboLedgerAdapter._serialized_public(public)
+        self.assertEqual(serialized[:2], [str(large_manifest), str(large_metrics)])
+        self.assertTrue(all(isinstance(value, str) for value in serialized))
+        manifest = {
+            "node_id": 1,
+            "round_id": 1,
+            "nonce": 1,
+            "policy_version": "1.0.0",
+        }
+        first = artifact_binding_fields(manifest, {"round_id": 1, **metrics})
+        second = artifact_binding_fields(manifest, {"round_id": 2, **metrics})
+        self.assertNotEqual(first["metrics_digest"], second["metrics_digest"])
 
     def test_experiment_seed_validation(self):
         self.assertEqual(

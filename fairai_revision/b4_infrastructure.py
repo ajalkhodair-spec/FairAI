@@ -107,6 +107,10 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             circuit_input["nonce"],
         ]]
 
+    @staticmethod
+    def _serialized_public(public_signals):
+        return [str(int(value)) for value in public_signals]
+
     def prepare_round(self, round_id, updates, client_metrics, policy):
         scale = 1_000_000
         submissions = []
@@ -119,6 +123,7 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             nonce = round_id * 1_000_000 + numeric_node_id
             prefix = {"round_id": round_id, "node_id": numeric_node_id}
             scaled = self._scaled_metrics(client_metrics[client_id], scale)
+            metrics_artifact = {**prefix, **scaled}
             cids = {
                 "model": self._publish(
                     round_id,
@@ -127,7 +132,10 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                     _canonical_bytes({**prefix, **_parameters_payload(update.parameters)}),
                 ),
                 "metrics": self._publish(
-                    round_id, client_id, "metrics", _canonical_bytes(scaled)
+                    round_id,
+                    client_id,
+                    "metrics",
+                    _canonical_bytes(metrics_artifact),
                 ),
                 "metadata": self._publish(
                     round_id,
@@ -156,7 +164,7 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                 "bound_manifest",
                 _canonical_bytes(bound_manifest),
             )
-            binding = artifact_binding_fields(bound_manifest, scaled)
+            binding = artifact_binding_fields(bound_manifest, metrics_artifact)
             circuit_input = self._circuit_input(
                 scaled,
                 policy,
@@ -204,14 +212,18 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                     }
                 )
             public_signals = self._expected_public(circuit_input)
+            serialized_public = self._serialized_public(public_signals)
             cids["proof"] = self._publish(
-                round_id, client_id, "proof", _canonical_bytes(proof_payload)
+                round_id,
+                client_id,
+                "proof",
+                _canonical_bytes({**prefix, "proof": proof_payload}),
             )
             cids["public"] = self._publish(
                 round_id,
                 client_id,
                 "public",
-                _canonical_bytes({"public_signals": public_signals}),
+                _canonical_bytes({"public_signals": serialized_public}),
             )
             submission_manifest = {
                 "schema_version": "fairai.submission_manifest.v2",
@@ -239,7 +251,7 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                     "metrics_hash": binding["metrics_digest"],
                     "approved": decision["approved"],
                     "groth16_proof": contract_proof,
-                    "public_signals": public_signals,
+                    "public_signals": serialized_public,
                     "cids": cids,
                 }
             )
