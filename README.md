@@ -29,7 +29,8 @@ scientific nonclaims.
 - packaged Circom 2.1.6 V2 R1CS/WASM/ZKey/VKey artifacts, direct Groth16
   verification, composite proof/signature approval, and cryptographic negative
   tests;
-- strict B2/B4/B7 two-peer Kubo adapters and a three-host Azure deployment;
+- strict B2/B4/B7 two-peer Kubo adapters and three-host Azure deployment
+  infrastructure;
 - deterministic poisoning scenarios and A1-A14 security evidence;
 - repeated Hardhat gas and sequential/concurrent throughput measurements, plus
   modeled cost scenarios;
@@ -123,10 +124,13 @@ The tracked native-peer configuration and bounded full-path suite are:
 ```sh
 make revision-ipfs-native
 make revision-kubo-v2
+make revision-kubo-v2-adversarial
 ```
 
 The committed derived evidence is under
 `outputs/revision_audit/infrastructure-analysis-v2/`.
+The strict poisoning analysis is under
+`outputs/revision_audit/adversarial-kubo-v2-analysis/`.
 The native Kubo archive used for those measurements is pinned in
 `infrastructure/toolchain.lock.json`.
 

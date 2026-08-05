@@ -24,7 +24,7 @@ This file is the source of truth for the acceptance-oriented revision.
 | 6 | Baselines and ablations | B0-B7 implemented and reference-tested | Complete bounded evidence: B0/B1/B3/B5/B6 plus strict two-peer B2/B4/B7 at 5/10 clients |
 | 7 | V2 proof binding | Versioned circuit, canonical digests, generated artifacts, negative tests | Complete bounded implementation: 30 proofs, negative cases, direct verifier tests and 30 gas receipts |
 | 8 | Verifier security | EIP-712, replay, expiry, revocation, compromise test | Complete |
-| 9 | Expanded experiment suites | R1-R7 measured with manifests | Partial: FairFed, 3-50 algorithmic scaling, and 5/10-client strict Kubo complete; Azure matrix pending |
+| 9 | Expanded experiment suites | R1-R7 measured with manifests | Partial: FairFed, 3-50 algorithmic scaling, 5/10-client strict Kubo, and targeted B4/B7 poisoning complete; Azure matrix pending |
 | 10 | Statistics and result freeze | Workbook, CSVs, tables, figures, evidence map | Complete for available evidence, including bootstrap CIs and local throughput |
 | 11 | Clean reproduction and release | G6 clean clone and release package | Partial: source/tests/Adult/report and native Kubo validated; public remote and Docker Compose validation pending |
 
@@ -44,8 +44,7 @@ The pre-Azure evidence is frozen at commit `62d8dd3` by
 
 1. deploy and measure the bounded multi-host Azure matrix;
 2. add multi-host infrastructure cost and consumer-outage evidence;
-3. run targeted B4/B7 poisoning comparisons;
-4. freeze the complete result package;
-5. repeat anonymous clean-clone validation.
+3. freeze the complete result package;
+4. repeat anonymous clean-clone validation.
 
 See `docs/revision/acceptance_scope.md` for the reviewer-derived scope boundary.

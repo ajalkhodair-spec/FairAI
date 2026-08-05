@@ -17,6 +17,9 @@
   label flipping at a 20% malicious-client ratio.
 - Coordinate median is evaluated as robust aggregation, not as proof that
   poisoning is detected.
+- The V2 fairness gate rejected most tested label-flip updates but accepted all
+  tested sign-flip updates and some or all random-weight updates. It proves the
+  configured metric relation, not update provenance or poisoning absence.
 - The signed verifier remains a trust point; a compromised authorized key can
   submit an accepted false decision.
 - Fairness values are supplied to the proof relation. Correct derivation from

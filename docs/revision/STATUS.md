@@ -9,7 +9,7 @@
 
 ## Completed
 
-- Full local regression suite: 69 Python tests and 20 Solidity tests pass.
+- Full local regression suite: 71 Python tests and 20 Solidity tests pass.
 
 - Adult and COMPAS loaders, logistic regression and small MLP, IID and
   Dirichlet partitions, multi-round execution, and group-fairness policies.
@@ -22,9 +22,12 @@
 - Strict B2/B4/B7 execution at 5 and 10 clients, three seeds and three rounds:
   18 contract executions, 54 archived rounds, 2,688 verified retrievals, 258
   proof decisions, and 387 ledger records.
+- Targeted B4/B7 poisoning execution with four attack conditions, three seeds,
+  and three rounds: 24 contract executions, 72 rounds, 2,664 verified
+  retrievals, 360 proof decisions, and 360 ledger records.
 - Bicep compilation and shell validation for the bounded three-host Azure
   topology; no deployment was performed.
-- 68 Python and 20 Solidity tests pass; Bicep compilation and Azure shell syntax
+- 71 Python and 20 Solidity tests pass; Bicep compilation and Azure shell syntax
   validation also pass.
 
 ## Preserved Failures
@@ -40,7 +43,6 @@
 
 - Deploy and measure the Azure 5/10/20-client matrix, then destroy resources.
 - Measure consumer outage, WAN/multi-host behavior, and Azure cost.
-- Run targeted B4/B7 poisoning comparisons.
 - Configure and verify the public remote, anonymous clean clone, and release.
 
 The canonical claim boundaries are in `docs/revision/current_results.md`,

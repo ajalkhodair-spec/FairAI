@@ -3,8 +3,9 @@
 The FairFed and algorithmic-scaling results were generated from clean run
 manifests at commit `4a08a15`. The bounded full-path run used clean commit
 `e17a1f4`, the strict pin/cold-cache benchmark used `0d9212f`, and the isolated
-publisher-recovery benchmark used `6ba3a9c`. These are bounded local research
-results, not Azure, public-chain, WAN, or production evidence.
+publisher-recovery benchmark used `6ba3a9c`. The targeted strict adversarial run
+used clean commit `3cfa695`. These are bounded local research results, not
+Azure, public-chain, WAN, or production evidence.
 
 ## FairFed Comparison
 
@@ -55,6 +56,29 @@ The ZKey is a single-contributor experimental setup. No production ceremony,
 external cryptographic audit, public-chain cost, or production security claim is
 made.
 
+## Strict Adversarial Full-Path Evidence
+
+B4 and B7 were each executed under no attack, label flip, sign flip, and random
+weights for three paired seeds, five clients, three rounds, and a 20% malicious
+cohort. The 24 clean executions used native Kubo 0.29.0, V2 Groth16 plus EIP-712
+verification, and the Solidity ledger.
+
+| Method | Attack | Mean accuracy | Mean change vs no attack | Malicious approvals |
+|---|---|---:|---:|---:|
+| B4 | Label flip | 0.7253 | -0.0319 | 1/9 |
+| B4 | Sign flip | 0.4662 | -0.2910 | 9/9 |
+| B4 | Random weights | 0.5256 | -0.2315 | 5/9 |
+| B7 | Label flip | 0.5930 | -0.1837 | 1/9 |
+| B7 | Sign flip | 0.4559 | -0.3208 | 9/9 |
+| B7 | Random weights | 0.6396 | -0.1371 | 9/9 |
+
+All 2,664 IPFS retrievals were byte-verified. The ledger recorded 209 approved
+and 151 rejected submissions; 70 rounds were archived and two were cancelled
+because no model was eligible. These results show that the fairness proof is
+not a general poisoning detector. B7 reduced mean random-weight damage relative
+to B4 but did not robustly prevent label- or sign-flip damage in this bounded
+matrix.
+
 ## Strict Kubo and Full-Path Evidence
 
 Two independent native Kubo 0.29.0 peers were connected over loopback. The
@@ -100,6 +124,13 @@ unmeasured.
 - `outputs/revision_audit/v2_gas_run_manifest.json`
 - `outputs/revision_audit/verifier_security_evidence.json`
 - `outputs/revision_audit/verifier_security_run_manifest.json`
+- `outputs/revision_audit/adversarial-kubo-v2-analysis/adversarial_summary.csv`
+- `outputs/revision_audit/adversarial-kubo-v2-analysis/adversarial_approval.csv`
+- `outputs/revision_audit/adversarial-kubo-v2-analysis/adversarial_infrastructure.json`
+- `outputs/revision_audit/adversarial-kubo-v2-analysis/ledger_receipts.csv`
+- `outputs/revision_audit/adversarial-kubo-v2-analysis/proof_decisions.csv`
+- `outputs/revision_audit/adversarial-kubo-v2-analysis/ipfs_retrieval_checks.csv`
+- `outputs/revision_audit/adversarial-kubo-v2-analysis/analysis_manifest.json`
 - `outputs/revision_audit/infrastructure-analysis-v2/ipfs_sequential.csv`
 - `outputs/revision_audit/infrastructure-analysis-v2/ipfs_concurrency.csv`
 - `outputs/revision_audit/infrastructure-analysis-v2/ipfs_recovery.csv`
