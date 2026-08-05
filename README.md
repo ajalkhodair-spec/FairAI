@@ -40,9 +40,9 @@ scientific nonclaims.
 
 - The V2 phase-2 setup has one experimental contributor. A governed multi-party
   ceremony is required before production deployment.
-- Strict local two-peer Kubo timings and B2/B4/B7 runs are included. Process
-  outage/recovery, WAN behavior, Docker Compose, and Azure execution are not
-  claimed as measured evidence.
+- Strict local two-peer Kubo timings, publisher outage/recovery, and B2/B4/B7
+  runs are included. Consumer outage, WAN behavior, Docker Compose, and Azure
+  execution are not claimed as measured evidence.
 - FairFed implements the published server aggregation rule; it does not claim
   to reproduce every local debiasing variant from the paper.
 - Raw training data stay local, but the implementation does not provide a
@@ -126,9 +126,15 @@ make revision-kubo-v2
 ```
 
 The committed derived evidence is under
-`outputs/revision_audit/infrastructure-analysis/`.
+`outputs/revision_audit/infrastructure-analysis-v2/`.
 The native Kubo archive used for those measurements is pinned in
 `infrastructure/toolchain.lock.json`.
+
+Run the isolated publisher outage/recovery benchmark with the pinned binary:
+
+```sh
+FAIRAI_KUBO_BINARY=/absolute/path/to/ipfs make revision-ipfs-recovery
+```
 
 Run the measured V2 proof benchmark without Docker:
 

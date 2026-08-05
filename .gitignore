@@ -37,6 +37,8 @@ outputs/*
 !outputs/revision_audit/fairfed-scaling-analysis/*
 !outputs/revision_audit/infrastructure-analysis/
 !outputs/revision_audit/infrastructure-analysis/*
+!outputs/revision_audit/infrastructure-analysis-v2/
+!outputs/revision_audit/infrastructure-analysis-v2/*
 build/
 *.wtns
 *.zkey

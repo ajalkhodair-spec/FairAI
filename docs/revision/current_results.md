@@ -1,9 +1,10 @@
 # Current Measured Results
 
 The FairFed and algorithmic-scaling results were generated from clean run
-manifests at commit `4a08a15`. Strict infrastructure runs use clean commits
-`e17a1f4` and `4fbec7a`. These are bounded local research results, not Azure,
-public-chain, WAN, or production evidence.
+manifests at commit `4a08a15`. The bounded full-path run used clean commit
+`e17a1f4`, the strict pin/cold-cache benchmark used `0d9212f`, and the isolated
+publisher-recovery benchmark used `6ba3a9c`. These are bounded local research
+results, not Azure, public-chain, WAN, or production evidence.
 
 ## FairFed Comparison
 
@@ -62,24 +63,32 @@ official Darwin ARM64 archive was verified with SHA-512
 Thirty repetitions were measured for each payload size and concurrency level;
 every retrieved byte sequence matched the published payload.
 
-| Payload | Upload mean | Cold retrieval mean (p95) | Warm retrieval mean |
-|---|---:|---:|---:|
-| 1 KiB | 52.50 ms | 21.37 ms (28.65) | 0.65 ms |
-| 10 KiB | 49.21 ms | 20.47 ms (26.31) | 0.54 ms |
-| 100 KiB | 53.70 ms | 21.01 ms (28.35) | 0.85 ms |
-| 1 MiB | 74.32 ms | 52.78 ms (72.70) | 2.71 ms |
-| 10 MiB | 65.08 ms | 75.45 ms (87.48) | 23.61 ms |
+| Payload | Add mean | Cold retrieval mean (p95) | Warm retrieval mean | Pin mean |
+|---|---:|---:|---:|---:|
+| 1 KiB | 55.43 ms | 22.20 ms (25.36) | 0.98 ms | 19.77 ms |
+| 10 KiB | 56.83 ms | 22.06 ms (26.46) | 1.52 ms | 20.72 ms |
+| 100 KiB | 56.41 ms | 24.33 ms (34.80) | 1.58 ms | 20.54 ms |
+| 1 MiB | 81.53 ms | 62.77 ms (74.98) | 5.74 ms | 20.65 ms |
+| 10 MiB | 67.44 ms | 77.22 ms (85.93) | 20.99 ms | 17.04 ms |
 
 For fresh 1 MiB objects, mean aggregate retrieval throughput increased from
-20.55 MiB/s at concurrency 1 to 47.03 MiB/s at concurrency 20, while mean batch
-latency increased from 49.34 ms to 427.21 ms.
+18.44 MiB/s at concurrency 1 to 43.38 MiB/s at concurrency 10, then measured
+41.73 MiB/s at concurrency 20. Mean batch latency increased from 55.04 ms to
+482.51 ms.
+
+Thirty isolated publisher-restart trials used 1 MiB payloads. Mean pin latency
+was 20.45 ms; a pinned artifact remained retrievable from the consumer during
+publisher outage in 5.92 ms; publisher API readiness returned in 108.78 ms; and
+a newly published artifact was retrieved and verified 240.10 ms after recovery
+started. Publisher identity remained stable in all repetitions.
 
 The bounded Adult infrastructure suite executed B2, B4, and B7 for 5 and 10
 clients, three seeds, and three rounds. It completed 18 isolated contract
 executions, 54 archived rounds, 2,688 verified IPFS retrievals, 258 proof
 decisions, 163 generated V2 proofs, 95 policy rejections without proof
 generation, and 387 ledger records. No round was cancelled. This is local
-single-host evidence; outage recovery and multi-host latency remain unmeasured.
+single-host evidence; consumer outage, WAN, and multi-host latency remain
+unmeasured.
 
 ## Evidence Files
 
@@ -91,8 +100,9 @@ single-host evidence; outage recovery and multi-host latency remain unmeasured.
 - `outputs/revision_audit/v2_gas_run_manifest.json`
 - `outputs/revision_audit/verifier_security_evidence.json`
 - `outputs/revision_audit/verifier_security_run_manifest.json`
-- `outputs/revision_audit/infrastructure-analysis/ipfs_sequential.csv`
-- `outputs/revision_audit/infrastructure-analysis/ipfs_concurrency.csv`
-- `outputs/revision_audit/infrastructure-analysis/bounded_metrics.csv`
-- `outputs/revision_audit/infrastructure-analysis/infrastructure_summary.json`
-- `outputs/revision_audit/infrastructure-analysis/analysis_manifest.json`
+- `outputs/revision_audit/infrastructure-analysis-v2/ipfs_sequential.csv`
+- `outputs/revision_audit/infrastructure-analysis-v2/ipfs_concurrency.csv`
+- `outputs/revision_audit/infrastructure-analysis-v2/ipfs_recovery.csv`
+- `outputs/revision_audit/infrastructure-analysis-v2/bounded_metrics.csv`
+- `outputs/revision_audit/infrastructure-analysis-v2/infrastructure_summary.json`
+- `outputs/revision_audit/infrastructure-analysis-v2/analysis_manifest.json`

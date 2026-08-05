@@ -9,6 +9,8 @@
 
 ## Completed
 
+- Full local regression suite: 69 Python tests and 20 Solidity tests pass.
+
 - Adult and COMPAS loaders, logistic regression and small MLP, IID and
   Dirichlet partitions, multi-round execution, and group-fairness policies.
 - B0-B7 implementation, including measured FairFed Adult/COMPAS comparisons and
@@ -37,7 +39,7 @@
 ## Remaining
 
 - Deploy and measure the Azure 5/10/20-client matrix, then destroy resources.
-- Measure process outage/recovery, separate pin latency, and multi-host cost.
+- Measure consumer outage, WAN/multi-host behavior, and Azure cost.
 - Run targeted B4/B7 poisoning comparisons.
 - Configure and verify the public remote, anonymous clean clone, and release.
 

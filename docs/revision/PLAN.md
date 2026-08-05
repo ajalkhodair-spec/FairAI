@@ -43,7 +43,7 @@ The pre-Azure evidence is frozen at commit `62d8dd3` by
 `major-revision-azure` in this order:
 
 1. deploy and measure the bounded multi-host Azure matrix;
-2. add Kubo outage/recovery and multi-host infrastructure cost evidence;
+2. add multi-host infrastructure cost and consumer-outage evidence;
 3. run targeted B4/B7 poisoning comparisons;
 4. freeze the complete result package;
 5. repeat anonymous clean-clone validation.
