@@ -39,6 +39,8 @@ outputs/*
 !outputs/revision_audit/infrastructure-analysis/*
 !outputs/revision_audit/infrastructure-analysis-v2/
 !outputs/revision_audit/infrastructure-analysis-v2/*
+!outputs/revision_audit/adversarial-kubo-v2-analysis/
+!outputs/revision_audit/adversarial-kubo-v2-analysis/*
 build/
 *.wtns
 *.zkey
