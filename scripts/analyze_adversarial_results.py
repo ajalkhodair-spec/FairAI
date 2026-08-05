@@ -134,13 +134,29 @@ def analyze(args):
     states = []
     for path in evidence_paths:
         evidence = json.loads(path.read_text(encoding="utf-8"))
-        retrievals.extend(evidence["retrieval_rows"])
-        proofs.extend(evidence["proof_rows"])
+        execution_id = path.parent.name
+        retrievals.extend(
+            {"execution_id": execution_id, **row}
+            for row in evidence["retrieval_rows"]
+        )
+        proofs.extend(
+            {"execution_id": execution_id, **row}
+            for row in evidence["proof_rows"]
+        )
     for path in contract_paths:
         result = json.loads(path.read_text(encoding="utf-8"))
+        execution_id = path.parent.name
         for round_row in result["rounds"]:
             states.append(round_row["final_state"])
-            records.extend(round_row["records"])
+            records.extend(
+                {
+                    "execution_id": execution_id,
+                    "round_id": round_row["round_id"],
+                    "round_state": round_row["final_state"],
+                    **record,
+                }
+                for record in round_row["records"]
+            )
     if not retrievals or not all(parse_bool(row["verified"]) for row in retrievals):
         raise ValueError("At least one IPFS retrieval is missing or unverified")
 
@@ -164,8 +180,14 @@ def analyze(args):
     summary_output = output / "adversarial_summary.csv"
     approval_output = output / "adversarial_approval.csv"
     infrastructure_output = output / "adversarial_infrastructure.json"
+    receipt_output = output / "ledger_receipts.csv"
+    proof_output = output / "proof_decisions.csv"
+    retrieval_output = output / "ipfs_retrieval_checks.csv"
     write_csv(summary_output, summary_rows)
     write_csv(approval_output, approval_rows)
+    write_csv(receipt_output, records)
+    write_csv(proof_output, proofs)
+    write_csv(retrieval_output, retrievals)
     infrastructure_output.write_text(
         json.dumps(infrastructure, indent=2, sort_keys=True) + "\n",
         encoding="utf-8",
@@ -185,7 +207,14 @@ def analyze(args):
         },
         "outputs": {
             path.name: sha256_file(path)
-            for path in (summary_output, approval_output, infrastructure_output)
+            for path in (
+                summary_output,
+                approval_output,
+                infrastructure_output,
+                receipt_output,
+                proof_output,
+                retrieval_output,
+            )
         },
     }
     (output / "analysis_manifest.json").write_text(
