@@ -149,17 +149,64 @@ def analyze_bounded(directory):
     return descriptive, summary
 
 
+def analyze_recovery(directory):
+    manifest, manifest_path = load_clean_manifest(directory)
+    raw_path = directory / "raw" / "ipfs_recovery.csv"
+    summary_path = directory / "derived" / "summary.json"
+    frame = pd.read_csv(raw_path)
+    summary = json.loads(summary_path.read_text(encoding="utf-8"))
+    if (
+        len(frame) != 30
+        or not frame["verified"].all()
+        or not frame["publisher_identity_stable"].all()
+        or not summary["verified"]
+        or not summary["publisher_identity_stable"]
+    ):
+        raise ValueError("Native Kubo recovery evidence is incomplete")
+    row = {
+        "payload_bytes": int(frame["payload_bytes"].iloc[0]),
+        "n": len(frame),
+    }
+    for metric in (
+        "pin_ms",
+        "outage_retrieval_ms",
+        "restart_ready_ms",
+        "recovery_verified_ms",
+    ):
+        values = frame[metric].to_numpy(dtype=float)
+        row.update(
+            {
+                f"{metric}_mean": float(values.mean()),
+                f"{metric}_median": float(np.median(values)),
+                f"{metric}_p95": percentile95(values),
+            }
+        )
+    return row, {
+        "run_id": manifest["run_id"],
+        "git_commit": manifest["git_commit"],
+        "configuration_hash": manifest["configuration_hash"],
+        "kubo_version": manifest["environment"]["kubo_version"],
+        "raw_sha256": sha256_file(raw_path),
+        "summary_sha256": sha256_file(summary_path),
+        "manifest_sha256": sha256_file(manifest_path),
+    }
+
+
 def analyze(args):
     ipfs_dir = Path(args.ipfs)
     bounded_dir = Path(args.bounded)
+    recovery_dir = Path(args.recovery)
     sequential, concurrency, ipfs_input = analyze_ipfs(ipfs_dir)
     bounded, infrastructure = analyze_bounded(bounded_dir)
+    recovery, recovery_input = analyze_recovery(recovery_dir)
+    infrastructure["recovery"] = recovery
     output = Path(args.output)
     output.mkdir(parents=True, exist_ok=False)
     paths = {
         "ipfs_sequential.csv": pd.DataFrame(sequential),
         "ipfs_concurrency.csv": pd.DataFrame(concurrency),
         "bounded_metrics.csv": pd.DataFrame(bounded),
+        "ipfs_recovery.csv": pd.DataFrame([recovery]),
     }
     hashes = {}
     for name, frame in paths.items():
@@ -180,6 +227,7 @@ def analyze(args):
         ).stdout.strip(),
         "ipfs_input": ipfs_input,
         "bounded_input": infrastructure["input"],
+        "recovery_input": recovery_input,
         "outputs": hashes,
     }
     (output / "analysis_manifest.json").write_text(
@@ -193,6 +241,7 @@ def main():
     parser = argparse.ArgumentParser(description="Analyze strict Kubo and V2 infrastructure runs")
     parser.add_argument("--ipfs", required=True)
     parser.add_argument("--bounded", required=True)
+    parser.add_argument("--recovery", required=True)
     parser.add_argument("--output", required=True)
     analyze(parser.parse_args())
 
