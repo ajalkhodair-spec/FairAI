@@ -2,6 +2,7 @@ import unittest
 
 from fairai_revision.ipfs import (
     StrictIPFSError,
+    concurrency_payload_seed,
     connect_two_peers,
     deterministic_payload,
     verify_payload,
@@ -9,6 +10,18 @@ from fairai_revision.ipfs import (
 
 
 class RevisionIPFSTests(unittest.TestCase):
+    def test_concurrency_payload_seeds_do_not_overlap(self):
+        sequential_seed = 11201
+        observed = {
+            concurrency_payload_seed(sequential_seed, concurrency, worker)
+            for concurrency in (1, 5, 10, 20)
+            for worker in range(concurrency)
+        }
+        self.assertEqual(len(observed), 36)
+        self.assertNotIn(sequential_seed, observed)
+        with self.assertRaises(ValueError):
+            concurrency_payload_seed(sequential_seed, 5, 5)
+
     def test_payload_generation_is_deterministic_and_exact_size(self):
         first = deterministic_payload(11, 1024, 3)
         second = deterministic_payload(11, 1024, 3)

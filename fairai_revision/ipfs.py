@@ -19,6 +19,12 @@ def deterministic_payload(seed, size_bytes, repetition):
     return (prefix + digest * ((size_bytes // len(digest)) + 1))[:size_bytes]
 
 
+def concurrency_payload_seed(seed, concurrency, worker):
+    if concurrency < 1 or worker < 0 or worker >= concurrency:
+        raise ValueError("Invalid concurrency worker index")
+    return seed + 1_000_000 + concurrency * 1_000 + worker
+
+
 class KuboClient:
     def __init__(self, api_url, timeout_seconds=60):
         self.api_url = api_url.rstrip("/")
@@ -159,7 +165,9 @@ def benchmark_two_peer_kubo(config):
         for repetition in range(1, config["repetitions"] + 1):
             payloads = [
                 deterministic_payload(
-                    config["seed"] + worker,
+                    concurrency_payload_seed(
+                        config["seed"], concurrency, worker
+                    ),
                     concurrency_payload_size,
                     repetition,
                 )
