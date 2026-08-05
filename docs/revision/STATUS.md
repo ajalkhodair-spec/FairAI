@@ -1,73 +1,45 @@
 # Major Revision Status
 
 - Active branch: `major-revision-azure`
-- Upgrade basis: exact reviewer reports and submitted manuscript, bounded by
+- Scope authority: reviewer reports, submitted manuscript, and
   `docs/revision/acceptance_scope.md`
-- Frozen pre-Azure evidence: commit `62d8dd3`, recorded in
-  `outputs/revision_audit/current_evidence_freeze.json`
-- Current work: acceptance-critical baseline and infrastructure integration
-  gaps; no Azure resources have been created
+- Current phase: measured-evidence freeze followed by Azure execution and public
+  clean-clone validation
+- No Azure resources or Azure results are claimed.
 
-- Current phase: Phase 11, clean reproduction and release packaging
-- Completed: Phase 0 audit, baseline commit, annotated submitted-state tag,
-  revision branch, strict-Kubo diagnostic legacy reproduction, G1
-  configuration runner, schemas, manifests, Make targets, CI smoke step, and
-  formal three-trial legacy evidence package, checksum-pinned Adult and COMPAS
-  acquisition, train-only preprocessing, and common logistic-regression and
-  small-MLP model interfaces, a deterministic parameter-transfer federated MLP,
-  deterministic IID and Dirichlet client
-  partitioning, minimum-size enforcement, canonical partition checksums, and
-  normalized entropy exports, protected-group DP/EO/equalized-odds/SAG metrics,
-  explicit undefined results, versioned round-bounded approval policies, and
-  real-data multi-round B0/B1/B3 engineering-validation runs, paired ten-seed
-  Adult/COMPAS statistics, federated MLP, client scaling, heterogeneity,
-  threshold sensitivity, deterministic poisoning, 2,825 Hardhat gas receipts,
-  240 local throughput scenarios, deterministic bootstrap statistics,
-  security/privacy/ethics/complexity evidence, exact publication CSVs,
-  workbook, LaTeX tables, and 300-dpi figures
-- Tests passed before the current branch:
-  - Python: 59 tests in the clean-clone evidence
-  - Solidity: 15 tests
-  - Hardhat compile: 7 contracts
-  - ZKey verification against R1CS and Powers of Tau
-  - strict-Kubo three-trial legacy reproduction
-- Tests failed:
-  - first end-to-end attempt stopped on the intentionally absent Powers of Tau
-    file; rerun succeeded with an externally supplied, hash-recorded artifact
-  - first concurrent throughput attempt failed because one signer could not
-    queue nonces under Hardhat automining; the failed manifest was preserved,
-    distinct authorized signers were used, and the 30-repetition rerun passed
-- Active blockers:
-  - local repository has no configured remote
-  - expected prompt URL returned 404 to anonymous access; an older local
-    checkout points to `https://github.com/ajalkhodair-spec/FairAI.git`, but
-    the active revision repository is not connected to that remote
-  - GitHub CLI token is invalid
-  - Docker socket API calls remain denied after explicit sandbox grants and no
-    Kubo ports are listening, so the new strict B2 adapter cannot yet generate
-    measured two-peer evidence in this task
-- Clean-clone status:
-  - no-local clone passed;
-  - independent npm installation passed;
-  - 59 Python and 15 Solidity tests passed with the verified Python environment;
-  - smoke and a 10-seed Adult run passed;
-  - CSV, LaTeX, and SVG regeneration was byte-for-byte reproducible;
-  - fresh pip installation remained blocked by sandbox DNS
-- Current-branch verification:
-  - 61 Python and 20 Solidity tests pass on the current branch
-  - 30/30 V2 proofs verify and six negative cryptographic cases reject
-  - the real V2 proof passes the composite Groth16 plus EIP-712 ledger path;
-    context substitution, replay, and rejected-decision recording are tested
-  - the B2-only verifier and multi-round ledger runner compile
-  - B2 unit boundaries pass; real Kubo execution is pending the Docker boundary
-- Next action: run strict B2/B4/B7 Kubo integration as soon as Docker is
-  reachable, then execute the reviewer-derived local and Azure matrices
-- Latest implementation commit hash: `846a068`
-- Latest results/reproducibility commit hash: `f62a3ad`
-- Latest output paths:
-  - `outputs/major_revision/adult-core-10seed-e01b72a`
-  - `outputs/major_revision/compas-core-10seed-e01b72a`
-  - `outputs/major_revision/core-statistics-bootstrap`
-  - `outputs/major_revision/expanded-analysis-bootstrap-aae4091`
-  - `outputs/major_revision/gas-throughput-30rep-7dff9b5`
-  - `outputs/major_revision/FairAI_Major_Revision_Results.xlsx`
+## Completed
+
+- Adult and COMPAS loaders, logistic regression and small MLP, IID and
+  Dirichlet partitions, multi-round execution, and group-fairness policies.
+- B0-B7 implementation, including measured FairFed Adult/COMPAS comparisons and
+  algorithmic scaling to 50 logical clients.
+- Pinned Circom 2.1.6 V2 artifacts, 30 valid proofs, six negative cases, direct
+  Solidity pairing verification, EIP-712 binding, and 30 gas receipts.
+- Two native Kubo 0.29.0 peers with 30-repeat upload, cold/warm retrieval, and
+  concurrency measurements over 1 KiB through 10 MiB payloads.
+- Strict B2/B4/B7 execution at 5 and 10 clients, three seeds and three rounds:
+  18 contract executions, 54 archived rounds, 2,688 verified retrievals, 258
+  proof decisions, and 387 ledger records.
+- Bicep compilation and shell validation for the bounded three-host Azure
+  topology; no deployment was performed.
+- 68 Python and 20 Solidity tests pass; Bicep compilation and Azure shell syntax
+  validation also pass.
+
+## Preserved Failures
+
+- The first dynamic B4 run exposed IEEE-754 precision loss for BN254 digest
+  fields; decimal-string witness and ABI boundaries now have regression tests.
+- The next run exposed duplicate content CIDs across rounds; metrics and proof
+  artifacts now include round/node context and bind the exact published bytes.
+- An IPFS concurrency review found seed overlap with sequential payloads; each
+  concurrency/worker pair now has a disjoint payload namespace.
+
+## Remaining
+
+- Deploy and measure the Azure 5/10/20-client matrix, then destroy resources.
+- Measure process outage/recovery, separate pin latency, and multi-host cost.
+- Run targeted B4/B7 poisoning comparisons.
+- Configure and verify the public remote, anonymous clean clone, and release.
+
+The canonical claim boundaries are in `docs/revision/current_results.md`,
+`docs/revision/known_limitations.md`, and the root `BLOCKERS.md`.

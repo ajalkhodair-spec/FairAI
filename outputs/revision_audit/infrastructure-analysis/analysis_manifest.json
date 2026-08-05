@@ -1,0 +1,25 @@
+{
+  "analysis_git_commit": "672a543e0998d4cf858275fc381bfd0b83fcf6fa",
+  "bounded_input": {
+    "configuration_hash": "d27ecc90f468e3d439d4a0856a6866da02ea314e579951703f828de5b8c2c889",
+    "git_commit": "e17a1f478c69242e09cececc001b0bc826261469",
+    "metrics_sha256": "b321fdcf43642fcf3d48953fb840a9f1a94756e9870e68dea30f80dc154e46b6",
+    "run_id": "kubo-v2-bounded-e17a1f4"
+  },
+  "evidence_type": "derived",
+  "ipfs_input": {
+    "configuration_hash": "bc87b10d61d8a624f82c3be21ee4012947696570823b62f99a31b5164b6b4abb",
+    "git_commit": "4fbec7a6e6ae55e150a0ed1f110f5e21e0e5bd16",
+    "kubo_version": "0.29.0",
+    "manifest_sha256": "0e090aad62f3ed61a3bf247f843ce218fd5d963e1d4bd99ef5d361b5ac335133",
+    "raw_sha256": "c0d998ec42fef834930948a1f7184ea582ed62dcdab72b27a9f023861b1b8211",
+    "run_id": "ipfs-native-cold-30rep-4fbec7a"
+  },
+  "outputs": {
+    "bounded_metrics.csv": "654fd0371228944404b824407db1aa1fd02921975efd3ad7b5188817ead033ea",
+    "infrastructure_summary.json": "9b4a48022f7cafe9b0b39eae4822c61ecd16914ad2a76383a5b78c4203516100",
+    "ipfs_concurrency.csv": "3053b6f2ac5509b117f04a7a1d457ac79fc0d98c6f1a45b70b07940b021a76d1",
+    "ipfs_sequential.csv": "ddd9163c0394cf020729c4fb58a70c2f54ebfd0c87a1678feff2b7953e9b862e"
+  },
+  "schema_version": "fairai.infrastructure_analysis_manifest.v1"
+}

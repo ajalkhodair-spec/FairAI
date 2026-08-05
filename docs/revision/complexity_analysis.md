@@ -28,12 +28,14 @@ Contract submission and reference growth are `O(NRm)` over an experiment.
 the approved set, so retrieval is `O(NR + |A_t|)` for the queried round rather
 than only `O(|A_t|)`.
 
-IPFS byte-processing work is proportional to artifact size, but network,
-chunking, cache, and replication constants require measurement. Those V2
-two-peer measurements are blocked by Docker socket access. Direct V2 Groth16
-cost is expressed as a function of `C_circuit`; measured constraint, proving,
-verification, and pairing-gas values remain blocked until Circom 2.1.6
-artifacts are generated.
+IPFS byte-processing work is proportional to artifact size, while network,
+chunking, cache, and replication constants are empirical. The local two-peer
+suite measures 1 KiB through 10 MiB payloads and concurrency 1 through 20; it
+does not estimate WAN or outage-recovery constants. Direct V2 Groth16 cost is a
+function of `C_circuit`; witness, proving, off-chain verification, and direct
+pairing-verifier gas are measured with the pinned Circom 2.1.6 artifacts.
 
 The machine-readable mapping is
-`outputs/major_revision/complexity/complexity_analysis.csv`.
+`outputs/major_revision/complexity/complexity_analysis.csv`; measured Kubo and
+V2 summaries are under `outputs/revision_audit/infrastructure-analysis/` and
+`outputs/revision_audit/v2_gas_summary.csv`.

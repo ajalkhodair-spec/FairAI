@@ -35,6 +35,8 @@ outputs/*
 !outputs/revision_audit/verifier_security_run_manifest.json
 !outputs/revision_audit/fairfed-scaling-analysis/
 !outputs/revision_audit/fairfed-scaling-analysis/*
+!outputs/revision_audit/infrastructure-analysis/
+!outputs/revision_audit/infrastructure-analysis/*
 build/
 *.wtns
 *.zkey

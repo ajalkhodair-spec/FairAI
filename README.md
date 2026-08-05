@@ -40,9 +40,9 @@ scientific nonclaims.
 
 - The V2 phase-2 setup has one experimental contributor. A governed multi-party
   ceremony is required before production deployment.
-- The two-peer Kubo benchmark is strict and implemented, but current repository
-  evidence does not include its timings because Docker socket access was
-  unavailable during the recorded run.
+- Strict local two-peer Kubo timings and B2/B4/B7 runs are included. Process
+  outage/recovery, WAN behavior, Docker Compose, and Azure execution are not
+  claimed as measured evidence.
 - FairFed implements the published server aggregation rule; it does not claim
   to reproduce every local debiasing variant from the paper.
 - Raw training data stay local, but the implementation does not provide a
@@ -58,7 +58,8 @@ and [known_undetected_threats.md](docs/revision/known_undetected_threats.md).
 
 - Python 3.11 or newer
 - Node.js 20
-- Docker Desktop for strict Kubo scenarios
+- Docker Desktop for Compose-based Kubo scenarios, or two native Kubo 0.29.0
+  peers for `ipfs_benchmark_native.yaml`
 - Circom 2.1.6 and snarkjs 0.7.5 for V2 artifact regeneration
 
 Install:
@@ -116,6 +117,18 @@ make revision-ipfs
 
 The benchmark fails if either real Kubo endpoint is unavailable. It never
 records fallback CIDs as IPFS evidence.
+
+The tracked native-peer configuration and bounded full-path suite are:
+
+```sh
+make revision-ipfs-native
+make revision-kubo-v2
+```
+
+The committed derived evidence is under
+`outputs/revision_audit/infrastructure-analysis/`.
+The native Kubo archive used for those measurements is pinned in
+`infrastructure/toolchain.lock.json`.
 
 Run the measured V2 proof benchmark without Docker:
 

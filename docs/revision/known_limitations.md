@@ -3,8 +3,9 @@
 - V2 uses pinned Circom 2.1.6, a verified phase-2 Powers of Tau file, generated
   Groth16 artifacts, and direct Solidity pairing-verifier tests. The experimental
   phase-2 ZKey has one contributor and is not a production ceremony artifact.
-- Two-peer Kubo overhead, outage, recovery, and concurrency are not measured in
-  the frozen evidence package because Docker socket access was denied.
+- Two native local Kubo 0.29.0 peers provide measured upload, cold/warm
+  retrieval, and concurrency evidence. Process outage/recovery, WAN behavior,
+  and multi-host Kubo performance are not measured.
 - FairFed implements the published server weighting rule and is reference-tested.
   This does not claim implementation of every client-side debiasing variant used
   by fair-federated-learning literature.
