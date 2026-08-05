@@ -1,4 +1,7 @@
+import hashlib
+import tempfile
 import unittest
+from pathlib import Path
 
 from fairai_revision.ipfs import (
     StrictIPFSError,
@@ -7,9 +10,19 @@ from fairai_revision.ipfs import (
     deterministic_payload,
     verify_payload,
 )
+from fairai_revision.ipfs_recovery import sha512_file
 
 
 class RevisionIPFSTests(unittest.TestCase):
+    def test_kubo_binary_hash_uses_sha512(self):
+        payload = b"pinned-kubo-binary"
+        with tempfile.TemporaryDirectory() as tmp:
+            path = Path(tmp) / "ipfs"
+            path.write_bytes(payload)
+            self.assertEqual(
+                sha512_file(path), hashlib.sha512(payload).hexdigest()
+            )
+
     def test_concurrency_payload_seeds_do_not_overlap(self):
         sequential_seed = 11201
         observed = {
@@ -48,6 +61,11 @@ class RevisionIPFSTests(unittest.TestCase):
         self.assertEqual(
             consumer.connected,
             "/dns4/ipfs-publisher/tcp/4001/p2p/publisher",
+        )
+        connect_two_peers(publisher, consumer, "127.0.0.1", 4201)
+        self.assertEqual(
+            consumer.connected,
+            "/ip4/127.0.0.1/tcp/4201/p2p/publisher",
         )
 
 

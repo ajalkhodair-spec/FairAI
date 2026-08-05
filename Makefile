@@ -1,6 +1,6 @@
 .PHONY: test revision-smoke revision-baseline revision-partitions revision-core revision-scaling \
 	revision-algorithmic-scaling revision-fairfed revision-fairness revision-security revision-ipfs \
-	revision-ipfs-native revision-kubo-v2 revision-proof azure-validate revision-report revision-all
+	revision-ipfs-native revision-ipfs-recovery revision-kubo-v2 revision-proof azure-validate revision-report revision-all
 
 PYTHON ?= python3
 
@@ -50,6 +50,9 @@ revision-ipfs:
 
 revision-ipfs-native:
 	$(PYTHON) -m fairai_revision.run --config configs/revision/ipfs_benchmark_native.yaml
+
+revision-ipfs-recovery:
+	$(PYTHON) -m fairai_revision.run --config configs/revision/ipfs_recovery_native.yaml
 
 revision-kubo-v2:
 	$(PYTHON) -m fairai_revision.run --config configs/revision/kubo_v2_bounded.yaml

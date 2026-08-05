@@ -96,13 +96,20 @@ def verify_payload(expected, observed, cid):
         )
 
 
-def connect_two_peers(publisher, consumer, publisher_host="ipfs-publisher"):
+def connect_two_peers(
+    publisher,
+    consumer,
+    publisher_host="ipfs-publisher",
+    publisher_swarm_port=4001,
+):
     publisher_id = publisher.identity()["ID"]
     try:
         protocol = "ip4" if ipaddress.ip_address(publisher_host).version == 4 else "ip6"
     except ValueError:
         protocol = "dns4"
-    address = f"/{protocol}/{publisher_host}/tcp/4001/p2p/{publisher_id}"
+    address = (
+        f"/{protocol}/{publisher_host}/tcp/{publisher_swarm_port}/p2p/{publisher_id}"
+    )
     consumer.connect(address)
     return publisher_id, consumer.identity()["ID"]
 
@@ -143,7 +150,9 @@ def benchmark_two_peer_kubo(config):
             warm = consumer.cat(cid)
             warm_ms = (time.perf_counter() - started) * 1000
             verify_payload(payload, warm, cid)
+            started = time.perf_counter()
             consumer.pin(cid)
+            pin_ms = (time.perf_counter() - started) * 1000
             rows.append(
                 {
                     "mode": "sequential",
@@ -154,6 +163,7 @@ def benchmark_two_peer_kubo(config):
                     "upload_ms": upload_ms,
                     "cold_retrieval_ms": cold_ms,
                     "warm_retrieval_ms": warm_ms,
+                    "pin_ms": pin_ms,
                     "verified": True,
                 }
             )
@@ -190,6 +200,7 @@ def benchmark_two_peer_kubo(config):
                     "upload_ms": "",
                     "cold_retrieval_ms": elapsed_ms,
                     "warm_retrieval_ms": "",
+                    "pin_ms": "",
                     "verified": True,
                 }
             )

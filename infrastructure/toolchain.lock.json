@@ -4,7 +4,8 @@
   "native_distribution": {
     "platform": "darwin-arm64",
     "url": "https://dist.ipfs.tech/kubo/v0.29.0/kubo_v0.29.0_darwin-arm64.tar.gz",
-    "sha512": "bcd17a4913582a5715f68290bf40ef88f24c45d4cc4998fc4dbd5250d5702b155bb2189545810c6ea284f5651c2855de9ac48947d1cc0ce522a963c5a238df45"
+    "archive_sha512": "bcd17a4913582a5715f68290bf40ef88f24c45d4cc4998fc4dbd5250d5702b155bb2189545810c6ea284f5651c2855de9ac48947d1cc0ce522a963c5a238df45",
+    "binary_sha512": "c09d7d05cc054ba524d3b458d2beb3bc1ef817b00a4e97b71314e5051eb720cc4e17a2834922672c14cce778442f1810c65d3c52334ce3ff2385183678386dfe"
   },
   "scope": "Locks the native binary used for the committed local two-peer measurements; it does not attest a Docker image or Azure deployment."
 }

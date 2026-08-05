@@ -828,6 +828,65 @@ def run_ipfs_benchmark(config, output_dir):
     }
 
 
+def run_ipfs_recovery(config, output_dir):
+    import math
+
+    from .ipfs_recovery import benchmark_native_kubo_recovery
+
+    result = benchmark_native_kubo_recovery(config, output_dir, REPO_ROOT)
+    rows = result["rows"]
+    write_csv(output_dir / "raw" / "ipfs_recovery.csv", rows, list(rows[0]))
+
+    def p95(field):
+        values = sorted(float(row[field]) for row in rows)
+        return values[math.ceil(0.95 * len(values)) - 1]
+
+    checksum = __import__("hashlib").sha256(
+        canonical_json_bytes(
+            {
+                "publisher_peer_id": result["publisher_peer_id"],
+                "consumer_peer_id": result["consumer_peer_id"],
+                "rows": rows,
+            }
+        )
+    ).hexdigest()
+    return {
+        "dataset_checksum": checksum,
+        "partition_checksum": checksum,
+        "manifest_updates": {
+            "environment.kubo_version": result["kubo_version"]
+        },
+        "summary": {
+            "strict_ipfs": True,
+            "fallback_used": False,
+            "kubo_version": result["kubo_version"],
+            "kubo_binary_sha512": result["kubo_binary_sha512"],
+            "publisher_peer_id": result["publisher_peer_id"],
+            "consumer_peer_id": result["consumer_peer_id"],
+            "repetitions": len(rows),
+            "payload_bytes": config["payload_bytes"],
+            "publisher_identity_stable": all(
+                row["publisher_identity_stable"] for row in rows
+            ),
+            "verified": all(row["verified"] for row in rows),
+            "pin_ms_mean": mean([row["pin_ms"] for row in rows]),
+            "pin_ms_p95": p95("pin_ms"),
+            "outage_retrieval_ms_mean": mean(
+                [row["outage_retrieval_ms"] for row in rows]
+            ),
+            "outage_retrieval_ms_p95": p95("outage_retrieval_ms"),
+            "restart_ready_ms_mean": mean(
+                [row["restart_ready_ms"] for row in rows]
+            ),
+            "restart_ready_ms_p95": p95("restart_ready_ms"),
+            "recovery_verified_ms_mean": mean(
+                [row["recovery_verified_ms"] for row in rows]
+            ),
+            "recovery_verified_ms_p95": p95("recovery_verified_ms"),
+        },
+    }
+
+
 def run_gas_benchmark(config, output_dir):
     import os
     import subprocess
@@ -1100,6 +1159,7 @@ EXECUTORS = {
     "partition_analysis": run_partition_analysis,
     "federated_core": run_federated_core,
     "ipfs_benchmark": run_ipfs_benchmark,
+    "ipfs_recovery": run_ipfs_recovery,
     "gas_benchmark": run_gas_benchmark,
     "verifier_security": run_verifier_security,
     "proof_v2": run_proof_v2,

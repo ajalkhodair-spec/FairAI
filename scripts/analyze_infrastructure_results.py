@@ -38,7 +38,12 @@ def analyze_ipfs(directory):
     sequential = frame[frame["mode"] == "sequential"]
     for size, group in sequential.groupby("payload_bytes", sort=True):
         row = {"payload_bytes": int(size), "n": len(group)}
-        for metric in ("upload_ms", "cold_retrieval_ms", "warm_retrieval_ms"):
+        for metric in (
+            "upload_ms",
+            "cold_retrieval_ms",
+            "warm_retrieval_ms",
+            "pin_ms",
+        ):
             values = group[metric].to_numpy(dtype=float)
             row.update(
                 {
