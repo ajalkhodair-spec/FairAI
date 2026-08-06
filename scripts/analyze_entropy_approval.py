@@ -60,22 +60,44 @@ def analyze(run_dir, output_dir, method):
         for entropy_name in ("label_entropy", "group_entropy"):
             for outcome in outcomes:
                 values = group[[entropy_name, outcome]].dropna()
-                result = stats.spearmanr(values[entropy_name], values[outcome])
+                constant = (
+                    values[entropy_name].nunique() < 2
+                    or values[outcome].nunique() < 2
+                )
+                result = None if constant else stats.spearmanr(
+                    values[entropy_name], values[outcome]
+                )
                 correlations.append(
                     {
                         "partition": partition, "entropy_metric": entropy_name,
                         "outcome": outcome, "n": len(values),
-                        "spearman_rho": result.statistic, "p_value": result.pvalue,
+                        "status": "undefined_constant" if constant else "measured",
+                        "spearman_rho": None if constant else result.statistic,
+                        "p_value": None if constant else result.pvalue,
                     }
                 )
-    representation = (
-        joined.groupby(["partition", "minority_heavy"], sort=True)
+    per_seed_representation = (
+        joined.groupby(["seed", "partition", "minority_heavy"], sort=True)
         .agg(
             clients=("client_id", "size"),
             approval_rate=("approved_numeric", "mean"),
             rejection_rate=("excluded_numeric", "mean"),
             mean_minority_fraction=("minority_fraction", "mean"),
             excluded_sample_fraction=("excluded_sample_fraction", "sum"),
+        )
+        .reset_index()
+    )
+    representation = (
+        per_seed_representation.groupby(
+            ["partition", "minority_heavy"], sort=True
+        )
+        .agg(
+            seeds=("seed", "nunique"),
+            mean_clients=("clients", "mean"),
+            approval_rate=("approval_rate", "mean"),
+            rejection_rate=("rejection_rate", "mean"),
+            mean_minority_fraction=("mean_minority_fraction", "mean"),
+            mean_excluded_sample_fraction=("excluded_sample_fraction", "mean"),
         )
         .reset_index()
     )
