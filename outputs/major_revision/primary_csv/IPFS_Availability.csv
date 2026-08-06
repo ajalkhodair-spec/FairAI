@@ -1,2 +1,2 @@
-status,scope,value,blocker,evidence_type,source_file
-blocked,two-peer availability and recovery,,BLK-002,missing,BLOCKERS.md
+run_id,payload_bytes,n,pin_ms_mean,pin_ms_median,pin_ms_p95,outage_retrieval_ms_mean,outage_retrieval_ms_median,outage_retrieval_ms_p95,restart_ready_ms_mean,restart_ready_ms_median,restart_ready_ms_p95,recovery_verified_ms_mean,recovery_verified_ms_median,recovery_verified_ms_p95,evidence_type,source_file
+infrastructure-analysis-v2,1048576,30,20.450255567751203,20.045541488798335,23.531233679386787,5.923865201960628,6.230458500795066,9.180989564629272,108.77953612944113,109.3697705073282,111.79836090304887,240.09523339918815,240.2326665178407,254.57410624076144,derived_from_30_repeat_native_kubo_measurements,outputs/revision_audit/infrastructure-analysis-v2/ipfs_recovery.csv

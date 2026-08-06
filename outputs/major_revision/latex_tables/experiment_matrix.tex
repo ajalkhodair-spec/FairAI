@@ -3,16 +3,27 @@
 scenario\_id & dataset & model & clients & rounds & seeds \\
 \midrule
 adult\_core & adult & logistic\_regression & 10 & 5 & 10 \\
+adult\_fairfed\_comparison & adult & logistic\_regression & 10 & 5 & 10 \\
 adult\_mlp & adult & small\_mlp & 10 & 5 & 5 \\
 adversarial & adult & logistic\_regression & 10 & 5 & 5 \\
+approved\_artifact\_failure & adult & logistic\_regression & 3 & 1 & 1 \\
+azure\_adult\_bounded & adult & logistic\_regression & 20 & 5 & 5 \\
+azure\_compas\_bounded & compas & logistic\_regression & 20 & 5 & 5 \\
 compas\_core & compas & logistic\_regression & 10 & 5 & 10 \\
+compas\_fairfed\_comparison & compas & logistic\_regression & 10 & 5 & 10 \\
+false\_metric\_reporting & adult & logistic\_regression & 3 & 1 & 1 \\
 full\_revision\_matrix & multiple & multiple & 20 & 5 & 1 \\
 gas\_benchmark & synthetic\_transactions & not\_applicable & 20 & 1 & 1 \\
 heterogeneity\_entropy & adult & logistic\_regression & 10 & 5 & 10 \\
 ipfs\_benchmark & artifact\_payloads & not\_applicable & 1 & 1 & 1 \\
+ipfs\_benchmark\_native & artifact\_payloads & not\_applicable & 1 & 1 & 1 \\
+ipfs\_recovery\_native & artifact\_payloads & not\_applicable & 1 & 1 & 1 \\
+kubo\_v2\_adversarial & adult & logistic\_regression & 5 & 3 & 3 \\
+kubo\_v2\_bounded & adult & logistic\_regression & 10 & 3 & 3 \\
 legacy\_mvp\_reproduction & synthetic\_v1 & logistic\_regression & 3 & 1 & 1 \\
 proof\_binding\_v2 & synthetic\_unit & logistic\_regression & 3 & 1 & 1 \\
 client\_scaling & adult & logistic\_regression & 20 & 3 & 5 \\
+client\_scaling\_algorithmic & adult & logistic\_regression & 50 & 3 & 5 \\
 revision\_smoke & synthetic\_smoke & logistic\_regression & 1 & 1 & 1 \\
 threshold\_sensitivity & adult & logistic\_regression & 10 & 5 & 10 \\
 verifier\_security & synthetic\_unit & logistic\_regression & 3 & 2 & 1 \\

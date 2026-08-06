@@ -30,21 +30,33 @@
     "source_file": "outputs/major_revision/claims_supported.json"
   },
   {
-    "claim": "Direct V2 Groth16 is measured",
-    "status": "not_supported",
-    "evidence_type": "blocked",
+    "claim": "Direct V2 Groth16 is measured locally",
+    "status": "supported_bounded",
+    "evidence_type": "measured_local",
     "source_file": "outputs/major_revision/claims_supported.json"
   },
   {
-    "claim": "Two-peer IPFS overhead is measured",
-    "status": "not_supported",
-    "evidence_type": "blocked",
+    "claim": "Two-peer native Kubo overhead is measured",
+    "status": "supported_bounded",
+    "evidence_type": "measured_local",
     "source_file": "outputs/major_revision/claims_supported.json"
   },
   {
-    "claim": "FairFed is compared",
+    "claim": "Published FairFed server weighting is compared",
+    "status": "supported_bounded",
+    "evidence_type": "measured",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "Proofs establish correct derivation of private metrics",
     "status": "not_supported",
-    "evidence_type": "blocked",
+    "evidence_type": "trust_boundary_test",
+    "source_file": "outputs/major_revision/claims_supported.json"
+  },
+  {
+    "claim": "Approved artifacts fail closed when unavailable",
+    "status": "supported_bounded",
+    "evidence_type": "full_path_test",
     "source_file": "outputs/major_revision/claims_supported.json"
   },
   {

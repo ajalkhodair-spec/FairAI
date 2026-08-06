@@ -1,2 +1,6 @@
-status,scope,value,blocker,evidence_type,source_file
-blocked,two-peer Kubo artifact size accounting,,BLK-002,missing,BLOCKERS.md
+run_id,payload_bytes,evidence_type,source_file
+infrastructure-analysis-v2,1024,derived_from_30_repeat_native_kubo_measurements,outputs/revision_audit/infrastructure-analysis-v2/ipfs_sequential.csv
+infrastructure-analysis-v2,10240,derived_from_30_repeat_native_kubo_measurements,outputs/revision_audit/infrastructure-analysis-v2/ipfs_sequential.csv
+infrastructure-analysis-v2,102400,derived_from_30_repeat_native_kubo_measurements,outputs/revision_audit/infrastructure-analysis-v2/ipfs_sequential.csv
+infrastructure-analysis-v2,1048576,derived_from_30_repeat_native_kubo_measurements,outputs/revision_audit/infrastructure-analysis-v2/ipfs_sequential.csv
+infrastructure-analysis-v2,10485760,derived_from_30_repeat_native_kubo_measurements,outputs/revision_audit/infrastructure-analysis-v2/ipfs_sequential.csv

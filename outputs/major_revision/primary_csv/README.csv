@@ -3,7 +3,7 @@ Purpose,Traceable FairAI major-revision evidence package
 Evidence boundary,"Measured, derived, modeled, tested, blocked, and missing are distinguished"
 Primary datasets,Adult and COMPAS
 Core models,Federated logistic regression and small MLP
-IPFS status,Two-peer benchmark code complete; measurement blocked by Docker socket access
-V2 proof status,"V2 compiles with Circom 2.1.9; pinned setup, ZKey, and proof benchmark remain blocked"
-FairFed status,Blocked; no heuristic substitution
+IPFS status,Measured on two native Kubo 0.29.0 peers with 30 repetitions
+V2 proof status,Thirty valid proofs verified and six negative cases rejected; production ceremony still required
+FairFed status,Published stateful weighting rule implemented and evaluated on Adult and COMPAS
 Source of truth,Run manifests and source_file columns

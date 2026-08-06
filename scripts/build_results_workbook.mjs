@@ -135,6 +135,7 @@ const errors = await workbook.inspect({
 process.stdout.write(`${errors.ndjson}\n`);
 
 const previewDirectory = `${outputRoot}/workbook_previews`;
+await fs.rm(previewDirectory, { recursive: true, force: true });
 await fs.mkdir(previewDirectory, { recursive: true });
 for (let index = 0; index < previewRanges.length; index += 1) {
   const { sheetName, range } = previewRanges[index];

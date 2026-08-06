@@ -253,7 +253,9 @@ def main():
     )
 
     scaling = summary[
-        (summary["suite"] == "scaling") & (summary["metric"] == "accuracy")
+        (summary["suite"] == "scaling")
+        & (summary["metric"] == "accuracy")
+        & (summary["method"] == "B0")
     ].copy()
     scaling["error"] = scaling["ci95_high"] - scaling["mean"]
     scaling.to_csv(DATA / "client_scaling.csv", index=False)
@@ -267,7 +269,7 @@ def main():
     )
 
     entropy_rows = []
-    heterogeneity = ROOT / "heterogeneity-10seed-2d2b220"
+    heterogeneity = ROOT / "heterogeneity-b0-b3-10seed-76828c3"
     metrics = pd.read_csv(heterogeneity / "metrics" / "test_metrics.csv")
     for path in sorted((heterogeneity / "partitions").glob("**/entropy_summary.csv")):
         values = pd.read_csv(path).set_index("metric")["mean"]
@@ -338,22 +340,41 @@ def main():
     )
     verifier_summary.to_csv(DATA / "verifier_security.csv", index=False)
 
-    pd.DataFrame(
-        [
-            {
-                "status": "blocked",
-                "blocker": "BLK-002",
-                "measurement": "two-peer add pin cold warm concurrency recovery",
-                "source": "BLOCKERS.md",
-            }
-        ]
-    ).to_csv(DATA / "ipfs_measurement_status.csv", index=False)
+    ipfs = pd.read_csv(ROOT / "ipfs_add_latency.csv")
+    ipfs_rows = []
+    for _, row in ipfs.iterrows():
+        for operation, mean_column, p95_column in (
+            ("Add", "upload_ms_mean", "upload_ms_p95"),
+            ("Pin", "pin_ms_mean", "pin_ms_p95"),
+            ("Cold retrieval", "cold_retrieval_ms_mean", "cold_retrieval_ms_p95"),
+            ("Warm retrieval", "warm_retrieval_ms_mean", "warm_retrieval_ms_p95"),
+        ):
+            ipfs_rows.append(
+                {
+                    "payload": f"{int(row['payload_bytes'] / 1024)} KiB",
+                    "operation": operation,
+                    "mean_ms": row[mean_column],
+                    "error_ms": max(0.0, row[p95_column] - row[mean_column]),
+                    "n": row["n"],
+                }
+            )
+    ipfs_figure = pd.DataFrame(ipfs_rows)
+    ipfs_figure.to_csv(DATA / "ipfs_overhead.csv", index=False)
+    grouped_bars(
+        ipfs_figure,
+        "payload",
+        "operation",
+        "mean_ms",
+        "error_ms",
+        "Latency (ms; p95 upper bars)",
+        INDEPENDENT / "ipfs_overhead.svg",
+    )
 
     grouped = svg_start(1800, 1200)
     grouped.append(
         '<text class="label" x="900" y="580" text-anchor="middle">'
-        "Panel-ready source figures are provided independently; "
-        "IPFS panel omitted because BLK-002 prevents measurement.</text>"
+        "Panel-ready source figures are provided independently, including "
+        "30-repeat native Kubo measurements.</text>"
     )
     grouped.append(
         '<text class="legend" x="900" y="640" text-anchor="middle">'

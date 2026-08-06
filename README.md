@@ -37,7 +37,7 @@ nonclaims.
 - full-path false-metric and approved-artifact-unavailable trust-boundary tests;
 - repeated Hardhat gas and sequential/concurrent throughput measurements, plus
   modeled cost scenarios;
-- run manifests, statistical tables, a 37-sheet workbook, and figure-data
+- run manifests, statistical tables, a 40-sheet workbook, and figure-data
   exports.
 
 ## Boundaries
@@ -216,8 +216,8 @@ preprocessing only on the training split.
 
 ## Citation
 
-Use [CITATION.cff](CITATION.cff). Public repository accessibility must be
-verified anonymously before citing the repository URL as an available artifact.
+Use [CITATION.cff](CITATION.cff). Cite the versioned release URL once the
+corresponding GitHub release has been published.
 
 ## License
 

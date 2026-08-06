@@ -177,6 +177,8 @@ def main():
     bars(adversarial, "attack_type", "method", "mean", "error", "Test accuracy", "adversarial_accuracy.png")
     verifier = pd.read_csv(DATA / "verifier_security.csv")
     bars(verifier, "outcome", "series", "count", None, "Scenario count", "verifier_security.png")
+    ipfs = pd.read_csv(DATA / "ipfs_overhead.csv")
+    bars(ipfs, "payload", "operation", "mean_ms", "error_ms", "Latency (ms; p95 upper bars)", "ipfs_overhead.png")
 
     names = [
         "baseline_comparison.png",
@@ -185,14 +187,15 @@ def main():
         "threshold_sensitivity.png",
         "adversarial_accuracy.png",
         "verifier_security.png",
+        "ipfs_overhead.png",
     ]
-    panel = Image.new("RGB", (2400, 1500), "white")
+    panel = Image.new("RGB", (3200, 1500), "white")
     panel_draw = ImageDraw.Draw(panel)
     for index, name in enumerate(names):
         image = Image.open(OUTPUT / name)
         image.thumbnail((780, 700))
-        x = (index % 3) * 800 + 10
-        y = (index // 3) * 730 + 65
+        x = (index % 4) * 800 + 10
+        y = (index // 4) * 730 + 65
         panel.paste(image, (x, y))
         text(panel_draw, (x + 20, y - 35), chr(65 + index), size=44, anchor="lm", bold=True)
     panel.save(GROUPED / "measured_results_panels.png", dpi=(300, 300))

@@ -2,32 +2,32 @@
   "schema_version": "fairai.limitations.v1",
   "limitations": [
     {
-      "id": " BLK-001 ",
-      "scope": " V2 Groth16 ",
-      "blocker": " PATH resolves Circom 0.5.46 and the pinned 2.1.6 toolchain/Powers of Tau are absent. A local Circom 2.1.9 binary compiled V2 successfully, but no admissible setup artifact or V2 ZKey exists. ",
-      "effect": " Direct V2 proof generation, verification latency, and pairing-verifier gas cannot be measured. ",
-      "resolution": " Install the pinned Circom 2.1.6 binary, provide the checksum-pinned Powers of Tau file, generate and verify the V2 ZKey, and run the cryptographic negative suite. "
+      "id": "BLK-001",
+      "status": "Resolved",
+      "scope": "V2 Groth16",
+      "blocker": "Circom 2.1.6 was built from tag `v2.1.6`; the verified phase-2 Powers of Tau, R1CS, ZKey, VKey, real proof, generated Solidity verifier, composite verifier, and negative suite all pass.",
+      "effect": "Thirty valid proof repetitions and six rejection cases are measured. A multi-party phase-2 ceremony remains required before production deployment."
     },
     {
-      "id": " BLK-002 ",
-      "scope": " Two-peer IPFS ",
-      "blocker": " This execution task is denied access to `~/.docker/run/docker.sock`. ",
-      "effect": " Real Kubo add, pin, cold/warm retrieval, concurrency, outage, and recovery measurements cannot be generated here. ",
-      "resolution": " Grant the task Docker socket access, then run `make revision-ipfs`; the benchmark is strict and will not use a fallback. "
+      "id": "BLK-002",
+      "status": "Resolved bounded",
+      "scope": "Two-peer IPFS",
+      "blocker": "Two native Kubo 0.29.0 peers completed 30-repeat add/pin/cold/warm/concurrency measurements, 30 publisher outage/recovery trials, and strict B2/B4/B7 runs at 5/10 clients.",
+      "effect": "Consumer outage, WAN, Docker Compose, and multi-host measurements remain limitations rather than completed evidence."
     },
     {
-      "id": " BLK-003 ",
-      "scope": " FairFed ",
-      "blocker": " A faithful primary-paper weighting implementation has not been independently specified and verified in this repository. ",
-      "effect": " B5 is not measured; no custom heuristic is labeled FairFed. ",
-      "resolution": " Implement the published weighting equations with reference tests against reported examples. "
+      "id": "BLK-003",
+      "status": "Resolved",
+      "scope": "FairFed",
+      "blocker": "The published stateful server weighting rule, signed EOD sufficient-statistic calculation, beta-zero equivalence, accuracy fallback, deterministic tests, and paired Adult/COMPAS runs are complete.",
+      "effect": "Report the observed accuracy-fairness trade-off; do not claim reproduction of every local debiasing variant."
     },
     {
-      "id": " BLK-004 ",
-      "scope": " Public release ",
-      "blocker": " The local repository has no configured remote and anonymous repository access has not been verified. ",
-      "effect": " Public citation and clean-clone-from-GitHub evidence remain unavailable. ",
-      "resolution": " Configure the actual public remote, push the branch, and run the anonymous URL checker and clean-clone protocol. "
+      "id": "BLK-004",
+      "status": "Active",
+      "scope": "Public release",
+      "blocker": "The local repository has no configured remote and anonymous repository access has not been verified.",
+      "effect": "Public citation and clean-clone-from-GitHub evidence remain unavailable. Configure the public remote, push, and run the anonymous clean-clone protocol."
     }
   ]
 }

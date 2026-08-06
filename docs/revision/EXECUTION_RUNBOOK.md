@@ -90,21 +90,20 @@ throughput.
   --output outputs/major_revision/core-statistics-bootstrap
 
 .venv/bin/python -m scripts.analyze_expanded_results \
-  --mlp outputs/major_revision/adult-mlp-5seed-ee23a65 \
+  --mlp outputs/major_revision/adult-mlp-b0-b3-b5-5seed-dbc1e53 \
   --scaling outputs/major_revision/client-scaling-5seed-2d2b220 \
-  --heterogeneity outputs/major_revision/heterogeneity-10seed-2d2b220 \
+  --heterogeneity outputs/major_revision/heterogeneity-b0-b3-10seed-76828c3 \
   --threshold outputs/major_revision/threshold-sensitivity-10seed-aa165b3 \
   --adversarial outputs/major_revision/adversarial-5seed-e8733cb \
-  --output outputs/major_revision/expanded-analysis-bootstrap
+  --output outputs/revision_audit/expanded-analysis-current
 
-.venv/bin/python -m scripts.prepare_results_package \
-  --gas-run gas-throughput-30rep \
-  --analysis-run expanded-analysis-bootstrap \
-  --core-analysis-run core-statistics-bootstrap
+.venv/bin/python -m scripts.prepare_results_package
 .venv/bin/python -m scripts.build_latex_tables
 .venv/bin/python -m scripts.build_revision_figures
 .venv/bin/python scripts/render_revision_png_figures.py
 node scripts/build_results_workbook.mjs
+.venv/bin/python -m scripts.build_release_checksums
+.venv/bin/python -m scripts.build_release_checksums --verify
 ```
 
 PNG rendering additionally requires `requirements-report.txt`. The workbook

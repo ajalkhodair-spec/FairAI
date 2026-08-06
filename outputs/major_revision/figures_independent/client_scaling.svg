@@ -4,38 +4,43 @@
 <line class="axis" x1="180" y1="90" x2="180" y2="1010"/>
 <line class="axis" x1="180" y1="1010" x2="1680" y2="1010"/>
 <line class="grid" x1="180" y1="1010.0" x2="1680" y2="1010.0"/>
-<text class="tick" x="158" y="1020.0" text-anchor="end">0.767</text>
+<text class="tick" x="158" y="1020.0" text-anchor="end">0.763</text>
 <line class="grid" x1="180" y1="826.0" x2="1680" y2="826.0"/>
-<text class="tick" x="158" y="836.0" text-anchor="end">0.769</text>
+<text class="tick" x="158" y="836.0" text-anchor="end">0.766</text>
 <line class="grid" x1="180" y1="642.0" x2="1680" y2="642.0"/>
-<text class="tick" x="158" y="652.0" text-anchor="end">0.771</text>
+<text class="tick" x="158" y="652.0" text-anchor="end">0.769</text>
 <line class="grid" x1="180" y1="458.0" x2="1680" y2="458.0"/>
-<text class="tick" x="158" y="468.0" text-anchor="end">0.773</text>
+<text class="tick" x="158" y="468.0" text-anchor="end">0.772</text>
 <line class="grid" x1="180" y1="274.0" x2="1680" y2="274.0"/>
-<text class="tick" x="158" y="284.0" text-anchor="end">0.775</text>
+<text class="tick" x="158" y="284.0" text-anchor="end">0.774</text>
 <line class="grid" x1="180" y1="90.0" x2="1680" y2="90.0"/>
-<text class="tick" x="158" y="100.0" text-anchor="end">0.776</text>
-<text class="tick" x="367.5" y="1065" text-anchor="middle">3.0</text>
-<text class="tick" x="742.5" y="1065" text-anchor="middle">5.0</text>
-<text class="tick" x="1117.5" y="1065" text-anchor="middle">10.0</text>
-<text class="tick" x="1492.5" y="1065" text-anchor="middle">20.0</text>
+<text class="tick" x="158" y="100.0" text-anchor="end">0.777</text>
+<text class="tick" x="330.0" y="1065" text-anchor="middle">3.0</text>
+<text class="tick" x="630.0" y="1065" text-anchor="middle">5.0</text>
+<text class="tick" x="930.0" y="1065" text-anchor="middle">10.0</text>
+<text class="tick" x="1230.0" y="1065" text-anchor="middle">20.0</text>
+<text class="tick" x="1530.0" y="1065" text-anchor="middle">50.0</text>
 <text class="label" transform="translate(48 550.0) rotate(-90)" text-anchor="middle">Test accuracy</text>
-<line class="axis" x1="367.5" y1="543.0582464657048" x2="367.5" y2="508.49901393494025"/>
-<line class="axis" x1="353.5" y1="543.0582464657048" x2="381.5" y2="543.0582464657048"/>
-<line class="axis" x1="353.5" y1="508.49901393494025" x2="381.5" y2="508.49901393494025"/>
-<line class="axis" x1="742.5" y1="596.22629651302" x2="742.5" y2="476.59818390654664"/>
-<line class="axis" x1="728.5" y1="596.22629651302" x2="756.5" y2="596.22629651302"/>
-<line class="axis" x1="728.5" y1="476.59818390654664" x2="756.5" y2="476.59818390654664"/>
-<line class="axis" x1="1117.5" y1="624.1395227878519" x2="1117.5" y2="576.288277745267"/>
-<line class="axis" x1="1103.5" y1="624.1395227878519" x2="1131.5" y2="624.1395227878519"/>
-<line class="axis" x1="1103.5" y1="576.288277745267" x2="1131.5" y2="576.288277745267"/>
-<line class="axis" x1="1492.5" y1="609.5183090248294" x2="1492.5" y2="524.4494289491427"/>
-<line class="axis" x1="1478.5" y1="609.5183090248294" x2="1506.5" y2="609.5183090248294"/>
-<line class="axis" x1="1478.5" y1="524.4494289491427" x2="1506.5" y2="524.4494289491427"/>
-<polyline fill="none" stroke="#176B87" stroke-width="8" points="367.5,525.7786302003224 742.5,536.4122402097834 1117.5,600.2139002665594 1492.5,566.983868986986"/>
-<circle cx="367.5" cy="525.7786302003224" r="13" fill="#176B87"/>
-<circle cx="742.5" cy="536.4122402097834" r="13" fill="#176B87"/>
-<circle cx="1117.5" cy="600.2139002665594" r="13" fill="#176B87"/>
-<circle cx="1492.5" cy="566.983868986986" r="13" fill="#176B87"/>
+<line class="axis" x1="330.0" y1="543.3670984287401" x2="330.0" y2="486.94688304327053"/>
+<line class="axis" x1="316.0" y1="543.3670984287401" x2="344.0" y2="543.3670984287401"/>
+<line class="axis" x1="316.0" y1="486.94688304327053" x2="344.0" y2="486.94688304327053"/>
+<line class="axis" x1="630.0" y1="550.2059124148707" x2="630.0" y2="464.7207375883821"/>
+<line class="axis" x1="616.0" y1="550.2059124148707" x2="644.0" y2="550.2059124148707"/>
+<line class="axis" x1="616.0" y1="464.7207375883821" x2="644.0" y2="464.7207375883821"/>
+<line class="axis" x1="930.0" y1="543.3670984287544" x2="930.0" y2="398.042301223731"/>
+<line class="axis" x1="916.0" y1="543.3670984287544" x2="944.0" y2="543.3670984287544"/>
+<line class="axis" x1="916.0" y1="398.042301223731" x2="944.0" y2="398.042301223731"/>
+<line class="axis" x1="1230.0" y1="763.2135967887322" x2="1230.0" y2="338.9079315375203"/>
+<line class="axis" x1="1216.0" y1="763.2135967887322" x2="1244.0" y2="763.2135967887322"/>
+<line class="axis" x1="1216.0" y1="338.9079315375203" x2="1244.0" y2="338.9079315375203"/>
+<line class="axis" x1="1530.0" y1="479.25321730889164" x2="1530.0" y2="352.73515856570566"/>
+<line class="axis" x1="1516.0" y1="479.25321730889164" x2="1544.0" y2="479.25321730889164"/>
+<line class="axis" x1="1516.0" y1="352.73515856570566" x2="1544.0" y2="352.73515856570566"/>
+<polyline fill="none" stroke="#176B87" stroke-width="8" points="330.0,515.1569907360054 630.0,507.46332500162634 930.0,470.70469982624263 1230.0,551.0607641631261 1530.0,415.99418793729865"/>
+<circle cx="330.0" cy="515.1569907360054" r="13" fill="#176B87"/>
+<circle cx="630.0" cy="507.46332500162634" r="13" fill="#176B87"/>
+<circle cx="930.0" cy="470.70469982624263" r="13" fill="#176B87"/>
+<circle cx="1230.0" cy="551.0607641631261" r="13" fill="#176B87"/>
+<circle cx="1530.0" cy="415.99418793729865" r="13" fill="#176B87"/>
 <text class="label" x="930" y="1135" text-anchor="middle">Clients</text>
 </svg>

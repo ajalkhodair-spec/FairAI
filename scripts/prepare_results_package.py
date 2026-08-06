@@ -40,6 +40,9 @@ SHEETS = [
     "Privacy_Exposure",
     "Ethics_Scope",
     "Complexity",
+    "Stage_Timing",
+    "Representation_Fairness",
+    "Trust_Boundary",
     "Statistics",
     "Missing_Data",
     "Claims_Supported",
@@ -105,14 +108,111 @@ def missing_frame(blocker, scope):
     )
 
 
+def read_blockers(path):
+    rows = []
+    for line in path.read_text(encoding="utf-8").splitlines():
+        if not line.startswith("| BLK-"):
+            continue
+        cells = [cell.strip() for cell in line.strip("|").split("|")]
+        rows.append(
+            dict(
+                zip(
+                    ["id", "status", "scope", "blocker", "effect"],
+                    cells,
+                    strict=True,
+                )
+            )
+        )
+    return pd.DataFrame(rows)
+
+
+def flatten_trust_boundary(path):
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    false_metric = payload["false_metric_reporting"]
+    unavailable = payload["approved_artifact_unavailable"]
+    return pd.DataFrame(
+        [
+            {
+                "scenario": "false_metric_reporting",
+                "expected_control": "proof binds supplied metrics",
+                "observed_result": "fabricated metrics approved and aggregated",
+                "round_state": false_metric["round_final_state"],
+                "on_chain_approved": false_metric["on_chain_approved"],
+                "aggregated": false_metric["aggregated"],
+                "reason": payload["claim_boundary"],
+                "evidence_type": payload["evidence_type"],
+                "source_file": str(path),
+            },
+            {
+                "scenario": "approved_artifact_unavailable",
+                "expected_control": "fail closed before aggregation",
+                "observed_result": "round cancelled and no global model published",
+                "round_state": unavailable["final_state"],
+                "on_chain_approved": True,
+                "aggregated": unavailable["aggregation_started"],
+                "reason": unavailable["reason"],
+                "evidence_type": payload["evidence_type"],
+                "source_file": str(path),
+            },
+        ]
+    )
+
+
+def flatten_proof_benchmark(path):
+    payload = json.loads(path.read_text(encoding="utf-8"))
+    rows = []
+    for stage, values in payload["timings_ms"].items():
+        rows.append(
+            {
+                "run_id": payload["run_id"],
+                "stage": stage,
+                "n": payload["repetitions"],
+                "mean_ms": values["mean"],
+                "std_ms": values["standard_deviation"],
+                "median_ms": values["median"],
+                "p95_ms": values["p95_nearest_rank_index"],
+                "minimum_ms": values["minimum"],
+                "maximum_ms": values["maximum"],
+                "valid_proofs_verified": payload["valid_proofs_verified"],
+                "negative_cases_rejected": payload["negative_cases_rejected"],
+                "setup_type": payload["setup_type"],
+                "production_ceremony_required": payload[
+                    "production_ceremony_required"
+                ],
+                "evidence_type": payload["evidence_type"],
+                "source_file": str(path),
+            }
+        )
+    return pd.DataFrame(rows)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", default="outputs/major_revision")
+    parser.add_argument("--gas-run", default="gas-v2-30rep-4a08a15")
     parser.add_argument(
-        "--gas-run", default="gas-throughput-30rep-7dff9b5"
+        "--analysis-dir",
+        default="outputs/revision_audit/expanded-analysis-6df6bfb",
     )
     parser.add_argument(
-        "--analysis-run", default="expanded-analysis-bootstrap-aae4091"
+        "--fairfed-analysis-dir",
+        default="outputs/revision_audit/fairfed-scaling-analysis",
+    )
+    parser.add_argument(
+        "--infrastructure-analysis-dir",
+        default="outputs/revision_audit/infrastructure-analysis-v2",
+    )
+    parser.add_argument(
+        "--stage-timing-dir",
+        default="outputs/revision_audit/stage-timing-1536b13",
+    )
+    parser.add_argument(
+        "--entropy-analysis-dir",
+        default="outputs/revision_audit/entropy-approval-4d97043",
+    )
+    parser.add_argument(
+        "--trust-boundary-file",
+        default="outputs/revision_audit/trust-boundary-1536b13/evidence.json",
     )
     parser.add_argument(
         "--core-analysis-run", default="core-statistics-bootstrap"
@@ -125,15 +225,20 @@ def main():
     runs = {
         "adult_core": root / "adult-core-10seed-e01b72a",
         "compas_core": root / "compas-core-10seed-e01b72a",
-        "mlp": root / "adult-mlp-5seed-ee23a65",
+        "mlp": root / "adult-mlp-b0-b3-b5-5seed-dbc1e53",
         "scaling": root / "client-scaling-5seed-2d2b220",
-        "heterogeneity": root / "heterogeneity-10seed-2d2b220",
+        "heterogeneity": root / "heterogeneity-b0-b3-10seed-76828c3",
         "threshold": root / "threshold-sensitivity-10seed-aa165b3",
         "adversarial": root / "adversarial-5seed-e8733cb",
         "gas": root / args.gas_run,
         "legacy": root / "legacy_mvp",
     }
-    analysis_root = root / args.analysis_run
+    analysis_root = Path(args.analysis_dir)
+    fairfed_analysis_root = Path(args.fairfed_analysis_dir)
+    infrastructure_analysis_root = Path(args.infrastructure_analysis_dir)
+    stage_timing_root = Path(args.stage_timing_dir)
+    entropy_analysis_root = Path(args.entropy_analysis_dir)
+    trust_boundary_file = Path(args.trust_boundary_file)
     core_analysis_root = root / args.core_analysis_run
     measured_runs = [
         "adult_core",
@@ -152,9 +257,9 @@ def main():
             ["Evidence boundary", "Measured, derived, modeled, tested, blocked, and missing are distinguished"],
             ["Primary datasets", "Adult and COMPAS"],
             ["Core models", "Federated logistic regression and small MLP"],
-            ["IPFS status", "Two-peer benchmark code complete; measurement blocked by Docker socket access"],
-            ["V2 proof status", "V2 compiles with Circom 2.1.9; pinned setup, ZKey, and proof benchmark remain blocked"],
-            ["FairFed status", "Blocked; no heuristic substitution"],
+            ["IPFS status", "Measured on two native Kubo 0.29.0 peers with 30 repetitions"],
+            ["V2 proof status", "Thirty valid proofs verified and six negative cases rejected; production ceremony still required"],
+            ["FairFed status", "Published stateful weighting rule implemented and evaluated on Adult and COMPAS"],
             ["Source of truth", "Run manifests and source_file columns"],
         ],
         columns=["item", "value"],
@@ -248,7 +353,12 @@ def main():
         "derived",
         str(core_analysis_root / "summary_statistics.csv"),
     )
-    workbook["FairFed_Comparison"] = missing_frame("BLK-003", "B5 FairFed")
+    workbook["FairFed_Comparison"] = add_trace(
+        read_csv(fairfed_analysis_root / "descriptive_statistics.csv"),
+        fairfed_analysis_root.name,
+        "derived_from_measured_runs",
+        str(fairfed_analysis_root / "descriptive_statistics.csv"),
+    )
     workbook["Scaling"] = add_trace(
         read_csv(runs["scaling"] / "metrics" / "test_metrics.csv"),
         runs["scaling"].name,
@@ -268,15 +378,8 @@ def main():
         str(runs["threshold"] / "metrics" / "test_metrics.csv"),
     )
     workbook["Convergence"] = workbook["Global_Metrics"]
-    proof_legacy = add_trace(
-        read_csv(runs["legacy"] / "proof_timings.csv"),
-        "legacy_mvp",
-        "measured_legacy",
-        str(runs["legacy"] / "proof_timings.csv"),
-    )
-    workbook["Proof_Overhead"] = pd.concat(
-        [proof_legacy, missing_frame("BLK-001", "direct V2 Groth16")],
-        ignore_index=True,
+    workbook["Proof_Overhead"] = flatten_proof_benchmark(
+        Path("outputs/revision_audit/v2_proof_benchmark.json")
     )
     workbook["Proof_Semantics"] = add_trace(
         read_csv(root / "security-evidence" / "false_metric_reporting_results.csv"),
@@ -300,15 +403,31 @@ def main():
         ],
         ignore_index=True,
     )
-    for sheet, scope in (
-        ("IPFS_Add", "two-peer Kubo add"),
-        ("IPFS_Pin", "two-peer Kubo pin"),
-        ("IPFS_Cold_Retrieval", "two-peer cold retrieval"),
-        ("IPFS_Warm_Retrieval", "two-peer warm retrieval"),
-        ("IPFS_Availability", "two-peer availability and recovery"),
-        ("IPFS_Concurrency", "two-peer concurrent retrieval"),
+    ipfs_sequential = read_csv(infrastructure_analysis_root / "ipfs_sequential.csv")
+    for sheet in (
+        "IPFS_Add",
+        "IPFS_Pin",
+        "IPFS_Cold_Retrieval",
+        "IPFS_Warm_Retrieval",
     ):
-        workbook[sheet] = missing_frame("BLK-002", scope)
+        workbook[sheet] = add_trace(
+            ipfs_sequential,
+            infrastructure_analysis_root.name,
+            "derived_from_30_repeat_native_kubo_measurements",
+            str(infrastructure_analysis_root / "ipfs_sequential.csv"),
+        )
+    workbook["IPFS_Availability"] = add_trace(
+        read_csv(infrastructure_analysis_root / "ipfs_recovery.csv"),
+        infrastructure_analysis_root.name,
+        "derived_from_30_repeat_native_kubo_measurements",
+        str(infrastructure_analysis_root / "ipfs_recovery.csv"),
+    )
+    workbook["IPFS_Concurrency"] = add_trace(
+        read_csv(infrastructure_analysis_root / "ipfs_concurrency.csv"),
+        infrastructure_analysis_root.name,
+        "derived_from_30_repeat_native_kubo_measurements",
+        str(infrastructure_analysis_root / "ipfs_concurrency.csv"),
+    )
 
     gas_summary = add_trace(
         read_csv(runs["gas"] / "blockchain" / "gas_summary.csv"),
@@ -357,23 +476,27 @@ def main():
         "analytical",
         str(root / "complexity" / "complexity_analysis.csv"),
     )
+    workbook["Stage_Timing"] = add_trace(
+        read_csv(stage_timing_root / "stage_timing.csv"),
+        stage_timing_root.name,
+        "derived_from_independently_instrumented_stages",
+        str(stage_timing_root / "stage_timing.csv"),
+    )
+    workbook["Representation_Fairness"] = add_trace(
+        read_csv(entropy_analysis_root / "representation_fairness.csv"),
+        entropy_analysis_root.name,
+        "derived_from_measured_client_decisions",
+        str(entropy_analysis_root / "representation_fairness.csv"),
+    )
+    workbook["Trust_Boundary"] = flatten_trust_boundary(trust_boundary_file)
     workbook["Statistics"] = add_trace(
         read_csv(analysis_root / "experiment_summary.csv"),
         analysis_root.name,
         "derived",
         str(analysis_root / "experiment_summary.csv"),
     )
-    blockers = pd.read_csv(
-        "BLOCKERS.md",
-        sep="|",
-        skiprows=4,
-        names=["drop", "id", "scope", "blocker", "effect", "resolution", "drop2"],
-        engine="python",
-    )[["id", "scope", "blocker", "effect", "resolution"]]
-    blockers = blockers[
-        blockers["id"].fillna("").str.strip().str.startswith("BLK-")
-    ].reset_index(drop=True)
-    workbook["Missing_Data"] = blockers.apply(lambda column: column.str.strip())
+    blockers = read_blockers(Path("BLOCKERS.md"))
+    workbook["Missing_Data"] = blockers
 
     claims = pd.DataFrame(
         [
@@ -382,9 +505,11 @@ def main():
             ["3/5/10/20 clients are evaluated", "supported_B0", "measured"],
             ["Fairness policy changes approval and outcomes", "supported_B3", "measured"],
             ["Random-weight poisoning is mitigated by coordinate median in this suite", "supported_bounded", "measured"],
-            ["Direct V2 Groth16 is measured", "not_supported", "blocked"],
-            ["Two-peer IPFS overhead is measured", "not_supported", "blocked"],
-            ["FairFed is compared", "not_supported", "blocked"],
+            ["Direct V2 Groth16 is measured locally", "supported_bounded", "measured_local"],
+            ["Two-peer native Kubo overhead is measured", "supported_bounded", "measured_local"],
+            ["Published FairFed server weighting is compared", "supported_bounded", "measured"],
+            ["Proofs establish correct derivation of private metrics", "not_supported", "trust_boundary_test"],
+            ["Approved artifacts fail closed when unavailable", "supported_bounded", "full_path_test"],
             ["Raw data locality provides formal privacy", "not_supported", "nonclaim"],
             ["FairAI operationalizes all ethics dimensions", "not_supported", "nonclaim"],
         ],
@@ -425,12 +550,9 @@ def main():
             str(analysis_root / "entropy_correlations.csv"),
         ),
         "complexity_analysis.csv": workbook["Complexity"],
-        "stage_timing.csv": add_trace(
-            read_csv(root / "complexity" / "stage_timing.csv"),
-            "complexity",
-            "measured_and_missing",
-            str(root / "complexity" / "stage_timing.csv"),
-        ),
+        "stage_timing.csv": workbook["Stage_Timing"],
+        "representation_fairness.csv": workbook["Representation_Fairness"],
+        "trust_boundary.csv": workbook["Trust_Boundary"],
         "verifier_security_results.csv": workbook["Verifier_Security"],
     }
     for filename in (
@@ -482,15 +604,13 @@ def main():
         "ipfs_cold_retrieval.csv": workbook["IPFS_Cold_Retrieval"],
         "ipfs_warm_retrieval.csv": workbook["IPFS_Warm_Retrieval"],
         "ipfs_availability.csv": workbook["IPFS_Availability"],
-        "ipfs_recovery.csv": missing_frame(
-            "BLK-002", "two-peer publisher restart and replica recovery"
-        ),
+        "ipfs_recovery.csv": workbook["IPFS_Availability"],
         "ipfs_concurrency.csv": workbook["IPFS_Concurrency"],
-        "ipfs_artifact_sizes.csv": missing_frame(
-            "BLK-002", "two-peer Kubo artifact size accounting"
-        ),
+        "ipfs_artifact_sizes.csv": workbook["IPFS_Add"][[
+            "run_id", "payload_bytes", "evidence_type", "source_file"
+        ]].drop_duplicates(),
         "filesystem_baseline.csv": missing_frame(
-            "BLK-002", "paired filesystem baseline"
+            "LIMITATION", "paired filesystem baseline not measured"
         ),
     }
     exact_csv_exports.update(ipfs_exports)
