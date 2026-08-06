@@ -1,102 +1,93 @@
 import argparse
+import json
 from pathlib import Path
 
 import pandas as pd
 
 
-def describe(values, stage, evidence_type, source, status="measured"):
+def describe(values, stage, source, status="measured"):
     values = pd.Series(values, dtype=float).dropna()
     if values.empty:
         return {
-            "stage": stage,
-            "status": status,
-            "evidence_type": evidence_type,
-            "n": 0,
-            "mean_ms": None,
-            "std_ms": None,
-            "median_ms": None,
-            "p95_ms": None,
-            "minimum_ms": None,
-            "maximum_ms": None,
+            "stage": stage, "status": status,
+            "evidence_type": "unavailable" if status != "measured" else "measured",
+            "n": 0, "mean_ms": None, "std_ms": None, "median_ms": None,
+            "p95_ms": None, "minimum_ms": None, "maximum_ms": None,
             "source": source,
         }
     return {
-        "stage": stage,
-        "status": status,
-        "evidence_type": evidence_type,
-        "n": len(values),
-        "mean_ms": values.mean(),
+        "stage": stage, "status": status, "evidence_type": "measured",
+        "n": len(values), "mean_ms": values.mean(),
         "std_ms": values.std(ddof=1) if len(values) > 1 else 0.0,
-        "median_ms": values.median(),
-        "p95_ms": values.quantile(0.95),
-        "minimum_ms": values.min(),
-        "maximum_ms": values.max(),
+        "median_ms": values.median(), "p95_ms": values.quantile(0.95),
+        "minimum_ms": values.min(), "maximum_ms": values.max(),
         "source": source,
     }
+
+
+def add_values(collection, stage, values, source):
+    entry = collection.setdefault(stage, {"values": [], "sources": set()})
+    entry["values"].extend(pd.Series(values, dtype=float).dropna().tolist())
+    entry["sources"].add(str(source))
 
 
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output", required=True)
     parser.add_argument("--federated-run", action="append", required=True)
-    parser.add_argument("--legacy-run", required=True)
+    parser.add_argument("--strict-run", action="append", required=True)
+    parser.add_argument("--proof-run")
     args = parser.parse_args()
-    rows = []
-    for directory_value in args.federated_run:
-        directory = Path(directory_value)
-        client = pd.read_csv(
-            directory / "metrics" / "fairness_metrics_by_client.csv"
+    collected = {}
+    for value in args.federated_run:
+        directory = Path(value)
+        timing_path = directory / "metrics" / "stage_timings.csv"
+        timings = pd.read_csv(timing_path)
+        for stage, group in timings.groupby("stage", sort=True):
+            add_values(collected, stage, group["duration_ms"], timing_path)
+        test_path = directory / "metrics" / "test_metrics.csv"
+        add_values(
+            collected, "end_to_end_method",
+            pd.read_csv(test_path)["runtime_ms"], test_path,
         )
-        test = pd.read_csv(directory / "metrics" / "test_metrics.csv")
-        rows.append(
-            describe(
-                client["runtime_ms"],
-                "local_train_evaluate_fairness_policy",
-                "measured",
-                str(
-                    directory
-                    / "metrics"
-                    / "fairness_metrics_by_client.csv"
-                ),
-            )
-        )
-        rows.append(
-            describe(
-                test["runtime_ms"],
-                "federated_method_total",
-                "measured",
-                str(directory / "metrics" / "test_metrics.csv"),
-            )
-        )
-    legacy = Path(args.legacy_run)
-    proof = pd.read_csv(legacy / "proof_timings.csv")
-    rows.append(
-        describe(
-            proof["proof_generation_ms"],
-            "legacy_proof_generation",
-            "measured_legacy",
-            str(legacy / "proof_timings.csv"),
-        )
-    )
-    ipfs = pd.read_csv(legacy / "ipfs_timings.csv")
-    rows.append(
-        describe(
-            ipfs["retrieval_ms"],
-            "legacy_single_peer_ipfs_retrieval",
-            "measured_legacy",
-            str(legacy / "ipfs_timings.csv"),
-        )
-    )
-    for stage, source in (
-        ("v2_proof_generation", "BLOCKERS.md#BLK-001"),
-        ("v2_proof_verification", "BLOCKERS.md#BLK-001"),
-        ("two_peer_ipfs_add", "BLOCKERS.md#BLK-002"),
-        ("two_peer_ipfs_pin", "BLOCKERS.md#BLK-002"),
-        ("two_peer_ipfs_cold_retrieval", "BLOCKERS.md#BLK-002"),
-        ("two_peer_ipfs_warm_retrieval", "BLOCKERS.md#BLK-002"),
-        ("two_peer_ipfs_recovery", "BLOCKERS.md#BLK-002"),
-    ):
-        rows.append(describe([], stage, "missing", source, status="blocked"))
+    for value in args.strict_run:
+        for evidence_path in sorted(Path(value).rglob("contract_result.json")):
+            evidence = json.loads(evidence_path.read_text(encoding="utf-8"))
+            retrieval = pd.DataFrame(evidence["retrieval_rows"])
+            initial = retrieval[retrieval["artifact_type"] != "approved_model_master_retrieval"]
+            approved = retrieval[retrieval["artifact_type"] == "approved_model_master_retrieval"]
+            add_values(collected, "kubo_add", initial["upload_ms"], evidence_path)
+            add_values(collected, "consumer_retrieval", initial["retrieval_ms"], evidence_path)
+            if "pin_ms" in initial:
+                add_values(collected, "consumer_pin", initial["pin_ms"], evidence_path)
+            add_values(collected, "approved_model_retrieval", approved["retrieval_ms"], evidence_path)
+            serialization = pd.DataFrame(evidence.get("serialization_rows", []))
+            if not serialization.empty:
+                add_values(collected, "artifact_serialization", serialization["serialization_ms"], evidence_path)
+            records = pd.DataFrame([record for rnd in evidence["rounds"] for record in rnd["records"]])
+            if "signature_ms" in records:
+                add_values(collected, "eip712_decision_signing", records["signature_ms"], evidence_path)
+            if "contract_submission_ms" in records:
+                add_values(collected, "contract_submission", records["contract_submission_ms"], evidence_path)
+            contract = pd.DataFrame(evidence.get("contract_timing_rows", []))
+            if not contract.empty:
+                for stage, group in contract.groupby("stage", sort=True):
+                    add_values(collected, stage, group["duration_ms"], evidence_path)
+            if args.proof_run is None:
+                proof = pd.DataFrame(evidence["proof_rows"])
+                proof = proof[proof["approved"]]
+                for field, stage in (("witness_ms", "witness_generation"), ("proof_ms", "proof_generation"), ("verify_ms", "off_chain_proof_verification")):
+                    add_values(collected, stage, proof[field], evidence_path)
+    if args.proof_run:
+        proof_path = Path(args.proof_run) / "raw" / "v2_proof_timings.csv"
+        proof = pd.read_csv(proof_path)
+        for field, stage in (("witness_ms", "witness_generation"), ("proof_ms", "proof_generation"), ("verify_ms", "off_chain_proof_verification")):
+            add_values(collected, stage, proof[field], proof_path)
+    rows = [
+        describe(item["values"], stage, ";".join(sorted(item["sources"])))
+        for stage, item in sorted(collected.items())
+    ]
+    rows.append(describe([], "direct_solidity_verification_latency", "Gas measured separately; wall-clock latency was not instrumented", status="unavailable"))
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_csv(output, index=False)

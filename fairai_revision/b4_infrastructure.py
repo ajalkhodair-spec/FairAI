@@ -40,6 +40,22 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
         self.fault_injection_rows = []
         self.metric_integrity_experiment = metric_integrity_experiment
         self.metric_integrity_rows = []
+        self.serialization_rows = []
+        self.contract_timing_rows = []
+
+    def _serialize(self, round_id, client_id, artifact_type, value):
+        started = time.perf_counter()
+        payload = _canonical_bytes(value)
+        self.serialization_rows.append(
+            {
+                "round": round_id,
+                "client_id": client_id,
+                "artifact_type": artifact_type,
+                "serialization_ms": (time.perf_counter() - started) * 1000,
+                "payload_bytes": len(payload),
+            }
+        )
+        return payload
 
     @staticmethod
     def _scaled_metrics(metrics, scale):
@@ -347,6 +363,8 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             "proof_rows": self.proof_rows,
             "fault_injections": self.fault_injection_rows,
             "metric_integrity_experiment": self.metric_integrity_rows,
+            "serialization_rows": self.serialization_rows,
+            "contract_timing_rows": self.contract_timing_rows,
         }
         self.output_dir.mkdir(parents=True, exist_ok=True)
         (self.output_dir / "contract_input.json").write_text(
@@ -386,7 +404,10 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             prefix = {"round_id": round_id, "node_id": numeric_node_id}
             scaled = self._scaled_metrics(reported_metrics[client_id], scale)
             metrics_artifact = {**prefix, **scaled}
-            model_payload = _canonical_bytes(
+            model_payload = self._serialize(
+                round_id,
+                client_id,
+                "model",
                 {**prefix, **_parameters_payload(update.parameters)}
             )
             model_cid = self._publish(
@@ -402,19 +423,24 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                     round_id,
                     client_id,
                     "metrics",
-                    _canonical_bytes(metrics_artifact),
+                    self._serialize(
+                        round_id, client_id, "metrics", metrics_artifact
+                    ),
                 ),
                 "metadata": self._publish(
                     round_id,
                     client_id,
                     "metadata",
-                    _canonical_bytes(
+                    self._serialize(
+                        round_id,
+                        client_id,
+                        "metadata",
                         {
                             **prefix,
                             "method": "B4_or_B7",
                             "sample_count": update.sample_count,
                             "policy_version": policy["policy_version"],
-                        }
+                        },
                     ),
                 ),
             }
@@ -429,7 +455,9 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                 round_id,
                 client_id,
                 "bound_manifest",
-                _canonical_bytes(bound_manifest),
+                self._serialize(
+                    round_id, client_id, "bound_manifest", bound_manifest
+                ),
             )
             binding = artifact_binding_fields(bound_manifest, metrics_artifact)
             circuit_input = self._circuit_input(
@@ -483,13 +511,23 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                 round_id,
                 client_id,
                 "proof",
-                _canonical_bytes({**prefix, "proof": proof_payload}),
+                self._serialize(
+                    round_id,
+                    client_id,
+                    "proof",
+                    {**prefix, "proof": proof_payload},
+                ),
             )
             cids["public"] = self._publish(
                 round_id,
                 client_id,
                 "public",
-                _canonical_bytes({"public_signals": serialized_public}),
+                self._serialize(
+                    round_id,
+                    client_id,
+                    "public",
+                    {"public_signals": serialized_public},
+                ),
             )
             submission_manifest = {
                 "schema_version": "fairai.submission_manifest.v2",
@@ -502,7 +540,12 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                 round_id,
                 client_id,
                 "submission_manifest",
-                _canonical_bytes(submission_manifest),
+                self._serialize(
+                    round_id,
+                    client_id,
+                    "submission_manifest",
+                    submission_manifest,
+                ),
             )
             submissions.append(
                 {
@@ -528,7 +571,15 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
         }
         self.protocol_commands.append(command)
         try:
+            started = time.perf_counter()
             on_chain = self.bridge.request(command)
+            self.contract_timing_rows.append(
+                {
+                    "round": round_id,
+                    "stage": "round_contract_submission_total",
+                    "duration_ms": (time.perf_counter() - started) * 1000,
+                }
+            )
         except LedgerBridgeError as exc:
             self.bridge.close(force=True)
             raise B2InfrastructureError(f"On-chain round submission failed: {exc}") from exc
@@ -626,25 +677,31 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             round_id,
             "global",
             "global_model",
-            _canonical_bytes(
+            self._serialize(
+                round_id,
+                "global",
+                "global_model",
                 {
                     "round_id": round_id,
                     "method": "B4_or_B7",
                     **_parameters_payload(global_parameters),
-                }
+                },
             ),
         )
         report_cid = self._publish(
             round_id,
             "global",
             "report",
-            _canonical_bytes(
+            self._serialize(
+                round_id,
+                "global",
+                "report",
                 {
                     "schema_version": "fairai.v2_round_report.v1",
                     "round_id": round_id,
                     "global_metrics": global_metrics,
                     "participant_nodes": sorted(included_clients),
-                }
+                },
             ),
         )
         command = {
@@ -655,7 +712,15 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             "participant_model_cids": participant_cids,
         }
         self.protocol_commands.append(command)
+        started = time.perf_counter()
         publication = self.bridge.request(command)
+        self.contract_timing_rows.append(
+            {
+                "round": round_id,
+                "stage": "global_publication",
+                "duration_ms": (time.perf_counter() - started) * 1000,
+            }
+        )
         self.rounds.append(
             {
                 **pending["on_chain"],

@@ -83,7 +83,9 @@ async function submitRound(state, command) {
       decision: submission.approved,
       expiration: block.timestamp + 3600,
     };
+    const signatureStarted = performance.now();
     const signature = await state.signer.signTypedData(state.domain, decisionTypes, decision);
+    const signatureMs = performance.now() - signatureStarted;
     const p = submission.groth16_proof;
     const encoded = hre.ethers.AbiCoder.defaultAbiCoder().encode(
       [
@@ -93,6 +95,7 @@ async function submitRound(state, command) {
       ],
       [p.pA, p.pB, p.pC, decision, signature],
     );
+    const submissionStarted = performance.now();
     const receipt = await (await state.ledger.connect(state.submitter).submitModel(
       decision.nodeId,
       roundId,
@@ -105,6 +108,7 @@ async function submitRound(state, command) {
       encoded,
       submission.public_signals,
     )).wait();
+    const contractSubmissionMs = performance.now() - submissionStarted;
     const record = await state.ledger.getRecord(decision.nodeId, roundId);
     records.push({
       node_id: submission.node_id,
@@ -113,6 +117,8 @@ async function submitRound(state, command) {
       model_cid: record.modelCid,
       tx_hash: receipt.hash,
       gas_used: receipt.gasUsed.toString(),
+      signature_ms: signatureMs,
+      contract_submission_ms: contractSubmissionMs,
     });
   }
   await (await state.ledger.closeSubmissions(roundId)).wait();

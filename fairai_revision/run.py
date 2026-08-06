@@ -531,6 +531,7 @@ def run_federated_core(config, output_dir):
     global_rows = []
     client_rows = []
     test_rows = []
+    stage_timing_rows = []
     method_summaries = []
     observed_kubo_versions = set()
     v2_infrastructure_executed = False
@@ -698,6 +699,10 @@ def run_federated_core(config, output_dir):
                     client_rows.extend(
                         {**dimensions, **row} for row in result["client_metrics"]
                     )
+                    stage_timing_rows.extend(
+                        {**dimensions, "method": method, **row}
+                        for row in result["stage_timings"]
+                    )
                     test_metrics = result["test_metrics"]
                     test_rows.append(
                         {
@@ -774,6 +779,11 @@ def run_federated_core(config, output_dir):
         output_dir / "metrics" / "test_metrics.csv",
         test_rows,
         list(test_rows[0]),
+    )
+    write_csv(
+        output_dir / "metrics" / "stage_timings.csv",
+        stage_timing_rows,
+        list(stage_timing_rows[0]),
     )
     if expected_failure_rows:
         (output_dir / "negative").mkdir(parents=True, exist_ok=True)

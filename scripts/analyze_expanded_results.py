@@ -204,7 +204,7 @@ def analyze(args):
         frames[name], inputs[name] = load_completed(directory)
 
     summary_rows = []
-    summary_rows += summarize(frames["mlp"], "mlp", ["method"])
+    summary_rows += summarize(frames["mlp"], "mlp", ["partition", "method"])
     summary_rows += summarize(
         frames["scaling"], "scaling", ["client_count", "method"]
     )
@@ -220,7 +220,8 @@ def analyze(args):
         ["attack_type", "method"],
     )
 
-    paired = paired_rows(frames["mlp"], "mlp", ["partition"], "B0", "B1")
+    paired = paired_rows(frames["mlp"], "mlp", ["partition"], "B0", "B3")
+    paired += paired_rows(frames["mlp"], "mlp", ["partition"], "B0", "B5")
     paired += paired_rows(
         frames["adversarial"],
         "adversarial",

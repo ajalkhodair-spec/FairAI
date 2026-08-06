@@ -83,8 +83,13 @@ def _model_metrics(
     protected,
     dataset,
     minimum_group_samples,
+    timing_sink=None,
 ):
+    started = time.perf_counter()
     predictions = model.predict(features)
+    macro_f1 = float(f1_score(labels, predictions, average="macro"))
+    evaluation_ms = (time.perf_counter() - started) * 1000
+    started = time.perf_counter()
     result = evaluate_group_fairness(
         labels,
         predictions,
@@ -94,7 +99,11 @@ def _model_metrics(
         favorable_label=dataset.favorable_label,
         minimum_group_samples=minimum_group_samples,
     )
-    result["macro_f1"] = float(f1_score(labels, predictions, average="macro"))
+    fairness_ms = (time.perf_counter() - started) * 1000
+    result["macro_f1"] = macro_f1
+    if timing_sink is not None:
+        timing_sink["local_evaluation_ms"] = evaluation_ms
+        timing_sink["fairness_computation_ms"] = fairness_ms
     return result
 
 
@@ -176,6 +185,7 @@ def run_federated_method(
     )
     round_rows = []
     client_rows = []
+    stage_rows = []
     fairfed_raw_weights = None
     started = time.perf_counter()
     for round_id in range(1, rounds + 1):
@@ -214,14 +224,20 @@ def run_federated_method(
                     )
             valid = len(np.unique(prepared.train_labels[train_indices])) == 2
             if valid:
+                local_training_ms = None
+                metric_timings = {}
                 if remote_trainer is None:
                     training_labels = prepared.train_labels[train_indices]
                     if is_malicious and attack_type == "label_flip":
                         training_labels = 1 - training_labels
+                    training_started = time.perf_counter()
                     local_model.train_local(
                         prepared.train_features[train_indices],
                         training_labels,
                     )
+                    local_training_ms = (
+                        time.perf_counter() - training_started
+                    ) * 1000
                     metrics = _model_metrics(
                         local_model,
                         prepared.train_features[evaluation_indices],
@@ -229,6 +245,7 @@ def run_federated_method(
                         prepared.train_protected[evaluation_indices],
                         dataset,
                         minimum_group_samples,
+                        timing_sink=metric_timings,
                     )
                     parameters = tuple(local_model.get_parameters())
                 else:
@@ -245,6 +262,7 @@ def run_federated_method(
                     )
                     metrics = remote_result["metrics"]
                     parameters = remote_result["parameters"]
+                    local_training_ms = remote_result.get("worker_runtime_ms")
                 decision = evaluate_policy(metrics, policy, round_id)
                 if is_malicious and attack_type == "sign_flip":
                     parameters = tuple(-value for value in parameters)
@@ -254,12 +272,35 @@ def run_federated_method(
                         for value in parameters
                     )
             else:
+                local_training_ms = 0.0
+                metric_timings = {
+                    "local_evaluation_ms": 0.0,
+                    "fairness_computation_ms": 0.0,
+                }
                 metrics = None
                 decision = {
                     "approved": False,
                     "reasons": ["local training split contains only one class"],
                 }
                 parameters = tuple(global_parameters)
+            for stage, duration in (
+                ("local_training", local_training_ms),
+                ("local_evaluation", metric_timings.get("local_evaluation_ms")),
+                (
+                    "fairness_computation",
+                    metric_timings.get("fairness_computation_ms"),
+                ),
+            ):
+                if duration is not None:
+                    stage_rows.append(
+                        {
+                            "stage": stage,
+                            "round": round_id,
+                            "client_id": client_id,
+                            "duration_ms": duration,
+                            "evidence_type": "measured",
+                        }
+                    )
             updates.append(
                 ClientUpdate(
                     client_id=str(client_id),
@@ -326,6 +367,7 @@ def run_federated_method(
                 for update in updates
             ]
         try:
+            aggregation_started = time.perf_counter()
             fairfed_diagnostics = None
             if method == "B5":
                 selected, exclusions = eligible_updates(method, updates)
@@ -373,6 +415,15 @@ def run_federated_method(
                 },
             }
             aggregation_status = "skipped_no_eligible_clients"
+        stage_rows.append(
+            {
+                "stage": "aggregation",
+                "round": round_id,
+                "client_id": None,
+                "duration_ms": (time.perf_counter() - aggregation_started) * 1000,
+                "evidence_type": "measured",
+            }
+        )
         global_model.set_parameters(global_parameters)
         validation = _model_metrics(
             global_model,
@@ -428,6 +479,7 @@ def run_federated_method(
                 else fairfed_diagnostics["weights"],
             }
         )
+    final_test_timings = {}
     test_metrics = _model_metrics(
         global_model,
         prepared.test_features,
@@ -435,7 +487,18 @@ def run_federated_method(
         prepared.test_protected,
         dataset,
         minimum_group_samples,
+        timing_sink=final_test_timings,
     )
+    for stage, duration in final_test_timings.items():
+        stage_rows.append(
+            {
+                "stage": f"final_{stage.removesuffix('_ms')}",
+                "round": rounds,
+                "client_id": None,
+                "duration_ms": duration,
+                "evidence_type": "measured",
+            }
+        )
     infrastructure = (
         None if round_infrastructure is None else round_infrastructure.finalize()
     )
@@ -445,6 +508,7 @@ def run_federated_method(
         "client_metrics": client_rows,
         "test_metrics": test_metrics,
         "runtime_ms": (time.perf_counter() - started) * 1000,
+        "stage_timings": stage_rows,
         "final_parameters": global_parameters,
         "infrastructure": infrastructure,
         "remote_training": None

@@ -9,7 +9,7 @@
   "clients": 10,
   "rounds": 5,
   "local_epochs": 3,
-  "method": "B0_B4",
+  "method": "B0_B3",
   "fairness_policy": "submitted_policy",
   "attack_profile": "none",
   "partitions": [
@@ -19,10 +19,7 @@
   ],
   "minimum_samples_per_client": 50,
   "minimum_group_samples": 10,
-  "executable_methods": ["B0", "B4"],
-  "kubo_version": "0.29.0",
-  "publisher_api": "http://127.0.0.1:5001",
-  "consumer_api": "http://127.0.0.1:5002",
+  "executable_methods": ["B0", "B3"],
   "methods_not_executed": {},
   "experiment_seeds": [
     6001,

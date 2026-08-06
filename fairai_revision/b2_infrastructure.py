@@ -66,7 +66,9 @@ class B2KuboLedgerAdapter:
         observed = self.consumer.cat(cid)
         retrieval_ms = (time.perf_counter() - started) * 1000
         verify_payload(payload, observed, cid)
+        started = time.perf_counter()
         self.consumer.pin(cid)
+        pin_ms = (time.perf_counter() - started) * 1000
         self.retrieval_rows.append(
             {
                 "round": round_id,
@@ -76,6 +78,7 @@ class B2KuboLedgerAdapter:
                 "payload_bytes": len(payload),
                 "upload_ms": upload_ms,
                 "retrieval_ms": retrieval_ms,
+                "pin_ms": pin_ms,
                 "verified": True,
             }
         )
