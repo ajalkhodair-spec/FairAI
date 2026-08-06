@@ -86,7 +86,15 @@ class KuboClient:
         return self._post("cat", {"arg": cid})
 
     def pin(self, cid):
-        return self.json_command("pin/add", {"arg": cid})
+        return self.json_command("pin/add", {"arg": cid, "recursive": "false"})
+
+    def unpin(self, cid, recursive=True):
+        return self.json_command(
+            "pin/rm", {"arg": cid, "recursive": str(recursive).lower()}
+        )
+
+    def gc(self):
+        return self._post("repo/gc")
 
 
 def verify_payload(expected, observed, cid):

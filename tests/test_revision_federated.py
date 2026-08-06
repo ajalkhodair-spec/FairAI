@@ -178,11 +178,20 @@ class RecordingInfrastructure:
 
     def prepare_round(self, **values):
         self.prepared_rounds.append(values["round_id"])
-        return [
+        approved = [
             update.client_id
             for update in values["updates"]
             if update.policy_approved
         ]
+        return {
+            "approved_clients": approved,
+            "retrieved_parameters": {
+                update.client_id: update.parameters
+                for update in values["updates"]
+                if update.client_id in approved
+            },
+            "eligible_model_cids": [],
+        }
 
     def record_round(self, **values):
         self.rounds.append(values["round_id"])

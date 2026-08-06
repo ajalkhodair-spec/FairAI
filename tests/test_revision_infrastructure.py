@@ -3,6 +3,8 @@ import tempfile
 import unittest
 from pathlib import Path
 
+import numpy as np
+
 from fairai_revision.config import ConfigError, config_hash, load_config, validate_config
 from fairai_revision.manifest import validate_manifest
 from fairai_revision.run import (
@@ -17,6 +19,131 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RevisionInfrastructureTests(unittest.TestCase):
+    def test_false_metric_experiment_preserves_genuine_and_fabricated_decisions(self):
+        from fairai_revision.b4_infrastructure import B4KuboLedgerAdapter
+
+        adapter = B4KuboLedgerAdapter.__new__(B4KuboLedgerAdapter)
+        adapter.metric_integrity_experiment = {
+            "type": "false_metric_reporting",
+            "round": 1,
+            "fabricated_metrics": {
+                "accuracy": 0.99,
+                "demographic_parity_gap": 0.0,
+                "equal_opportunity_gap": 0.0,
+                "equalized_odds_gap": 0.0,
+                "subgroup_accuracy_gap": 0.0,
+            },
+        }
+        adapter.metric_integrity_rows = []
+        metrics = {
+            "0": {
+                "accuracy": 0.5,
+                "demographic_parity_gap": 0.5,
+                "equal_opportunity_gap": 0.5,
+                "equalized_odds_gap": 0.5,
+                "subgroup_accuracy_gap": 0.5,
+            }
+        }
+        policy = {
+            "policy_version": "1.0.0",
+            "name": "test",
+            "minimum_accuracy": 0.7,
+            "maximum_demographic_parity_gap": 0.1,
+            "maximum_equal_opportunity_gap": 0.1,
+            "maximum_equalized_odds_gap": 0.1,
+            "maximum_subgroup_accuracy_gap": 0.1,
+            "enabled_metrics": {
+                "accuracy": True,
+                "demographic_parity_gap": True,
+                "equal_opportunity_gap": True,
+                "equalized_odds_gap": True,
+                "subgroup_accuracy_gap": True,
+            },
+            "semantics": "AND",
+            "undefined_metric_behavior": "reject",
+            "valid_round_start": 1,
+            "valid_round_end": 10,
+        }
+        reported = adapter._reported_metrics(1, metrics, policy)
+        self.assertEqual(metrics["0"]["accuracy"], 0.5)
+        self.assertEqual(reported["0"]["accuracy"], 0.99)
+        self.assertFalse(adapter.metric_integrity_rows[0]["genuine_policy_approved"])
+        self.assertTrue(adapter.metric_integrity_rows[0]["reported_policy_approved"])
+
+    def test_approved_model_payload_is_bound_and_shape_checked(self):
+        from fairai_revision.b2_infrastructure import B2InfrastructureError
+        from fairai_revision.b4_infrastructure import B4KuboLedgerAdapter
+
+        submission = {
+            "round_id": 3,
+            "node_id": 2,
+            "cids": {"model": "bafy-model"},
+        }
+        payload = json.dumps(
+            {
+                "format": "fairai.parameters.v1",
+                "round_id": 3,
+                "node_id": 2,
+                "parameters": [[[1.0, 2.0]], [0.5]],
+            }
+        ).encode("utf-8")
+        parameters = B4KuboLedgerAdapter._decode_model_payload(
+            payload, submission, ((1, 2), (1,))
+        )
+        np.testing.assert_allclose(parameters[0], [[1.0, 2.0]])
+
+        wrong_round = payload.replace(b'"round_id": 3', b'"round_id": 4')
+        with self.assertRaisesRegex(B2InfrastructureError, "round binding mismatch"):
+            B4KuboLedgerAdapter._decode_model_payload(
+                wrong_round, submission, ((1, 2), (1,))
+            )
+        with self.assertRaisesRegex(B2InfrastructureError, "unexpected parameter shapes"):
+            B4KuboLedgerAdapter._decode_model_payload(
+                payload, submission, ((2, 1), (1,))
+            )
+
+    def test_unavailable_approved_artifact_cancels_round_before_aggregation(self):
+        from fairai_revision.b4_infrastructure import (
+            ApprovedArtifactUnavailable,
+            B4KuboLedgerAdapter,
+        )
+        from fairai_revision.ipfs import StrictIPFSError
+
+        class UnavailableConsumer:
+            def cat(self, cid):
+                raise StrictIPFSError(f"CID {cid} unavailable")
+
+        adapter = B4KuboLedgerAdapter.__new__(B4KuboLedgerAdapter)
+        adapter.consumer = UnavailableConsumer()
+        adapter.retrieval_rows = []
+        cancellations = []
+
+        def cancel(round_id, reason):
+            cancellations.append((round_id, reason))
+            return {
+                "round_id": round_id,
+                "reason": reason,
+                "final_state": "Cancelled",
+            }
+
+        adapter._cancel_round = cancel
+        submission = {
+            "round_id": 7,
+            "node_id": 1,
+            "client_id": 0,
+            "cids": {"model": "bafy-missing"},
+        }
+        with self.assertRaises(ApprovedArtifactUnavailable) as raised:
+            adapter._retrieve_approved_models_or_cancel(
+                round_id=7,
+                eligible_cids=["bafy-missing"],
+                submissions_by_cid={"bafy-missing": submission},
+                model_payloads={"bafy-missing": b"expected"},
+                update_shapes={0: ((1,),)},
+            )
+        self.assertEqual(cancellations, [(7, "APPROVED_ARTIFACT_UNAVAILABLE")])
+        self.assertEqual(raised.exception.cancellation["final_state"], "Cancelled")
+
     def test_v2_digest_inputs_preserve_bn254_precision(self):
         from fairai_revision.b4_infrastructure import B4KuboLedgerAdapter
         from fairai_revision.binding import artifact_binding_fields

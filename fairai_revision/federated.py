@@ -303,17 +303,21 @@ def run_federated_method(
                 }
             )
         if method in {"B4", "B7"}:
-            approved_clients = set(
-                round_infrastructure.prepare_round(
-                    round_id=round_id,
-                    updates=updates,
-                    client_metrics=metrics_by_client,
-                    policy=policy,
-                )
+            infrastructure_approval = round_infrastructure.prepare_round(
+                round_id=round_id,
+                updates=updates,
+                client_metrics=metrics_by_client,
+                policy=policy,
             )
+            approved_clients = set(infrastructure_approval["approved_clients"])
+            retrieved_parameters = infrastructure_approval["retrieved_parameters"]
             updates = [
                 replace(
                     update,
+                    parameters=retrieved_parameters.get(
+                        update.client_id, update.parameters
+                    ),
+                    policy_approved=update.client_id in approved_clients,
                     proof_verified=update.client_id in approved_clients,
                     artifact_binding_valid=update.client_id in approved_clients,
                     decision_signed=True,

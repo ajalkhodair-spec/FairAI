@@ -40,11 +40,12 @@ class B2KuboLedgerAdapter:
         consumer_api="http://127.0.0.1:5002",
         kubo_version="0.29.0",
         publisher_swarm_host="ipfs-publisher",
+        ipfs_timeout_seconds=60,
     ):
         self.output_dir = Path(output_dir)
         self.repo_root = Path(repo_root)
-        self.publisher = KuboClient(publisher_api)
-        self.consumer = KuboClient(consumer_api)
+        self.publisher = KuboClient(publisher_api, timeout_seconds=ipfs_timeout_seconds)
+        self.consumer = KuboClient(consumer_api, timeout_seconds=ipfs_timeout_seconds)
         versions = (self.publisher.version()["Version"], self.consumer.version()["Version"])
         if versions != (kubo_version, kubo_version):
             raise B2InfrastructureError(

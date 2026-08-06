@@ -468,7 +468,7 @@ def run_federated_core(config, output_dir):
     from .data import load_adult, load_compas
     from .federated import run_federated_method
     from .b2_infrastructure import B2KuboLedgerAdapter
-    from .b4_infrastructure import B4KuboLedgerAdapter
+    from .b4_infrastructure import ApprovedArtifactUnavailable, B4KuboLedgerAdapter
     from .remote import SSHRemoteTrainer, validate_remote_topology
     from .partition import (
         export_partition_evidence,
@@ -534,6 +534,7 @@ def run_federated_core(config, output_dir):
     method_summaries = []
     observed_kubo_versions = set()
     v2_infrastructure_executed = False
+    expected_failure_rows = []
     client_counts = config.get("client_counts", [config["clients"]])
     if not client_counts or not all(
         isinstance(client_count, int) and client_count > 1
@@ -604,6 +605,7 @@ def run_federated_core(config, output_dir):
                             consumer_api=consumer_api,
                             kubo_version=config.get("kubo_version", "0.29.0"),
                             publisher_swarm_host=publisher_swarm_host,
+                            ipfs_timeout_seconds=config.get("ipfs_timeout_seconds", 60),
                         )
                     elif method in {"B4", "B7"}:
                         round_infrastructure = B4KuboLedgerAdapter(
@@ -613,27 +615,47 @@ def run_federated_core(config, output_dir):
                             consumer_api=consumer_api,
                             kubo_version=config.get("kubo_version", "0.29.0"),
                             publisher_swarm_host=publisher_swarm_host,
+                            ipfs_timeout_seconds=config.get("ipfs_timeout_seconds", 60),
+                            fault_injection=config.get("fault_injection"),
+                            metric_integrity_experiment=config.get(
+                                "metric_integrity_experiment"
+                            ),
                         )
-                    result = run_federated_method(
-                        dataset=dataset,
-                        partition=partition,
-                        method=method,
-                        policy=policy,
-                        model_type=config["model"],
-                        rounds=config["rounds"],
-                        local_epochs=config["local_epochs"],
-                        seed=experiment_seed,
-                        minimum_group_samples=config.get(
-                            "minimum_group_samples", 10
-                        ),
-                        attack_type=attack_type,
-                        malicious_client_ratio=config.get(
-                            "malicious_client_ratio", 0.0
-                        ),
-                        fairfed_beta=config.get("fairfed_beta", 1.0),
-                        round_infrastructure=round_infrastructure,
-                        remote_trainer=remote_trainer,
-                    )
+                    try:
+                        result = run_federated_method(
+                            dataset=dataset,
+                            partition=partition,
+                            method=method,
+                            policy=policy,
+                            model_type=config["model"],
+                            rounds=config["rounds"],
+                            local_epochs=config["local_epochs"],
+                            seed=experiment_seed,
+                            minimum_group_samples=config.get(
+                                "minimum_group_samples", 10
+                            ),
+                            attack_type=attack_type,
+                            malicious_client_ratio=config.get(
+                                "malicious_client_ratio", 0.0
+                            ),
+                            fairfed_beta=config.get("fairfed_beta", 1.0),
+                            round_infrastructure=round_infrastructure,
+                            remote_trainer=remote_trainer,
+                        )
+                    except ApprovedArtifactUnavailable as exc:
+                        if config.get("expected_failure") != "approved_artifact_unavailable":
+                            raise
+                        expected_failure_rows.append(
+                            {
+                                "execution_id": execution_id,
+                                "round_id": exc.cancellation["round_id"],
+                                "reason": exc.cancellation["reason"],
+                                "reason_code": exc.cancellation.get("reason_code"),
+                                "final_state": exc.cancellation["final_state"],
+                                "aggregation_started": False,
+                            }
+                        )
+                        continue
                     if result["remote_training"] is not None:
                         remote_dir = output_dir / "remote" / execution_id
                         remote_dir.mkdir(parents=True, exist_ok=True)
@@ -753,6 +775,17 @@ def run_federated_core(config, output_dir):
         test_rows,
         list(test_rows[0]),
     )
+    if expected_failure_rows:
+        (output_dir / "negative").mkdir(parents=True, exist_ok=True)
+        write_json(
+            output_dir / "negative" / "approved_artifact_unavailable.json",
+            {
+                "schema_version": "fairai.negative_test.v1",
+                "expected_failure": "approved_artifact_unavailable",
+                "outcome": "fail_closed",
+                "executions": expected_failure_rows,
+            },
+        )
     partition_checksum = __import__("hashlib").sha256(
         canonical_json_bytes(partition_checksums)
     ).hexdigest()
@@ -787,6 +820,7 @@ def run_federated_core(config, output_dir):
                 row["ipfs_retrieval_checks"] for row in method_summaries
             ),
             "test_set_usage": "evaluated once after final round for each paired method",
+            "expected_failures": expected_failure_rows,
         },
     }
 

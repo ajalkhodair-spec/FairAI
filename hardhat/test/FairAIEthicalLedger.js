@@ -193,6 +193,17 @@ describe("FairAIEthicalLedger", function () {
       .to.be.revertedWithCustomError(ledger, "InvalidRoundState");
   });
 
+  it("records a machine-readable cancellation reason", async function () {
+    const { ledger, owner } = await deployFixture();
+    const reason = ethers.id("APPROVED_ARTIFACT_UNAVAILABLE");
+    await ledger.createRound(10);
+    await ledger.closeSubmissions(10);
+    await expect(ledger.cancelRoundWithReason(10, reason))
+      .to.emit(ledger, "RoundCancelled")
+      .withArgs(10, reason, owner.address);
+    expect(await ledger.roundStates(10)).to.equal(6);
+  });
+
   it("hardens role and verifier administration", async function () {
     const { ledger, owner, verifier, otherAccount } = await deployFixture();
     const adminRole = await ledger.ADMIN_ROLE();

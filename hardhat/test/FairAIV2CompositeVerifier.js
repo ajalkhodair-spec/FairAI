@@ -157,4 +157,31 @@ describe("FairAIV2CompositeVerifier", function () {
     expect(record.verificationStatus).to.equal(2);
     expect(await signed.usedNonces(signer.address, 1)).to.equal(true);
   });
+
+  it("rejects a malformed proof that is signed as verified", async function () {
+    const { submitter, composite, ledger, decision, encoded } = await fixture();
+    const types = [
+      "uint256[2]",
+      "uint256[2][2]",
+      "uint256[2]",
+      "tuple(bytes32 nodeId,uint256 roundId,uint64 policyVersion,bytes32 manifestHash,bytes32 metricsHash,uint256 nonce,bool proofVerified,bool policyPassed,bool decision,uint256 expiration)",
+      "bytes",
+    ];
+    const decoded = ethers.AbiCoder.defaultAbiCoder().decode(types, encoded);
+    const malformed = ethers.AbiCoder.defaultAbiCoder().encode(
+      types,
+      [[0, 0], [[0, 0], [0, 0]], [0, 0], decoded[3], decoded[4]],
+    );
+    await ledger.createRound(1);
+    await ledger.registerNode(decision.nodeId);
+    await expect(ledger.connect(submitter).submitModel(
+      decision.nodeId, 1,
+      "bafy-malformed-model", "bafy-malformed-proof", "bafy-malformed-public",
+      "bafy-malformed-metadata", "bafy-malformed-metrics", "bafy-malformed-manifest",
+      malformed, publicSignals,
+    )).to.be.revertedWithCustomError(composite, "DecisionBindingMismatch");
+    const record = await ledger.getRecord(decision.nodeId, 1);
+    expect(record.timestamp).to.equal(0);
+    expect(await ledger.getEligibleModelCids(1)).to.deep.equal([]);
+  });
 });

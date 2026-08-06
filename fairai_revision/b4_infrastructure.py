@@ -1,10 +1,12 @@
 import json
-import os
-import subprocess
+import time
 from pathlib import Path
+
+import numpy as np
 
 from .b2_infrastructure import B2InfrastructureError, B2KuboLedgerAdapter, _canonical_bytes, _parameters_payload
 from .binding import artifact_binding_fields, policy_version_to_uint64
+from .ledger_bridge import HardhatV2LedgerBridge, LedgerBridgeError
 from .policy import evaluate_policy
 from .zk_v2 import V2ProofSystem, groth16_contract_proof
 
@@ -16,14 +18,28 @@ ZERO_PROOF = {
 }
 
 
+class ApprovedArtifactUnavailable(B2InfrastructureError):
+    def __init__(self, message, cancellation):
+        super().__init__(message)
+        self.cancellation = cancellation
+
+
 class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
     """Strict full-path adapter for B4 and B7."""
 
-    def __init__(self, *args, **kwargs):
+    def __init__(
+        self, *args, fault_injection=None, metric_integrity_experiment=None, **kwargs
+    ):
         super().__init__(*args, **kwargs)
         self.proof_system = V2ProofSystem(self.repo_root)
         self.pending = {}
         self.proof_rows = []
+        self.bridge = HardhatV2LedgerBridge(self.repo_root, self.output_dir)
+        self.protocol_commands = []
+        self.fault_injection = fault_injection
+        self.fault_injection_rows = []
+        self.metric_integrity_experiment = metric_integrity_experiment
+        self.metric_integrity_rows = []
 
     @staticmethod
     def _scaled_metrics(metrics, scale):
@@ -111,10 +127,256 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
     def _serialized_public(public_signals):
         return [str(int(value)) for value in public_signals]
 
+    @staticmethod
+    def _decode_model_payload(payload, submission, expected_shapes):
+        try:
+            decoded = json.loads(payload.decode("utf-8"))
+            if decoded["format"] != "fairai.parameters.v1":
+                raise ValueError("unexpected parameter format")
+            if decoded["round_id"] != submission["round_id"]:
+                raise ValueError("round binding mismatch")
+            if decoded["node_id"] != submission["node_id"]:
+                raise ValueError("node binding mismatch")
+            parameters = tuple(
+                np.asarray(value, dtype=float) for value in decoded["parameters"]
+            )
+        except (KeyError, TypeError, ValueError, UnicodeError, json.JSONDecodeError) as exc:
+            raise B2InfrastructureError(
+                f"Approved model CID {submission['cids']['model']} is malformed: {exc}"
+            ) from exc
+        shapes = tuple(value.shape for value in parameters)
+        if shapes != expected_shapes:
+            raise B2InfrastructureError(
+                f"Approved model CID {submission['cids']['model']} has unexpected parameter shapes"
+            )
+        if not all(np.isfinite(value).all() for value in parameters):
+            raise B2InfrastructureError(
+                f"Approved model CID {submission['cids']['model']} contains non-finite parameters"
+            )
+        return parameters
+
+    def _cancel_round(self, round_id, reason):
+        command = {"action": "cancel_round", "round_id": round_id, "reason": reason}
+        self.protocol_commands.append(command)
+        return self.bridge.request(command)
+
+    def _retrieve_approved_models(
+        self,
+        round_id,
+        eligible_cids,
+        submissions_by_cid,
+        model_payloads,
+        update_shapes,
+    ):
+        from .ipfs import verify_payload
+
+        retrieved_parameters = {}
+        for cid in eligible_cids:
+            submission = submissions_by_cid[cid]
+            started = time.perf_counter()
+            observed = self.consumer.cat(cid)
+            retrieval_ms = (time.perf_counter() - started) * 1000
+            expected = model_payloads[cid]
+            verify_payload(expected, observed, cid)
+            parameters = self._decode_model_payload(
+                observed,
+                submission,
+                update_shapes[submission["client_id"]],
+            )
+            retrieved_parameters[submission["client_id"]] = parameters
+            self.retrieval_rows.append(
+                {
+                    "round": round_id,
+                    "client_id": submission["client_id"],
+                    "artifact_type": "approved_model_master_retrieval",
+                    "cid": cid,
+                    "payload_bytes": len(observed),
+                    "upload_ms": 0,
+                    "retrieval_ms": retrieval_ms,
+                    "verified": True,
+                }
+            )
+        return retrieved_parameters
+
+    def _retrieve_approved_models_or_cancel(self, **kwargs):
+        try:
+            return self._retrieve_approved_models(**kwargs)
+        except Exception as exc:
+            round_id = kwargs["round_id"]
+            cancellation = self._cancel_round(
+                round_id, "APPROVED_ARTIFACT_UNAVAILABLE"
+            )
+            raise ApprovedArtifactUnavailable(
+                f"Approved model retrieval failed before aggregation: {exc}",
+                cancellation,
+            ) from exc
+
+    def _inject_approved_artifact_failure(
+        self, round_id, eligible_cids, submissions_by_cid
+    ):
+        fault = self.fault_injection or {}
+        if fault.get("type") != "approved_artifact_unavailable":
+            return
+        if int(fault.get("round", 1)) != round_id:
+            return
+        configured_client = fault.get("client_id")
+        if configured_client is None:
+            target = eligible_cids[0] if eligible_cids else None
+            target_client = (
+                None if target is None else submissions_by_cid[target]["client_id"]
+            )
+        else:
+            target_client = int(configured_client)
+            target = next(
+                (
+                    cid
+                    for cid in eligible_cids
+                    if submissions_by_cid[cid]["client_id"] == target_client
+                ),
+                None,
+            )
+        if target is None:
+            raise B2InfrastructureError(
+                f"Fault target client {target_client} has no approved model in round {round_id}"
+            )
+        self.publisher.unpin(target, recursive=True)
+        self.consumer.unpin(target, recursive=False)
+        self.publisher.gc()
+        self.consumer.gc()
+        self.fault_injection_rows.append(
+            {
+                "type": fault["type"],
+                "round_id": round_id,
+                "client_id": target_client,
+                "cid": target,
+                "publisher_unpinned": True,
+                "consumer_unpinned": True,
+                "garbage_collection_completed": True,
+            }
+        )
+
+    def _reported_metrics(self, round_id, client_metrics, policy):
+        reported = {
+            client_id: dict(metrics) for client_id, metrics in client_metrics.items()
+        }
+        experiment = self.metric_integrity_experiment or {}
+        if experiment.get("type") != "false_metric_reporting":
+            return reported
+        if int(experiment.get("round", 1)) != round_id:
+            return reported
+        configured_client = experiment.get("client_id")
+        if configured_client is None:
+            target = next(
+                (
+                    client_id
+                    for client_id in sorted(reported, key=int)
+                    if not evaluate_policy(reported[client_id], policy, round_id)[
+                        "approved"
+                    ]
+                ),
+                None,
+            )
+        else:
+            target = str(configured_client)
+        if target not in reported:
+            raise B2InfrastructureError(
+                "False-metric experiment requires a target with genuine metrics"
+            )
+        genuine = client_metrics[target]
+        genuine_decision = evaluate_policy(genuine, policy, round_id)
+        fabricated = dict(genuine)
+        fabricated.update(experiment["fabricated_metrics"])
+        fabricated_decision = evaluate_policy(fabricated, policy, round_id)
+        if genuine_decision["approved"]:
+            raise B2InfrastructureError(
+                "False-metric target must fail the policy using genuine metrics"
+            )
+        if not fabricated_decision["approved"]:
+            raise B2InfrastructureError(
+                "Fabricated metrics must pass the configured policy"
+            )
+        reported[target] = fabricated
+        self.metric_integrity_rows.append(
+            {
+                "round_id": round_id,
+                "client_id": target,
+                "genuine_metrics": {
+                    name: genuine.get(name)
+                    for name in (
+                        "accuracy",
+                        "demographic_parity_gap",
+                        "equal_opportunity_gap",
+                        "equalized_odds_gap",
+                        "subgroup_accuracy_gap",
+                    )
+                },
+                "fabricated_metrics": {
+                    name: fabricated.get(name)
+                    for name in (
+                        "accuracy",
+                        "demographic_parity_gap",
+                        "equal_opportunity_gap",
+                        "equalized_odds_gap",
+                        "subgroup_accuracy_gap",
+                    )
+                },
+                "genuine_policy_approved": False,
+                "reported_policy_approved": True,
+                "proof_generated_over": "fabricated_metrics",
+                "on_chain_approved": None,
+                "aggregated": None,
+            }
+        )
+        return reported
+
+    def _write_evidence(self):
+        startup = self.bridge.startup
+        result = {
+            "verifier_mode": "v2_groth16_eip712",
+            "network": startup["network"],
+            "chain_id": startup["chain_id"],
+            "contract_address": startup["contract_address"],
+            "groth16_verifier_address": startup["groth16_verifier_address"],
+            "signed_verifier_address": startup["signed_verifier_address"],
+            "composite_verifier_address": startup["composite_verifier_address"],
+            "rounds": self.rounds,
+            "kubo_version": self.kubo_version,
+            "publisher_peer_id": self.publisher_id,
+            "consumer_peer_id": self.consumer_id,
+            "retrieval_rows": self.retrieval_rows,
+            "proof_rows": self.proof_rows,
+            "fault_injections": self.fault_injection_rows,
+            "metric_integrity_experiment": self.metric_integrity_rows,
+        }
+        self.output_dir.mkdir(parents=True, exist_ok=True)
+        (self.output_dir / "contract_input.json").write_text(
+            json.dumps(
+                {
+                    "schema_version": "fairai.v2_round_protocol.v2",
+                    "verifier_mode": "v2_groth16_eip712",
+                    "commands": self.protocol_commands,
+                },
+                indent=2,
+                sort_keys=True,
+            ),
+            encoding="utf-8",
+        )
+        (self.output_dir / "contract_result.json").write_text(
+            json.dumps(result, indent=2, sort_keys=True), encoding="utf-8"
+        )
+        (self.output_dir / "v2_evidence.json").write_text(
+            json.dumps(result, indent=2, sort_keys=True), encoding="utf-8"
+        )
+        return result
+
     def prepare_round(self, round_id, updates, client_metrics, policy):
         scale = 1_000_000
+        reported_metrics = self._reported_metrics(
+            round_id, client_metrics, policy
+        )
         submissions = []
-        approved_clients = []
+        model_payloads = {}
+        update_shapes = {}
         for update in updates:
             if not update.valid or update.client_id not in client_metrics:
                 continue
@@ -122,15 +384,20 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
             numeric_node_id = int(client_id) + 1
             nonce = round_id * 1_000_000 + numeric_node_id
             prefix = {"round_id": round_id, "node_id": numeric_node_id}
-            scaled = self._scaled_metrics(client_metrics[client_id], scale)
+            scaled = self._scaled_metrics(reported_metrics[client_id], scale)
             metrics_artifact = {**prefix, **scaled}
+            model_payload = _canonical_bytes(
+                {**prefix, **_parameters_payload(update.parameters)}
+            )
+            model_cid = self._publish(
+                round_id, client_id, "model", model_payload
+            )
+            model_payloads[model_cid] = model_payload
+            update_shapes[client_id] = tuple(
+                np.asarray(value).shape for value in update.parameters
+            )
             cids = {
-                "model": self._publish(
-                    round_id,
-                    client_id,
-                    "model",
-                    _canonical_bytes({**prefix, **_parameters_payload(update.parameters)}),
-                ),
+                "model": model_cid,
                 "metrics": self._publish(
                     round_id,
                     client_id,
@@ -174,7 +441,7 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                 binding,
                 scale,
             )
-            decision = evaluate_policy(client_metrics[client_id], policy, round_id)
+            decision = evaluate_policy(reported_metrics[client_id], policy, round_id)
             if decision["approved"]:
                 proof_result = self.proof_system.prove(
                     circuit_input,
@@ -184,7 +451,6 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                     raise B2InfrastructureError("V2 public signals do not match bound inputs")
                 proof_payload = proof_result["proof"]
                 contract_proof = groth16_contract_proof(proof_payload)
-                approved_clients.append(client_id)
                 self.proof_rows.append(
                     {
                         "round": round_id,
@@ -255,8 +521,73 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                     "cids": cids,
                 }
             )
-        self.pending[round_id] = submissions
-        return approved_clients
+        command = {
+            "action": "submit_round",
+            "round_id": round_id,
+            "submissions": submissions,
+        }
+        self.protocol_commands.append(command)
+        try:
+            on_chain = self.bridge.request(command)
+        except LedgerBridgeError as exc:
+            self.bridge.close(force=True)
+            raise B2InfrastructureError(f"On-chain round submission failed: {exc}") from exc
+        expected_cids = sorted(
+            item["cids"]["model"] for item in submissions if item["approved"]
+        )
+        eligible_cids = sorted(on_chain["eligible_model_cids"])
+        records_by_node = {
+            int(record["node_id"]): record for record in on_chain["records"]
+        }
+        for row in self.metric_integrity_rows:
+            if row["round_id"] != round_id:
+                continue
+            node_id = int(row["client_id"]) + 1
+            record = records_by_node[node_id]
+            row["on_chain_approved"] = record["approval_status"] == "Approved"
+            row["model_cid"] = record["model_cid"]
+            row["submission_tx_hash"] = record["tx_hash"]
+        if eligible_cids != expected_cids:
+            cancellation = self._cancel_round(round_id, "ELIGIBILITY_MISMATCH")
+            self.rounds.append({**on_chain, **cancellation})
+            self._write_evidence()
+            self.bridge.close(force=True)
+            raise B2InfrastructureError(
+                "On-chain eligible CIDs diverged from verified proof decisions"
+            )
+
+        submissions_by_cid = {item["cids"]["model"]: item for item in submissions}
+        self._inject_approved_artifact_failure(
+            round_id, eligible_cids, submissions_by_cid
+        )
+        try:
+            retrieved_parameters = self._retrieve_approved_models_or_cancel(
+                round_id=round_id,
+                eligible_cids=eligible_cids,
+                submissions_by_cid=submissions_by_cid,
+                model_payloads=model_payloads,
+                update_shapes=update_shapes,
+            )
+        except ApprovedArtifactUnavailable as exc:
+            self.rounds.append({**on_chain, **exc.cancellation})
+            self._write_evidence()
+            self.bridge.close(force=True)
+            raise
+
+        approved_clients = [
+            submissions_by_cid[cid]["client_id"] for cid in eligible_cids
+        ]
+        self.pending[round_id] = {
+            "submissions": submissions,
+            "on_chain": on_chain,
+            "eligible_model_cids": eligible_cids,
+            "retrieved_parameters": retrieved_parameters,
+        }
+        return {
+            "approved_clients": approved_clients,
+            "retrieved_parameters": retrieved_parameters,
+            "eligible_model_cids": eligible_cids,
+        }
 
     def record_round(
         self,
@@ -267,10 +598,30 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
         global_metrics,
         included_clients,
     ):
-        submissions = self.pending[round_id]
+        pending = self.pending[round_id]
+        submissions = pending["submissions"]
         approved_submissions = [
             item for item in submissions if item["client_id"] in set(included_clients)
         ]
+        participant_cids = sorted(
+            item["cids"]["model"] for item in approved_submissions
+        )
+        for row in self.metric_integrity_rows:
+            if row["round_id"] == round_id:
+                row["aggregated"] = row["client_id"] in set(included_clients)
+        if participant_cids != pending["eligible_model_cids"]:
+            cancellation = self._cancel_round(round_id, "AGGREGATION_SET_MISMATCH")
+            self.rounds.append({**pending["on_chain"], **cancellation})
+            self._write_evidence()
+            self.bridge.close(force=True)
+            raise B2InfrastructureError(
+                "Aggregated clients do not match on-chain eligible model CIDs"
+            )
+        if not participant_cids:
+            cancellation = self._cancel_round(round_id, "NO_ELIGIBLE_MODELS")
+            self.rounds.append({**pending["on_chain"], **cancellation})
+            self._write_evidence()
+            return
         global_model_cid = self._publish(
             round_id,
             "global",
@@ -296,76 +647,32 @@ class B4KuboLedgerAdapter(B2KuboLedgerAdapter):
                 }
             ),
         )
+        command = {
+            "action": "publish_round",
+            "round_id": round_id,
+            "global_model_cid": global_model_cid,
+            "report_cid": report_cid,
+            "participant_model_cids": participant_cids,
+        }
+        self.protocol_commands.append(command)
+        publication = self.bridge.request(command)
         self.rounds.append(
             {
-                "round_id": round_id,
-                "submissions": submissions,
+                **pending["on_chain"],
+                **publication,
                 "global_publication": {
                     "global_model_cid": global_model_cid,
                     "report_cid": report_cid,
-                    "participant_model_cids": [
-                        item["cids"]["model"] for item in approved_submissions
-                    ],
+                    "participant_model_cids": participant_cids,
                 },
             }
         )
+        self._write_evidence()
 
     def finalize(self):
         if not self.rounds:
             raise B2InfrastructureError("No B4/B7 rounds were recorded")
-        self.output_dir.mkdir(parents=True, exist_ok=True)
-        input_path = self.output_dir / "contract_input.json"
-        output_path = self.output_dir / "contract_result.json"
-        input_path.write_text(
-            json.dumps(
-                {
-                    "schema_version": "fairai.v2_contract_input.v1",
-                    "verifier_mode": "v2_groth16_eip712",
-                    "rounds": self.rounds,
-                },
-                indent=2,
-                sort_keys=True,
-            ),
-            encoding="utf-8",
-        )
-        completed = subprocess.run(
-            ["npx", "hardhat", "run", "scripts/run_v2_rounds.js"],
-            cwd=self.repo_root / "hardhat",
-            env={
-                **os.environ,
-                "FAIRAI_CONTRACT_INPUT": str(input_path.resolve()),
-                "FAIRAI_CONTRACT_OUTPUT": str(output_path.resolve()),
-            },
-            text=True,
-            stdout=subprocess.PIPE,
-            stderr=subprocess.STDOUT,
-        )
-        if completed.returncode != 0:
-            raise B2InfrastructureError("V2 ledger execution failed:\n" + completed.stdout)
-        result = json.loads(output_path.read_text(encoding="utf-8"))
-        for expected, observed in zip(self.rounds, result["rounds"]):
-            expected_cids = sorted(
-                item["cids"]["model"]
-                for item in expected["submissions"]
-                if item["approved"]
-            )
-            expected_state = "Archived" if expected_cids else "Cancelled"
-            if observed["final_state"] != expected_state:
-                raise B2InfrastructureError(
-                    f"V2 ledger round did not reach {expected_state}"
-                )
-            if sorted(observed["eligible_model_cids"]) != expected_cids:
-                raise B2InfrastructureError("V2 ledger eligibility diverged from proofs")
-        result.update(
-            {
-                "kubo_version": self.kubo_version,
-                "publisher_peer_id": self.publisher_id,
-                "consumer_peer_id": self.consumer_id,
-                "retrieval_rows": self.retrieval_rows,
-                "proof_rows": self.proof_rows,
-            }
-        )
-        (self.output_dir / "v2_evidence.json").write_text(
-            json.dumps(result, indent=2, sort_keys=True), encoding="utf-8"
-        )
+        result = self._write_evidence()
+        self.protocol_commands.append({"action": "close"})
+        self.bridge.close()
         return result
