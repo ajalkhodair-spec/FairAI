@@ -1,0 +1,15 @@
+{
+  "evidence_type": "derived",
+  "final_round_only": true,
+  "inputs": {
+    "metrics_sha256": "fd9656298ab2f9eb97d44ee8af26c0f10bd90e0b381e160e5cf5da59fea57f47",
+    "run_id": "heterogeneity-b0-b3-10seed-76828c3"
+  },
+  "method": "B3",
+  "outputs": {
+    "entropy_approval_joined.csv": "ab59fdd2bf41fdff752e1ad8af42302827aa8bacf057d03c782ac08b83c7d93e",
+    "entropy_correlations.csv": "b4ee6ec00285bf93b1de4bc7b054e324a7a7186fe7f2044d74ebff083ec2d8b0",
+    "representation_fairness.csv": "24cc8df3e6e606c0bb0090efd989294d65d920cef4cdc72de8b94547572fea6f"
+  },
+  "schema_version": "fairai.entropy_approval_analysis.v1"
+}
