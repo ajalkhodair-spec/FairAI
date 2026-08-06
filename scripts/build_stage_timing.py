@@ -1,5 +1,7 @@
 import argparse
+import hashlib
 import json
+import subprocess
 from pathlib import Path
 
 import pandas as pd
@@ -91,6 +93,22 @@ def main():
     output = Path(args.output)
     output.parent.mkdir(parents=True, exist_ok=True)
     pd.DataFrame(rows).to_csv(output, index=False)
+    manifest = {
+        "schema_version": "fairai.stage_timing_analysis.v1",
+        "evidence_type": "derived_from_independent_measured_timers",
+        "analysis_git_commit": subprocess.run(
+            ["git", "rev-parse", "HEAD"],
+            check=True, capture_output=True, text=True,
+        ).stdout.strip(),
+        "federated_runs": args.federated_run,
+        "strict_runs": args.strict_run,
+        "proof_run": args.proof_run,
+        "unavailable_stages_are_not_imputed": True,
+        "stage_timing_sha256": hashlib.sha256(output.read_bytes()).hexdigest(),
+    }
+    (output.parent / "analysis_manifest.json").write_text(
+        json.dumps(manifest, indent=2, sort_keys=True) + "\n", encoding="utf-8"
+    )
 
 
 if __name__ == "__main__":
