@@ -1,0 +1,15 @@
+{
+  "analysis_git_commit": "6df6bfb9079ff6d5501290879a814a35c7fb357c",
+  "evidence_type": "derived_from_independent_measured_timers",
+  "federated_runs": [
+    "outputs/major_revision/adult-mlp-b0-b3-b5-5seed-76828c3",
+    "outputs/major_revision/false-metric-full-path-1536b13"
+  ],
+  "proof_run": "outputs/major_revision/proof-v2-30rep-c4e7124",
+  "schema_version": "fairai.stage_timing_analysis.v1",
+  "stage_timing_sha256": "e1755a58d880ce43e2cd36d91a6cd6cbc912aaf5d150fa31acb3e824907e2f1a",
+  "strict_runs": [
+    "outputs/major_revision/false-metric-full-path-1536b13"
+  ],
+  "unavailable_stages_are_not_imputed": true
+}

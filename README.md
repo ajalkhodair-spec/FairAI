@@ -6,8 +6,8 @@ traceability. It preserves the submitted three-node MVP and adds real-data,
 multi-seed, multi-round, and bounded multi-host validation infrastructure.
 
 This repository is not a security-audited production deployment. It is a
-tested research prototype with production-oriented controls and explicit
-scientific nonclaims.
+reproducible, bounded local research implementation with explicit scientific
+nonclaims.
 
 ## Demonstrated Scope
 
@@ -19,6 +19,8 @@ scientific nonclaims.
 - demographic parity, equal opportunity, equalized odds, and subgroup
   accuracy gaps;
 - versioned fairness-policy profiles and approved-only aggregation;
+- per-round on-chain eligibility checks followed by CID retrieval and
+  aggregation of the retrieved model parameters;
 - sample-weighted FedAvg and coordinate-wise median;
 - the published FairFed server weighting rule with signed EOD and accuracy
   fallback;
@@ -32,6 +34,7 @@ scientific nonclaims.
 - strict B2/B4/B7 two-peer Kubo adapters and three-host Azure deployment
   infrastructure;
 - deterministic poisoning scenarios and A1-A14 security evidence;
+- full-path false-metric and approved-artifact-unavailable trust-boundary tests;
 - repeated Hardhat gas and sequential/concurrent throughput measurements, plus
   modeled cost scenarios;
 - run manifests, statistical tables, a 37-sheet workbook, and figure-data
@@ -118,6 +121,18 @@ make revision-ipfs
 
 The benchmark fails if either real Kubo endpoint is unavailable. It never
 records fallback CIDs as IPFS evidence.
+
+Run the two focused trust-boundary scenarios from fresh Kubo volumes:
+
+```sh
+docker compose -f docker-compose.ipfs.yml down -v
+docker compose -f docker-compose.ipfs.yml up -d --wait
+python -m fairai_revision.run --config configs/revision/false_metric_reporting.yaml
+
+docker compose -f docker-compose.ipfs.yml down -v
+docker compose -f docker-compose.ipfs.yml up -d --wait
+python -m fairai_revision.run --config configs/revision/approved_artifact_failure.yaml
+```
 
 The tracked native-peer configuration and bounded full-path suite are:
 

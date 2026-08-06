@@ -12,7 +12,9 @@
   by fair-federated-learning literature.
 - Real-data experiments use Adult and COMPAS binary classification and one
   primary protected attribute per dataset.
-- The small MLP shows substantial seed sensitivity in the five-seed suite.
+- The bounded Adult small-MLP matrix covers B0, B3, and B5 under IID and
+  Dirichlet 0.3 for five paired seeds. It shows substantial seed sensitivity
+  and no comparison remains significant after Holm correction.
 - Poisoning experiments cover random weights, sign flip factor `-1`, and binary
   label flipping at a 20% malicious-client ratio.
 - Coordinate median is evaluated as robust aggregation, not as proof that
@@ -22,8 +24,9 @@
   configured metric relation, not update provenance or poisoning absence.
 - The signed verifier remains a trust point; a compromised authorized key can
   submit an accepted false decision.
-- Fairness values are supplied to the proof relation. Correct derivation from
-  private data is not independently proved.
+- The full-path false-metric experiment demonstrates that fabricated passing
+  values can be proved, stored, signed, approved, retrieved, and aggregated.
+  Correct metric derivation from private data is not independently proved.
 - Raw-data locality is not differential privacy or secure aggregation.
 - Hardhat gas is measured; public-chain fiat costs are modeled assumptions.
 - Contracts and cryptographic integration have not received an external audit.

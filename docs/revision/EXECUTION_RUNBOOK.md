@@ -122,3 +122,24 @@ docker compose -f docker-compose.ipfs.yml up -d --wait
 
 Do not publish IPFS result tables unless the manifest is completed and records
 both real peer IDs and the pinned Kubo version.
+
+## Focused Trust-Boundary Runs
+
+Use fresh Kubo volumes between the two scenarios because the unavailable-CID
+test intentionally unpins and garbage-collects an approved object.
+
+```sh
+docker compose -f docker-compose.ipfs.yml down -v
+docker compose -f docker-compose.ipfs.yml up -d --wait
+.venv/bin/python -m fairai_revision.run \
+  --config configs/revision/false_metric_reporting.yaml
+
+docker compose -f docker-compose.ipfs.yml down -v
+docker compose -f docker-compose.ipfs.yml up -d --wait
+.venv/bin/python -m fairai_revision.run \
+  --config configs/revision/approved_artifact_failure.yaml
+```
+
+The first run is expected to archive a round containing the fabricated-metric
+model. The second is expected to complete as a negative test with an on-chain
+`Cancelled` state, reason `APPROVED_ARTIFACT_UNAVAILABLE`, and no global model.

@@ -7,6 +7,10 @@ publisher-recovery benchmark used `6ba3a9c`. The targeted strict adversarial run
 used clean commit `3cfa695`. These are bounded local research results, not
 Azure, public-chain, WAN, or production evidence.
 
+The bounded MLP and entropy runs used clean commit `76828c3`. The current
+false-metric and unavailable-artifact full-path runs used clean commit
+`1536b13`.
+
 ## FairFed Comparison
 
 Each row is the mean over 10 paired seeds after five communication rounds with
@@ -39,6 +43,53 @@ the local sequential implementation. At 50 clients, mean accuracy was 0.7542
 and mean EO gap was 0.0000. The zero gap must be interpreted with the accuracy,
 F1, prediction-rate, and subgroup evidence because a degenerate classifier can
 produce an apparently favorable group gap.
+
+## Bounded Adult MLP Matrix
+
+The one-hidden-layer MLP was evaluated with B0, B3, and B5 under IID and joint
+Dirichlet 0.3 partitions for five paired seeds, 10 clients, and five rounds.
+B3 reduced mean EO gap under Dirichlet 0.3 from 0.0828 to 0.0526 while mean
+accuracy decreased from 0.5514 to 0.4838. B5 produced mean accuracy 0.4806 and
+EO gap 0.1160 in that partition. Under IID, B5 was close to B0 and B3 reduced
+accuracy. No bounded MLP comparison remained significant after Holm correction.
+These results establish model-family execution and sensitivity, not superiority
+or model-family generalization.
+
+## Metric Integrity and Storage Failure
+
+The false-metric scenario trained a genuine model whose strict-policy decision
+was rejected, replaced the reported metrics with threshold-compliant values,
+generated a valid proof over those values, uploaded and retrieved the artifacts
+through two Kubo peers, signed and submitted the decision, received on-chain
+approval, and aggregated the CID-retrieved model. This confirms the stated trust
+boundary: proof validity and artifact binding do not establish correct metric
+derivation from private data.
+
+In the unavailable-artifact scenario, three model CIDs were first approved on
+chain. One approved object was then unpinned and garbage-collected from both
+accessible peers. Retrieval failed, the round was cancelled on chain with reason
+`APPROVED_ARTIFACT_UNAVAILABLE`, aggregation did not start, and no global model
+was published.
+
+## Entropy and Representation
+
+The final-round B3 analysis uses 10 paired seeds. IID approval was constant at
+100%, so entropy-to-approval correlation is explicitly undefined. Under
+Dirichlet 0.3, group entropy correlated with approval (`rho = 0.279`,
+`p = 0.005`) and inversely with excluded sample fraction (`rho = -0.265`,
+`p = 0.008`). Minority-heavy clients had approval 0.62 versus 0.44 for the
+other half, with mean excluded sample fractions 0.0966 and 0.1862. These are
+diagnostic associations, not causal findings or an entropy-based policy rule.
+
+## Unified Stage Timing
+
+The current table combines only independently instrumented stages: local
+training, evaluation, fairness computation, serialization, Kubo add, retrieval,
+pin, witness generation, proof generation, off-chain verification, EIP-712
+signing, contract submission, approved-model retrieval, aggregation, global
+publication, and end-to-end runtime. Direct Solidity verification wall-clock
+latency is marked unavailable; its gas result is reported separately and is not
+converted into a timing value.
 
 ## Cryptographic and Contract Evidence
 
@@ -137,3 +188,8 @@ unmeasured.
 - `outputs/revision_audit/infrastructure-analysis-v2/bounded_metrics.csv`
 - `outputs/revision_audit/infrastructure-analysis-v2/infrastructure_summary.json`
 - `outputs/revision_audit/infrastructure-analysis-v2/analysis_manifest.json`
+- `outputs/revision_audit/expanded-analysis-6df6bfb/analysis_manifest.json`
+- `outputs/revision_audit/entropy-approval-4d97043/analysis_manifest.json`
+- `outputs/revision_audit/stage-timing-1536b13/analysis_manifest.json`
+- `outputs/revision_audit/stage-timing-1536b13/stage_timing.csv`
+- `outputs/revision_audit/trust-boundary-1536b13/evidence.json`
