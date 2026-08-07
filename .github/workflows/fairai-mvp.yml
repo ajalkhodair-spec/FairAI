@@ -12,6 +12,9 @@ on:
       - "tests/**"
       - "Makefile"
       - "requirements-lock.txt"
+      - "BLOCKERS.md"
+      - "docs/revision/**"
+      - "outputs/major_revision/**"
       - ".github/workflows/fairai-mvp.yml"
   pull_request:
     paths:
@@ -24,6 +27,9 @@ on:
       - "tests/**"
       - "Makefile"
       - "requirements-lock.txt"
+      - "BLOCKERS.md"
+      - "docs/revision/**"
+      - "outputs/major_revision/**"
       - ".github/workflows/fairai-mvp.yml"
 
 jobs:
