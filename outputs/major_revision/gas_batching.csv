@@ -1,0 +1,9 @@
+run_id,batch_size,operation,n,mean_gas,median_gas,min_gas,max_gas,evidence_type,source_file
+gas-v2-30rep-4a08a15,1,publish_global_model,30,242606.2,242617.0,242581,242617,measured_hardhat,outputs/major_revision/gas-v2-30rep-4a08a15/blockchain/gas_summary.csv
+gas-v2-30rep-4a08a15,1,submit_model,30,483635.6,483662.0,483566,483662,measured_hardhat,outputs/major_revision/gas-v2-30rep-4a08a15/blockchain/gas_summary.csv
+gas-v2-30rep-4a08a15,5,publish_global_model,30,347492.8,347518.0,347434,347518,measured_hardhat,outputs/major_revision/gas-v2-30rep-4a08a15/blockchain/gas_summary.csv
+gas-v2-30rep-4a08a15,5,submit_model,150,469953.28,466562.0,466454,483662,measured_hardhat,outputs/major_revision/gas-v2-30rep-4a08a15/blockchain/gas_summary.csv
+gas-v2-30rep-4a08a15,10,publish_global_model,30,478761.8,478805.0,478661,478805,measured_hardhat,outputs/major_revision/gas-v2-30rep-4a08a15/blockchain/gas_summary.csv
+gas-v2-30rep-4a08a15,10,submit_model,300,468327.32,466646.0,466538,483746,measured_hardhat,outputs/major_revision/gas-v2-30rep-4a08a15/blockchain/gas_summary.csv
+gas-v2-30rep-4a08a15,20,publish_global_model,30,741218.8,741298.0,741034,741298,measured_hardhat,outputs/major_revision/gas-v2-30rep-4a08a15/blockchain/gas_summary.csv
+gas-v2-30rep-4a08a15,20,submit_model,600,467514.4,466646.0,466538,483746,measured_hardhat,outputs/major_revision/gas-v2-30rep-4a08a15/blockchain/gas_summary.csv

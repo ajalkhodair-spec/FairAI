@@ -1,0 +1,16 @@
+run_id,scenario,mutation,expected,observed,rejected,error,evidence_type,source,source_file,replay_form,authorized_signature,accepted,detected,scientific_finding
+security-evidence,A2,unauthorized_signer,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,node_id,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,round_id,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,policy_version,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,manifest_hash,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,metrics_hash,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,decision,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,wrong_chain_id,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,wrong_verifying_contract,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,expired_decision,reject,rejected,True,DecisionExpired,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A3,revoked_signer,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/signature_attack_results.csv,,,,,
+security-evidence,A4,,reject,rejected,True,DecisionDigestAlreadyUsed,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/replay_results.csv,exact_decision_digest,,,,
+security-evidence,A4,,reject,rejected,True,NonceAlreadyUsed,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/replay_results.csv,reused_nonce_with_changed_payload,,,,
+security-evidence,A4,,reject,rejected,True,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/replay_results.csv,prior_round_signature,,,,
+security-evidence,A14,,,,,,tested,hardhat/test/FairAISignedVerifierV2.js,outputs/major_revision/security-evidence/compromised_verifier_results.csv,,True,True,False,A compromised authorized key can produce an accepted false decision in the single-verifier model

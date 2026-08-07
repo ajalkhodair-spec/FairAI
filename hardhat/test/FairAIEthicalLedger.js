@@ -181,6 +181,29 @@ describe("FairAIEthicalLedger", function () {
     expect(await ledger.roundStates(1)).to.equal(5);
   });
 
+  it("cancels a closed round when no model is eligible", async function () {
+    const { ledger } = await deployFixture();
+    await ledger.createRound(9);
+    await ledger.closeSubmissions(9);
+    await expect(ledger.cancelRound(9))
+      .to.emit(ledger, "RoundStateChanged")
+      .withArgs(9, 6);
+    expect(await ledger.roundStates(9)).to.equal(6);
+    await expect(ledger.startAggregation(9))
+      .to.be.revertedWithCustomError(ledger, "InvalidRoundState");
+  });
+
+  it("records a machine-readable cancellation reason", async function () {
+    const { ledger, owner } = await deployFixture();
+    const reason = ethers.id("APPROVED_ARTIFACT_UNAVAILABLE");
+    await ledger.createRound(10);
+    await ledger.closeSubmissions(10);
+    await expect(ledger.cancelRoundWithReason(10, reason))
+      .to.emit(ledger, "RoundCancelled")
+      .withArgs(10, reason, owner.address);
+    expect(await ledger.roundStates(10)).to.equal(6);
+  });
+
   it("hardens role and verifier administration", async function () {
     const { ledger, owner, verifier, otherAccount } = await deployFixture();
     const adminRole = await ledger.ADMIN_ROLE();

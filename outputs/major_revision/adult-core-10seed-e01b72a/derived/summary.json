@@ -1,0 +1,531 @@
+{
+  "dataset": "adult",
+  "experiment_seeds": [
+    2001,
+    2002,
+    2003,
+    2004,
+    2005,
+    2006,
+    2007,
+    2008,
+    2009,
+    2010
+  ],
+  "methods_executed": [
+    "B0",
+    "B1",
+    "B3"
+  ],
+  "methods_not_executed": {
+    "B2": "strict IPFS and blockchain integration pending for the real-data executor",
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version",
+    "B5": "faithful FairFed implementation is blocked and no heuristic is substituted"
+  },
+  "partitions": {
+    "seed_2001/iid": "533bf343b579417ecd2a5fb0fe3e64c1822505cab05ffcabc222f2f11430ee7b",
+    "seed_2001/joint_dirichlet_0.3": "db3755433d30aa1005320a08dd4a3e98ad0a8b3ec28da5330219ea6585745b50",
+    "seed_2002/iid": "7e27206544dbff5987447db0de1d17f00fc7436d38c09532aa6d824294052414",
+    "seed_2002/joint_dirichlet_0.3": "111143aa8ceb8405f770c6595cefb8ba30913d883c7dfbc908e67d56023d62e9",
+    "seed_2003/iid": "3e1d8b63f967181a417d59dd4183200fa301418cea081ed71e9eeb6a63a2c2c9",
+    "seed_2003/joint_dirichlet_0.3": "1147249a8cc58d151171c02331701cbcdae28383d260ea0ed3e525e15f938494",
+    "seed_2004/iid": "34d07eab5e6227d54fa33bd881446506bc9663de8720a93966960f677158c27f",
+    "seed_2004/joint_dirichlet_0.3": "97e773de077db5ad8b058584b7fc95a7e3a4d722d66b0e172dc341ba0472afcc",
+    "seed_2005/iid": "ba7b09248ad7fe4bf61fe3193ad219a48731ac4f847737a2dfcd1c1d8efb59e7",
+    "seed_2005/joint_dirichlet_0.3": "6479b0af154ac3cdb35fd99c209b47beb5c9f604801e2b1ddd69fbd2f28cfd6f",
+    "seed_2006/iid": "44ba79212ba54d0f6bcf9f121b58a477fed2534024e351032c049ad6e5412831",
+    "seed_2006/joint_dirichlet_0.3": "4a357418d53ce8b0fd8a37389ef5d82f7064672d9c80fba8f6900a55fd31ea66",
+    "seed_2007/iid": "ef72135fee2d3717ded699757cfd4762abe307b025a37c2e3efa4f3ea0ab0494",
+    "seed_2007/joint_dirichlet_0.3": "f7817c0e1a6724e635d9fd7f98f62f1236e361008d32c7fe07616fbfa64d7f49",
+    "seed_2008/iid": "8afd68cd886bd57c17e4b8a426d98e8da839ab64665607714371218768e395dd",
+    "seed_2008/joint_dirichlet_0.3": "776e2a34ad19b68ea8f70ddd3d230bf4afd7a441c301043131e2164ccb8de2aa",
+    "seed_2009/iid": "caf01f2e7508a84b463276a11e1d4af3dbfa00461ddc6a3d5402eda3f38f8196",
+    "seed_2009/joint_dirichlet_0.3": "55dee0eed59a587e452fee67b95b1e02e643b52b8c1aa863aa1e806bcf38b633",
+    "seed_2010/iid": "8e4b60757c6a5f7ba3f04eca800d6665c561265bd75f5947b440488ad1289be3",
+    "seed_2010/joint_dirichlet_0.3": "ca0b671faf03ce144c3ced366981dad79a06b00a2a9476549a487cb8bc298621"
+  },
+  "results": [
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 76.97745901532471,
+      "seed": 2001,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 77.92587499716319,
+      "seed": 2001,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 84.33825001702644,
+      "seed": 2001,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.87987500685267,
+      "seed": 2001,
+      "test_accuracy": 0.7735059760956176
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 77.42612500442192,
+      "seed": 2001,
+      "test_accuracy": 0.7735059760956176
+    },
+    {
+      "final_validation_accuracy": 0.756243093922652,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 80.57383302366361,
+      "seed": 2001,
+      "test_accuracy": 0.7591633466135458
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 76.80137499119155,
+      "seed": 2002,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 75.84137498633936,
+      "seed": 2002,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 75.20812499569729,
+      "seed": 2002,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 74.71929199527949,
+      "seed": 2002,
+      "test_accuracy": 0.7735059760956176
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.7093749998603,
+      "seed": 2002,
+      "test_accuracy": 0.7735059760956176
+    },
+    {
+      "final_validation_accuracy": 0.7845303867403315,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.2574999826029,
+      "seed": 2002,
+      "test_accuracy": 0.7883134130146082
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 78.74825000180863,
+      "seed": 2003,
+      "test_accuracy": 0.7743027888446216
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 75.75483300024644,
+      "seed": 2003,
+      "test_accuracy": 0.7743027888446216
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 85.38695800234564,
+      "seed": 2003,
+      "test_accuracy": 0.7743027888446216
+    },
+    {
+      "final_validation_accuracy": 0.7699447513812154,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 85.69133302080445,
+      "seed": 2003,
+      "test_accuracy": 0.7727755644090305
+    },
+    {
+      "final_validation_accuracy": 0.7699447513812154,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 83.65045901155099,
+      "seed": 2003,
+      "test_accuracy": 0.7727755644090305
+    },
+    {
+      "final_validation_accuracy": 0.7560220994475139,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 78.67112499661744,
+      "seed": 2003,
+      "test_accuracy": 0.7589641434262948
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 75.18816701485775,
+      "seed": 2004,
+      "test_accuracy": 0.7753652058432935
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 77.72641599876806,
+      "seed": 2004,
+      "test_accuracy": 0.7753652058432935
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 75.2940830134321,
+      "seed": 2004,
+      "test_accuracy": 0.7753652058432935
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 74.40683300956152,
+      "seed": 2004,
+      "test_accuracy": 0.7745683930942895
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 71.46066700806841,
+      "seed": 2004,
+      "test_accuracy": 0.7745683930942895
+    },
+    {
+      "final_validation_accuracy": 0.7681767955801105,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 73.1805830146186,
+      "seed": 2004,
+      "test_accuracy": 0.7722443559096945
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 75.93787499354221,
+      "seed": 2005,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 80.15220900415443,
+      "seed": 2005,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 75.26145901647396,
+      "seed": 2005,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.20974999736063,
+      "seed": 2005,
+      "test_accuracy": 0.7731075697211155
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.72950000758283,
+      "seed": 2005,
+      "test_accuracy": 0.7731075697211155
+    },
+    {
+      "final_validation_accuracy": 0.7569060773480663,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.49658300215378,
+      "seed": 2005,
+      "test_accuracy": 0.7597609561752988
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 75.23516600485891,
+      "seed": 2006,
+      "test_accuracy": 0.7752324037184595
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 74.40487502026372,
+      "seed": 2006,
+      "test_accuracy": 0.7752324037184595
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 77.51158400787972,
+      "seed": 2006,
+      "test_accuracy": 0.7752324037184595
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 85.01233402057551,
+      "seed": 2006,
+      "test_accuracy": 0.7742363877822045
+    },
+    {
+      "final_validation_accuracy": 0.7701657458563536,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 78.1389590119943,
+      "seed": 2006,
+      "test_accuracy": 0.7742363877822045
+    },
+    {
+      "final_validation_accuracy": 0.7549171270718232,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.82150000962429,
+      "seed": 2006,
+      "test_accuracy": 0.7578353253652058
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 75.26974999927916,
+      "seed": 2007,
+      "test_accuracy": 0.7745683930942895
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 79.46037498186342,
+      "seed": 2007,
+      "test_accuracy": 0.7745683930942895
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 79.00587501353584,
+      "seed": 2007,
+      "test_accuracy": 0.7745683930942895
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 77.43266699253581,
+      "seed": 2007,
+      "test_accuracy": 0.7743691899070385
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.15712497499771,
+      "seed": 2007,
+      "test_accuracy": 0.7743691899070385
+    },
+    {
+      "final_validation_accuracy": 0.7551381215469614,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.81708401651122,
+      "seed": 2007,
+      "test_accuracy": 0.7580345285524568
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 76.20916698942892,
+      "seed": 2008,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 76.27658301498741,
+      "seed": 2008,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7703867403314917,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 75.68529198761098,
+      "seed": 2008,
+      "test_accuracy": 0.7749003984063745
+    },
+    {
+      "final_validation_accuracy": 0.7725966850828729,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 71.31712499540299,
+      "seed": 2008,
+      "test_accuracy": 0.7780876494023904
+    },
+    {
+      "final_validation_accuracy": 0.7725966850828729,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 72.11683300556615,
+      "seed": 2008,
+      "test_accuracy": 0.7780876494023904
+    },
+    {
+      "final_validation_accuracy": 0.7566850828729281,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 71.23000000137836,
+      "seed": 2008,
+      "test_accuracy": 0.7593625498007968
+    },
+    {
+      "final_validation_accuracy": 0.7710497237569061,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 76.3157500186935,
+      "seed": 2009,
+      "test_accuracy": 0.7751660026560425
+    },
+    {
+      "final_validation_accuracy": 0.7710497237569061,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 74.8394999827724,
+      "seed": 2009,
+      "test_accuracy": 0.7751660026560425
+    },
+    {
+      "final_validation_accuracy": 0.7710497237569061,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 74.67508298577741,
+      "seed": 2009,
+      "test_accuracy": 0.7751660026560425
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 74.87316700280644,
+      "seed": 2009,
+      "test_accuracy": 0.7731075697211155
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.5696660198737,
+      "seed": 2009,
+      "test_accuracy": 0.7731075697211155
+    },
+    {
+      "final_validation_accuracy": 0.7560220994475139,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.15033301408403,
+      "seed": 2009,
+      "test_accuracy": 0.7588313413014608
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 77.05895899562165,
+      "seed": 2010,
+      "test_accuracy": 0.7743691899070385
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B1",
+      "partition": "iid",
+      "runtime_ms": 75.24537498829886,
+      "seed": 2010,
+      "test_accuracy": 0.7743691899070385
+    },
+    {
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B3",
+      "partition": "iid",
+      "runtime_ms": 74.64345800690353,
+      "seed": 2010,
+      "test_accuracy": 0.7743691899070385
+    },
+    {
+      "final_validation_accuracy": 0.7683977900552487,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.92641600058414,
+      "seed": 2010,
+      "test_accuracy": 0.7726427622841966
+    },
+    {
+      "final_validation_accuracy": 0.7683977900552487,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.70983399637043,
+      "seed": 2010,
+      "test_accuracy": 0.7726427622841966
+    },
+    {
+      "final_validation_accuracy": 0.754475138121547,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.64424999873154,
+      "seed": 2010,
+      "test_accuracy": 0.7568393094289508
+    }
+  ],
+  "split_seed": 2001,
+  "test_set_usage": "evaluated once after final round for each paired method"
+}

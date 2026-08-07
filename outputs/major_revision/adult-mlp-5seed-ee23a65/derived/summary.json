@@ -1,0 +1,109 @@
+{
+  "dataset": "adult",
+  "experiment_seeds": [
+    4001,
+    4002,
+    4003,
+    4004,
+    4005
+  ],
+  "methods_executed": [
+    "B0",
+    "B1"
+  ],
+  "methods_not_executed": {
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version",
+    "B5": "faithful FairFed implementation is blocked and no heuristic is substituted"
+  },
+  "partitions": {
+    "seed_4001/joint_dirichlet_0.3": "6474d9892903de07441968f20b5ba158aedd34d01364b2caba0331d3acd177dc",
+    "seed_4002/joint_dirichlet_0.3": "ad17f1e7b2183431344213b6ae1a184d804b7e5ad291a31d0282aa449d1cf2dc",
+    "seed_4003/joint_dirichlet_0.3": "ce7abe46c22a1e4f3328c2be244a2151bb647d42f658b53e8f5c7d0c05ca5717",
+    "seed_4004/joint_dirichlet_0.3": "ae7910d38c3f725f1104a509a396df4839045f42b8ed849010e77692344bc69b",
+    "seed_4005/joint_dirichlet_0.3": "5017c4b87bb7a23e173e7da8f4de0bbece1721b4e0a4e7b14139182401ec9045"
+  },
+  "results": [
+    {
+      "final_validation_accuracy": 0.4983425414364641,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 114.35208300827071,
+      "seed": 4001,
+      "test_accuracy": 0.49150066401062414
+    },
+    {
+      "final_validation_accuracy": 0.4983425414364641,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 104.76554100750946,
+      "seed": 4001,
+      "test_accuracy": 0.49150066401062414
+    },
+    {
+      "final_validation_accuracy": 0.46276243093922653,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 104.75175001192838,
+      "seed": 4002,
+      "test_accuracy": 0.46945551128818064
+    },
+    {
+      "final_validation_accuracy": 0.46276243093922653,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 107.29849999188446,
+      "seed": 4002,
+      "test_accuracy": 0.46945551128818064
+    },
+    {
+      "final_validation_accuracy": 0.7065193370165745,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 110.80516700167209,
+      "seed": 4003,
+      "test_accuracy": 0.6969455511288181
+    },
+    {
+      "final_validation_accuracy": 0.7065193370165745,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 107.9248329915572,
+      "seed": 4003,
+      "test_accuracy": 0.6969455511288181
+    },
+    {
+      "final_validation_accuracy": 0.4594475138121547,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 102.24324997398071,
+      "seed": 4004,
+      "test_accuracy": 0.45577689243027886
+    },
+    {
+      "final_validation_accuracy": 0.4594475138121547,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 101.96091700345278,
+      "seed": 4004,
+      "test_accuracy": 0.45577689243027886
+    },
+    {
+      "final_validation_accuracy": 0.6521546961325967,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 102.4771659867838,
+      "seed": 4005,
+      "test_accuracy": 0.6430942895086321
+    },
+    {
+      "final_validation_accuracy": 0.6521546961325967,
+      "method": "B1",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 106.0402909934055,
+      "seed": 4005,
+      "test_accuracy": 0.6430942895086321
+    }
+  ],
+  "split_seed": 4001,
+  "test_set_usage": "evaluated once after final round for each paired method"
+}

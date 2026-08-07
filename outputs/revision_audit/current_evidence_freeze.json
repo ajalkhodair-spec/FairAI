@@ -1,0 +1,23 @@
+{
+  "schema_version": "fairai.revision_audit.evidence_freeze.v1",
+  "frozen_at_utc": "2026-08-02T14:50:33Z",
+  "source_branch": "major-revision-experiments",
+  "source_commit": "62d8dd310476d5d321598ae27a16f4e4cd58dd57",
+  "source_tree_dirty": false,
+  "purpose": "Preserve the latest verified pre-Azure evidence without copying or recomputing result files.",
+  "evidence_package": {
+    "root": "outputs/major_revision",
+    "checksum_manifest": "outputs/major_revision/release_checksums.sha256",
+    "checksum_manifest_sha256": "0c9c7ab8ded82e461f29b1140cc50aa0fb303bcea3a09a36da4228dde0d4c09c",
+    "workbook": "outputs/major_revision/FairAI_Major_Revision_Results.xlsx",
+    "workbook_sha256": "b0ca77d245123dc46b79e26b2ad7bde354d6449749df9b4cd326064ad5ef5a50"
+  },
+  "reviewer_evidence_map_sha256": "974bb93860620b98cf79812443e503cbb2c7b79f2da2630a577b2d778e0d252d",
+  "reviewer_gap_matrix_sha256": "689c31d5bbf3f66d69d3b8524eaf86d9b3fda1bfb421d73bdd70cd059847684b",
+  "blocker_register_sha256": "2c1c7cc337e605f3d5ac106b7b8d3d877d1ea7643bcde99a98e5dafdb922f855",
+  "preservation_policy": {
+    "overwrite_existing_results": false,
+    "recompute_existing_results_in_place": false,
+    "new_result_requirement": "Use a new run ID and evidence level for every changed implementation or environment."
+  }
+}

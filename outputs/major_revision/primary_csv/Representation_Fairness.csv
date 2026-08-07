@@ -1,0 +1,7 @@
+run_id,partition,minority_heavy,seeds,mean_clients,approval_rate,rejection_rate,mean_minority_fraction,mean_excluded_sample_fraction,evidence_type,source_file
+entropy-approval-4d97043,iid,False,10,5.0,1.0,0.0,0.3174943376978153,0.0,derived_from_measured_client_decisions,outputs/revision_audit/entropy-approval-4d97043/representation_fairness.csv
+entropy-approval-4d97043,iid,True,10,5.0,1.0,0.0,0.3310992687854217,0.0,derived_from_measured_client_decisions,outputs/revision_audit/entropy-approval-4d97043/representation_fairness.csv
+entropy-approval-4d97043,joint_dirichlet_0.3,False,10,5.0,0.44,0.5599999999999999,0.0773031531095095,0.186234738854,derived_from_measured_client_decisions,outputs/revision_audit/entropy-approval-4d97043/representation_fairness.csv
+entropy-approval-4d97043,joint_dirichlet_0.3,True,10,5.0,0.62,0.38,0.3312464818677992,0.0965713617037875,derived_from_measured_client_decisions,outputs/revision_audit/entropy-approval-4d97043/representation_fairness.csv
+entropy-approval-4d97043,joint_dirichlet_1.0,False,10,5.0,0.78,0.22,0.1449367240415969,0.1067948667940866,derived_from_measured_client_decisions,outputs/revision_audit/entropy-approval-4d97043/representation_fairness.csv
+entropy-approval-4d97043,joint_dirichlet_1.0,True,10,5.0,0.8800000000000001,0.12,0.3607122786655083,0.0498225221359753,derived_from_measured_client_decisions,outputs/revision_audit/entropy-approval-4d97043/representation_fairness.csv

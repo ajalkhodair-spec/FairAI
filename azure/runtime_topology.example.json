@@ -1,0 +1,14 @@
+{
+  "schema_version": "fairai.azure_topology.v1",
+  "ssh_user": "fairaiadmin",
+  "ssh_key": "/home/fairaiadmin/.ssh/fairai_cluster",
+  "remote_root": "/opt/fairai",
+  "python": "/opt/fairai/.venv/bin/python",
+  "kubo_publisher_api": "http://10.42.0.5:5001",
+  "kubo_consumer_api": "http://10.42.0.6:5001",
+  "kubo_publisher_swarm_host": "10.42.0.5",
+  "workers": [
+    { "name": "worker1", "host": "10.42.0.5" },
+    { "name": "worker2", "host": "10.42.0.6" }
+  ]
+}

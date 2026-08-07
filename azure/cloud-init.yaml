@@ -1,0 +1,34 @@
+#cloud-config
+package_update: true
+package_upgrade: true
+packages:
+  - ca-certificates
+  - curl
+  - git
+  - gnupg
+  - jq
+  - make
+  - docker.io
+  - python3
+  - python3-venv
+  - python3-pip
+  - nodejs
+  - npm
+users:
+  - default
+groups:
+  - docker
+system_info:
+  default_user:
+    groups: [docker]
+runcmd:
+  - [sh, -c, "mkdir -p /etc/apt/keyrings && curl -fsSL https://deb.nodesource.com/gpgkey/nodesource-repo.gpg.key | gpg --dearmor -o /etc/apt/keyrings/nodesource.gpg"]
+  - [sh, -c, "echo 'deb [signed-by=/etc/apt/keyrings/nodesource.gpg] https://deb.nodesource.com/node_20.x nodistro main' > /etc/apt/sources.list.d/nodesource.list"]
+  - [apt-get, update]
+  - [apt-get, install, -y, nodejs]
+  - [systemctl, enable, --now, docker]
+  - [mkdir, -p, /opt/fairai, /var/lib/fairai-results]
+  - [chmod, '0755', /opt/fairai, /var/lib/fairai-results]
+  - [sh, -c, "printf '%s\n' 'vm.max_map_count=262144' > /etc/sysctl.d/60-fairai.conf"]
+  - [sysctl, --system]
+final_message: "FairAI base host provisioned after $UPTIME seconds"

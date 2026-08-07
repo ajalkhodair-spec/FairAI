@@ -1,0 +1,13 @@
+claim,status,evidence_type,source_file
+Adult and COMPAS loaders are checksum pinned,supported,dataset_manifest,outputs/major_revision/claims_supported.json
+LR and small MLP execute federated rounds,supported,measured,outputs/major_revision/claims_supported.json
+3/5/10/20 clients are evaluated,supported_B0,measured,outputs/major_revision/claims_supported.json
+Fairness policy changes approval and outcomes,supported_B3,measured,outputs/major_revision/claims_supported.json
+Random-weight poisoning is mitigated by coordinate median in this suite,supported_bounded,measured,outputs/major_revision/claims_supported.json
+Direct V2 Groth16 is measured locally,supported_bounded,measured_local,outputs/major_revision/claims_supported.json
+Two-peer native Kubo overhead is measured,supported_bounded,measured_local,outputs/major_revision/claims_supported.json
+Published FairFed server weighting is compared,supported_bounded,measured,outputs/major_revision/claims_supported.json
+Proofs establish correct derivation of private metrics,not_supported,trust_boundary_test,outputs/major_revision/claims_supported.json
+Approved artifacts fail closed when unavailable,supported_bounded,full_path_test,outputs/major_revision/claims_supported.json
+Raw data locality provides formal privacy,not_supported,nonclaim,outputs/major_revision/claims_supported.json
+FairAI operationalizes all ethics dimensions,not_supported,nonclaim,outputs/major_revision/claims_supported.json

@@ -1,0 +1,38 @@
+{
+  "schema_version": "fairai.zk_artifacts.v2",
+  "circuit": "circuits/FairnessEligibilityV2.circom",
+  "circuit_sha256": "99fe2e2486609eb46b2c9fe12f27771652fd0aac6eb316900898c9f8799ffec8",
+  "toolchain": {
+    "circom": "2.1.6",
+    "snarkjs": "0.7.5",
+    "curve": "bn128"
+  },
+  "powers_of_tau": {
+    "filename": "pot12_final_phase2.ptau",
+    "sha256": "88d726a18cf777c52f2b6c8a028235ccbcc078e0041b5e9b7607221d8d8b67dd",
+    "tracked": false,
+    "snarkjs_verified": true
+  },
+  "phase2": {
+    "setup_type": "single_contributor_experimental",
+    "contributor_name": "FairAI V2 experimental contributor",
+    "contribution_hash": "cf4e746962d2f8912e8d337c57d5beeefe740175633665bb4f37202adc6c1a39d839602029b535811f9243638143f68f445df40c1956bf9738f54f8654bd24b4",
+    "production_ceremony_required": true
+  },
+  "circuit_structure": {
+    "constraints": 751,
+    "wires": 744,
+    "public_inputs": 19,
+    "public_outputs": 2,
+    "private_inputs": 2
+  },
+  "files": {
+    "FairnessEligibilityV2.r1cs": "83ec918529e053375fa2c9866a84f6bc09cfd7a0b36a0bb5f7443978e81eeb89",
+    "FairnessEligibilityV2_final.zkey": "d17d244d5753af8d541758909b097707c71330b3592750a42472dc453f928053",
+    "FairnessEligibilityV2_vkey.json": "91ee67f787c925a2f75cfc3b96c61c84b3c3af8387615f6210c3cbd25e6da8ca",
+    "FairnessEligibilityV2_js/FairnessEligibilityV2.wasm": "32b7cb2ac4fbcfda9895317522abdcff9e341162827f0b08e70b75d339f64f6d",
+    "FairnessEligibilityV2_js/generate_witness.js": "e9f90211859797466368231b5f02afeb84afa497c3ccd04129e0a57a5c5a3eff",
+    "FairnessEligibilityV2_js/witness_calculator.js": "2bf018b05cb6dc399e72f57721d0f7b236b1a4a2d438d8b1c6763e9cd38ac8a8",
+    "hardhat/contracts/FairnessEligibilityV2Groth16Verifier.sol": "94da088a90546d425abe639ea843b880c410e1fd47aabf46b45f4ccd1bfb6c6b"
+  }
+}

@@ -1,0 +1,55 @@
+{
+  "analysis_git_commit": "6df6bfb9079ff6d5501290879a814a35c7fb357c",
+  "evidence_type": "derived",
+  "inputs": {
+    "adversarial": {
+      "configuration_hash": "841354f5a6ef41e0905876290228f06b78819f69ac862d223d7cd9d0e155c388",
+      "git_commit": "e8733cb513743b87619001ad127d21bb532de9cd",
+      "metrics_sha256": "784c4fde32ae410d3e83e34dbf346a68cede9aa571e84a4e97cb767e0a8739ee",
+      "run_id": "adversarial-5seed-e8733cb"
+    },
+    "heterogeneity": {
+      "configuration_hash": "c4fb6d5cf360f0bcbad0b082f6eb5891fb72df50ec98258f133f709df488386d",
+      "git_commit": "76828c39cbadd09502c8197066c2e75d54d758a8",
+      "metrics_sha256": "3abad54a6d091336c6d5d48ae2638593022f3da13204d0f395c1d282c9105ce3",
+      "run_id": "heterogeneity-b0-b3-10seed-76828c3"
+    },
+    "mlp": {
+      "configuration_hash": "976168989f16cd1eb2df2eed6833f15bbb5369a5372458abaf043f93aa00cd85",
+      "git_commit": "76828c39cbadd09502c8197066c2e75d54d758a8",
+      "metrics_sha256": "fbc44add8141ca2524a43df143ff480d614d19dbcd843415aa3005ced2b34d76",
+      "run_id": "adult-mlp-b0-b3-b5-5seed-76828c3"
+    },
+    "scaling": {
+      "configuration_hash": "74d8f4b6eb1420f3d115ed46a7666fab273167116cc076816fafb0e30ac11c03",
+      "git_commit": "4a08a15e4dadf4a00df083531ae303e9d2ab5e2f",
+      "metrics_sha256": "8e9427588e61291c4d5c4b66e4d3326ab809c37adbdfe62b82a67656bd33d5e7",
+      "run_id": "scaling-algorithmic-5seed-4a08a15"
+    },
+    "threshold": {
+      "configuration_hash": "e2722cce8f1fb93ff32ac428c884765593e2a7b5a96a014338fc22016cae0375",
+      "git_commit": "aa165b303fb4555bf5b8d16d3e0e13baa4dc1f30",
+      "metrics_sha256": "baaf7de73124195ba8baf0355e5a50b2142d4b142634e1a774b04ad66d254013",
+      "run_id": "threshold-sensitivity-10seed-aa165b3"
+    }
+  },
+  "outputs": {
+    "confidence_intervals.csv": "e3bb69b11587232f530bf7a8a3fb0dcf833819d0597530a698a14b86c68d3132",
+    "corrected_p_values.csv": "44050c25a2ea57059e8c39cbad0ba63afc92effeee7103dea8c71ba37d56bc70",
+    "descriptive_statistics.csv": "d927aa2e00c162eb3a17517fc219f4fbe45966dc954897e28180824def9ae006",
+    "effect_sizes.csv": "f0a7f06a2f7cc44fa81e856dcf084ce1fad863e7c50b12c2ae712ac6d5eb3f82",
+    "entropy_correlations.csv": "4d182963ca8bce268f08082cd9dfb2155f2afc4c824d51f822642215fcefdb35",
+    "experiment_summary.csv": "d927aa2e00c162eb3a17517fc219f4fbe45966dc954897e28180824def9ae006",
+    "paired_comparisons.csv": "09d24d179140708107e34336cd1947289fef6c10a01c6d4a81aba285ab06c996",
+    "paired_tests.csv": "09d24d179140708107e34336cd1947289fef6c10a01c6d4a81aba285ab06c996",
+    "threshold_approval.csv": "f3cfeec3ccb83652589ce4b243e18f45870585efb2104b60a4998848692361ae"
+  },
+  "schema_version": "fairai.expanded_analysis.v1",
+  "statistics": {
+    "confidence_interval": "two-sided percentile bootstrap 95% CI of the mean; 10000 deterministic resamples",
+    "entropy_correlation": "Spearman rank",
+    "multiple_testing": "Holm across expanded paired tests",
+    "paired_primary": "paired t test",
+    "paired_robustness": "Wilcoxon signed-rank"
+  }
+}

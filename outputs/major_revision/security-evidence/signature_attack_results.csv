@@ -1,0 +1,12 @@
+scenario,mutation,expected,observed,rejected,error,evidence_type,source
+A2,unauthorized_signer,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,node_id,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,round_id,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,policy_version,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,manifest_hash,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,metrics_hash,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,decision,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,wrong_chain_id,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,wrong_verifying_contract,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,expired_decision,reject,rejected,true,DecisionExpired,tested,hardhat/test/FairAISignedVerifierV2.js
+A3,revoked_signer,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js

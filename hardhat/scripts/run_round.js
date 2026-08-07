@@ -5,7 +5,7 @@ const hre = require("hardhat");
 const statusNames = {
   verification: ["Submitted", "Valid", "Invalid"],
   approval: ["Pending", "Approved", "Rejected"],
-  round: ["Uncreated", "Open", "SubmissionClosed", "AggregationStarted", "Published", "Archived"],
+  round: ["Uncreated", "Open", "SubmissionClosed", "AggregationStarted", "Published", "Archived", "Cancelled"],
 };
 
 function requireEnv(name) {

@@ -1,0 +1,4 @@
+run_id,partition,client_rows,mean_label_entropy,std_label_entropy,mean_group_entropy,std_group_entropy,mean_sample_count,evidence_type,source_file
+heterogeneity-b0-b3-10seed-76828c3,iid,100,0.8092771268852093,0.014332664382168774,0.9087284186800868,0.009586675800107327,2563.7,derived,outputs/major_revision/heterogeneity-b0-b3-10seed-76828c3/partitions
+heterogeneity-b0-b3-10seed-76828c3,joint_dirichlet_0.3,100,0.5548545877864914,0.3633313287015233,0.6041210509033208,0.3389994359659626,2563.7,derived,outputs/major_revision/heterogeneity-b0-b3-10seed-76828c3/partitions
+heterogeneity-b0-b3-10seed-76828c3,joint_dirichlet_1.0,100,0.6741112178869721,0.2652511569570901,0.7427779350723065,0.2315326668096832,2563.7,derived,outputs/major_revision/heterogeneity-b0-b3-10seed-76828c3/partitions

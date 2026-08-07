@@ -1,0 +1,2 @@
+status,scope,value,blocker,evidence_type,source_file
+blocked,paired filesystem baseline not measured,,LIMITATION,missing,BLOCKERS.md

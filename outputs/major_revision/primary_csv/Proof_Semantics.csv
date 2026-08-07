@@ -1,0 +1,2 @@
+run_id,scenario,proof_relation_accepts,independent_metric_derivation_proved,detected,scientific_finding,evidence_type,source,source_file
+security-evidence,A12,True,False,False,The relation can accept threshold-compliant supplied values and does not prove that they were correctly derived from private data,analytical_and_tested,docs/revision/proof_nonclaims.md,outputs/major_revision/security-evidence/false_metric_reporting_results.csv

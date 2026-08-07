@@ -1,15 +1,37 @@
 services:
-  ipfs:
+  ipfs-publisher:
     image: ipfs/kubo:v0.29.0
-    container_name: fairai-ipfs
+    container_name: fairai-ipfs-publisher
     ports:
       - "4001:4001"
       - "5001:5001"
       - "8080:8080"
     volumes:
-      - fairai_ipfs_data:/data/ipfs
-    environment:
-      - IPFS_PROFILE=server
+      - fairai_ipfs_publisher_data:/data/ipfs
+    healthcheck:
+      test: ["CMD", "ipfs", "id"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
+
+  ipfs-consumer:
+    image: ipfs/kubo:v0.29.0
+    container_name: fairai-ipfs-consumer
+    ports:
+      - "4002:4001"
+      - "5002:5001"
+      - "8081:8080"
+    volumes:
+      - fairai_ipfs_consumer_data:/data/ipfs
+    depends_on:
+      ipfs-publisher:
+        condition: service_healthy
+    healthcheck:
+      test: ["CMD", "ipfs", "id"]
+      interval: 5s
+      timeout: 3s
+      retries: 20
 
 volumes:
-  fairai_ipfs_data:
+  fairai_ipfs_publisher_data:
+  fairai_ipfs_consumer_data:

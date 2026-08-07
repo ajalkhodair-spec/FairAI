@@ -1,0 +1,30 @@
+[
+  {
+    "id": "BLK-001",
+    "status": "Resolved",
+    "scope": "V2 Groth16",
+    "blocker": "Circom 2.1.6 was built from tag `v2.1.6`; the verified phase-2 Powers of Tau, R1CS, ZKey, VKey, real proof, generated Solidity verifier, composite verifier, and negative suite all pass.",
+    "effect": "Thirty valid proof repetitions and six rejection cases are measured. A multi-party phase-2 ceremony remains required before production deployment."
+  },
+  {
+    "id": "BLK-002",
+    "status": "Resolved bounded",
+    "scope": "Two-peer IPFS",
+    "blocker": "Two native Kubo 0.29.0 peers completed 30-repeat add/pin/cold/warm/concurrency measurements, 30 publisher outage/recovery trials, and strict B2/B4/B7 runs at 5/10 clients.",
+    "effect": "Consumer outage, WAN, Docker Compose, and multi-host measurements remain limitations rather than completed evidence."
+  },
+  {
+    "id": "BLK-003",
+    "status": "Resolved",
+    "scope": "FairFed",
+    "blocker": "The published stateful server weighting rule, signed EOD sufficient-statistic calculation, beta-zero equivalence, accuracy fallback, deterministic tests, and paired Adult/COMPAS runs are complete.",
+    "effect": "Report the observed accuracy-fairness trade-off; do not claim reproduction of every local debiasing variant."
+  },
+  {
+    "id": "BLK-004",
+    "status": "Resolved",
+    "scope": "Public repository",
+    "blocker": "The revision branch is publicly available at `https://github.com/ajalkhodair-spec/FairAI`, pull request `#1` is open, GitHub Actions run `31160131439` passed, and an anonymous depth-one clone of commit `d131023df6ab9002b8244474ef1f03a9453aee2b` passed 77 Python and 22 contract tests.",
+    "effect": "Anonymous access and clean-clone reproduction are verified. A versioned GitHub release and archival DOI remain publication actions after review and merge."
+  }
+]

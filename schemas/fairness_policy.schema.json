@@ -1,0 +1,51 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fairai.fairness_policy.v1",
+  "type": "object",
+  "required": [
+    "policy_version",
+    "name",
+    "minimum_accuracy",
+    "maximum_demographic_parity_gap",
+    "maximum_equal_opportunity_gap",
+    "maximum_equalized_odds_gap",
+    "maximum_subgroup_accuracy_gap",
+    "enabled_metrics",
+    "semantics",
+    "undefined_metric_behavior",
+    "valid_round_start",
+    "valid_round_end"
+  ],
+  "properties": {
+    "policy_version": {"type": "string", "minLength": 1},
+    "name": {"type": "string", "minLength": 1},
+    "minimum_accuracy": {"type": "number", "minimum": 0, "maximum": 1},
+    "maximum_demographic_parity_gap": {"type": "number", "minimum": 0, "maximum": 1},
+    "maximum_equal_opportunity_gap": {"type": "number", "minimum": 0, "maximum": 1},
+    "maximum_equalized_odds_gap": {"type": "number", "minimum": 0, "maximum": 1},
+    "maximum_subgroup_accuracy_gap": {"type": "number", "minimum": 0, "maximum": 1},
+    "enabled_metrics": {
+      "type": "object",
+      "required": [
+        "accuracy",
+        "demographic_parity_gap",
+        "equal_opportunity_gap",
+        "equalized_odds_gap",
+        "subgroup_accuracy_gap"
+      ],
+      "properties": {
+        "accuracy": {"type": "boolean"},
+        "demographic_parity_gap": {"type": "boolean"},
+        "equal_opportunity_gap": {"type": "boolean"},
+        "equalized_odds_gap": {"type": "boolean"},
+        "subgroup_accuracy_gap": {"type": "boolean"}
+      },
+      "additionalProperties": false
+    },
+    "semantics": {"const": "AND"},
+    "undefined_metric_behavior": {"enum": ["reject", "ignore", "error"]},
+    "valid_round_start": {"type": "integer", "minimum": 0},
+    "valid_round_end": {"type": "integer", "minimum": 0}
+  },
+  "additionalProperties": false
+}

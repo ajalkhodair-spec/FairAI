@@ -1,0 +1,4 @@
+scenario,replay_form,expected,observed,rejected,error,evidence_type,source
+A4,exact_decision_digest,reject,rejected,true,DecisionDigestAlreadyUsed,tested,hardhat/test/FairAISignedVerifierV2.js
+A4,reused_nonce_with_changed_payload,reject,rejected,true,NonceAlreadyUsed,tested,hardhat/test/FairAISignedVerifierV2.js
+A4,prior_round_signature,reject,rejected,true,UnauthorizedSigner,tested,hardhat/test/FairAISignedVerifierV2.js

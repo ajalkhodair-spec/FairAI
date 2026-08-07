@@ -1,0 +1,41 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Georgia,'Times New Roman',serif;fill:#18252B}.axis{stroke:#18252B;stroke-width:3}.grid{stroke:#D9E2E7;stroke-width:2}.tick{font-size:30px}.label{font-size:36px}.legend{font-size:30px}</style>
+<line class="axis" x1="180" y1="90" x2="180" y2="1010"/>
+<line class="axis" x1="180" y1="1010" x2="1680" y2="1010"/>
+<line class="grid" x1="180" y1="1010.0" x2="1680" y2="1010.0"/>
+<text class="tick" x="158" y="1020.0" text-anchor="end">0.000</text>
+<line class="grid" x1="180" y1="826.0" x2="1680" y2="826.0"/>
+<text class="tick" x="158" y="836.0" text-anchor="end">0.172</text>
+<line class="grid" x1="180" y1="642.0" x2="1680" y2="642.0"/>
+<text class="tick" x="158" y="652.0" text-anchor="end">0.344</text>
+<line class="grid" x1="180" y1="458.0" x2="1680" y2="458.0"/>
+<text class="tick" x="158" y="468.0" text-anchor="end">0.516</text>
+<line class="grid" x1="180" y1="274.0" x2="1680" y2="274.0"/>
+<text class="tick" x="158" y="284.0" text-anchor="end">0.688</text>
+<line class="grid" x1="180" y1="90.0" x2="1680" y2="90.0"/>
+<text class="tick" x="158" y="100.0" text-anchor="end">0.861</text>
+<text class="tick" x="367.5" y="1065" text-anchor="middle">lenient</text>
+<text class="tick" x="742.5" y="1065" text-anchor="middle">moderate</text>
+<text class="tick" x="1117.5" y="1065" text-anchor="middle">strict</text>
+<text class="tick" x="1492.5" y="1065" text-anchor="middle">submitted</text>
+<text class="label" transform="translate(48 550.0) rotate(-90)" text-anchor="middle">Test accuracy</text>
+<rect x="255.29999999999998" y="191.95065520312642" width="224.40000000000003" height="818.0493447968736" fill="#176B87"/>
+<line class="axis" x1="367.5" y1="195.32988183482416" x2="367.5" y2="188.57142857142867"/>
+<line class="axis" x1="355.5" y1="195.32988183482416" x2="379.5" y2="195.32988183482416"/>
+<line class="axis" x1="355.5" y1="188.57142857142867" x2="379.5" y2="188.57142857142867"/>
+<rect x="630.3" y="211.87000802817408" width="224.40000000000003" height="798.1299919718259" fill="#176B87"/>
+<line class="axis" x1="742.5" y1="233.3511062635962" x2="742.5" y2="190.38890979275186"/>
+<line class="axis" x1="730.5" y1="233.3511062635962" x2="754.5" y2="233.3511062635962"/>
+<line class="axis" x1="730.5" y1="190.38890979275186" x2="754.5" y2="190.38890979275186"/>
+<rect x="1005.3" y="474.7330571225052" width="224.40000000000003" height="535.2669428774948" fill="#176B87"/>
+<line class="axis" x1="1117.5" y1="638.5033599285821" x2="1117.5" y2="310.96275431642846"/>
+<line class="axis" x1="1105.5" y1="638.5033599285821" x2="1129.5" y2="638.5033599285821"/>
+<line class="axis" x1="1105.5" y1="310.96275431642846" x2="1129.5" y2="310.96275431642846"/>
+<rect x="1380.3" y="197.50195025272978" width="224.40000000000003" height="812.4980497472702" fill="#176B87"/>
+<line class="axis" x1="1492.5" y1="198.7797419521271" x2="1492.5" y2="196.22415855333247"/>
+<line class="axis" x1="1480.5" y1="198.7797419521271" x2="1504.5" y2="198.7797419521271"/>
+<line class="axis" x1="1480.5" y1="196.22415855333247" x2="1504.5" y2="196.22415855333247"/>
+<rect x="250" y="1120" width="35" height="24" fill="#176B87"/>
+<text class="legend" x="298" y="1142">Test accuracy</text>
+</svg>

@@ -1,0 +1,105 @@
+{
+  "schema_version": "fairai.policy_profiles.v1",
+  "profiles": [
+    {
+      "policy_version": "1.0.0",
+      "name": "lenient",
+      "minimum_accuracy": 0.55,
+      "maximum_demographic_parity_gap": 0.35,
+      "maximum_equal_opportunity_gap": 1.0,
+      "maximum_equalized_odds_gap": 1.0,
+      "maximum_subgroup_accuracy_gap": 1.0,
+      "enabled_metrics": {
+        "accuracy": true,
+        "demographic_parity_gap": true,
+        "equal_opportunity_gap": false,
+        "equalized_odds_gap": false,
+        "subgroup_accuracy_gap": false
+      },
+      "semantics": "AND",
+      "undefined_metric_behavior": "reject",
+      "valid_round_start": 1,
+      "valid_round_end": 1000000
+    },
+    {
+      "policy_version": "1.0.0",
+      "name": "submitted",
+      "minimum_accuracy": 0.62,
+      "maximum_demographic_parity_gap": 0.28,
+      "maximum_equal_opportunity_gap": 1.0,
+      "maximum_equalized_odds_gap": 1.0,
+      "maximum_subgroup_accuracy_gap": 1.0,
+      "enabled_metrics": {
+        "accuracy": true,
+        "demographic_parity_gap": true,
+        "equal_opportunity_gap": false,
+        "equalized_odds_gap": false,
+        "subgroup_accuracy_gap": false
+      },
+      "semantics": "AND",
+      "undefined_metric_behavior": "reject",
+      "valid_round_start": 1,
+      "valid_round_end": 1000000
+    },
+    {
+      "policy_version": "1.0.0",
+      "name": "moderate",
+      "minimum_accuracy": 0.62,
+      "maximum_demographic_parity_gap": 0.20,
+      "maximum_equal_opportunity_gap": 0.20,
+      "maximum_equalized_odds_gap": 1.0,
+      "maximum_subgroup_accuracy_gap": 1.0,
+      "enabled_metrics": {
+        "accuracy": true,
+        "demographic_parity_gap": true,
+        "equal_opportunity_gap": true,
+        "equalized_odds_gap": false,
+        "subgroup_accuracy_gap": false
+      },
+      "semantics": "AND",
+      "undefined_metric_behavior": "reject",
+      "valid_round_start": 1,
+      "valid_round_end": 1000000
+    },
+    {
+      "policy_version": "1.0.0",
+      "name": "strict",
+      "minimum_accuracy": 0.70,
+      "maximum_demographic_parity_gap": 0.10,
+      "maximum_equal_opportunity_gap": 0.10,
+      "maximum_equalized_odds_gap": 0.10,
+      "maximum_subgroup_accuracy_gap": 0.10,
+      "enabled_metrics": {
+        "accuracy": true,
+        "demographic_parity_gap": true,
+        "equal_opportunity_gap": true,
+        "equalized_odds_gap": true,
+        "subgroup_accuracy_gap": true
+      },
+      "semantics": "AND",
+      "undefined_metric_behavior": "reject",
+      "valid_round_start": 1,
+      "valid_round_end": 1000000
+    },
+    {
+      "policy_version": "1.0.0",
+      "name": "multi_metric",
+      "minimum_accuracy": 0.62,
+      "maximum_demographic_parity_gap": 0.20,
+      "maximum_equal_opportunity_gap": 0.20,
+      "maximum_equalized_odds_gap": 1.0,
+      "maximum_subgroup_accuracy_gap": 1.0,
+      "enabled_metrics": {
+        "accuracy": true,
+        "demographic_parity_gap": true,
+        "equal_opportunity_gap": true,
+        "equalized_odds_gap": false,
+        "subgroup_accuracy_gap": false
+      },
+      "semantics": "AND",
+      "undefined_metric_behavior": "reject",
+      "valid_round_start": 1,
+      "valid_round_end": 1000000
+    }
+  ]
+}

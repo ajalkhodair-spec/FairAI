@@ -1,0 +1,32 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "approved_artifact_failure",
+  "executor": "federated_core",
+  "evidence_type": "measured",
+  "seed": 12201,
+  "dataset": "adult",
+  "model": "logistic_regression",
+  "clients": 3,
+  "rounds": 1,
+  "local_epochs": 1,
+  "method": "B0_B4_FAIL_CLOSED",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "none",
+  "partitions": ["iid"],
+  "minimum_samples_per_client": 50,
+  "minimum_group_samples": 10,
+  "executable_methods": ["B0", "B4"],
+  "kubo_version": "0.29.0",
+  "publisher_api": "http://127.0.0.1:5001",
+  "consumer_api": "http://127.0.0.1:5002",
+  "publisher_swarm_host": "ipfs-publisher",
+  "ipfs_timeout_seconds": 10,
+  "fault_injection": {
+    "type": "approved_artifact_unavailable",
+    "round": 1
+  },
+  "expected_failure": "approved_artifact_unavailable",
+  "methods_not_executed": {},
+  "experiment_seeds": [12201],
+  "seeds": 1
+}

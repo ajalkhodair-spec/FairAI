@@ -1,0 +1,59 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1800" height="1200" viewBox="0 0 1800 1200">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Georgia,'Times New Roman',serif;fill:#18252B}.axis{stroke:#18252B;stroke-width:3}.grid{stroke:#D9E2E7;stroke-width:2}.tick{font-size:30px}.label{font-size:36px}.legend{font-size:30px}</style>
+<line class="axis" x1="180" y1="90" x2="180" y2="1010"/>
+<line class="axis" x1="180" y1="1010" x2="1680" y2="1010"/>
+<line class="grid" x1="180" y1="1010.0" x2="1680" y2="1010.0"/>
+<text class="tick" x="158" y="1020.0" text-anchor="end">0.000</text>
+<line class="grid" x1="180" y1="826.0" x2="1680" y2="826.0"/>
+<text class="tick" x="158" y="836.0" text-anchor="end">0.178</text>
+<line class="grid" x1="180" y1="642.0" x2="1680" y2="642.0"/>
+<text class="tick" x="158" y="652.0" text-anchor="end">0.356</text>
+<line class="grid" x1="180" y1="458.0" x2="1680" y2="458.0"/>
+<text class="tick" x="158" y="468.0" text-anchor="end">0.534</text>
+<line class="grid" x1="180" y1="274.0" x2="1680" y2="274.0"/>
+<text class="tick" x="158" y="284.0" text-anchor="end">0.711</text>
+<line class="grid" x1="180" y1="90.0" x2="1680" y2="90.0"/>
+<text class="tick" x="158" y="100.0" text-anchor="end">0.889</text>
+<text class="tick" x="367.5" y="1065" text-anchor="middle">label_flip</text>
+<text class="tick" x="742.5" y="1065" text-anchor="middle">none</text>
+<text class="tick" x="1117.5" y="1065" text-anchor="middle">random_weights</text>
+<text class="tick" x="1492.5" y="1065" text-anchor="middle">sign_flip</text>
+<text class="label" transform="translate(48 550.0) rotate(-90)" text-anchor="middle">Test accuracy</text>
+<rect x="247.64999999999998" y="210.17061421116023" width="112.20000000000002" height="799.8293857888398" fill="#176B87"/>
+<line class="axis" x1="303.75" y1="231.7697998508918" x2="303.75" y2="188.57142857142867"/>
+<line class="axis" x1="291.75" y1="231.7697998508918" x2="315.75" y2="231.7697998508918"/>
+<line class="axis" x1="291.75" y1="188.57142857142867" x2="315.75" y2="188.57142857142867"/>
+<rect x="622.65" y="207.98596375523323" width="112.20000000000002" height="802.0140362447668" fill="#176B87"/>
+<line class="axis" x1="678.75" y1="210.5278526504943" x2="678.75" y2="205.44407485997226"/>
+<line class="axis" x1="666.75" y1="210.5278526504943" x2="690.75" y2="210.5278526504943"/>
+<line class="axis" x1="666.75" y1="205.44407485997226" x2="690.75" y2="205.44407485997226"/>
+<rect x="997.65" y="343.7640505820956" width="112.20000000000002" height="666.2359494179044" fill="#176B87"/>
+<line class="axis" x1="1053.75" y1="432.96374089579626" x2="1053.75" y2="254.56436026839503"/>
+<line class="axis" x1="1041.75" y1="432.96374089579626" x2="1065.75" y2="432.96374089579626"/>
+<line class="axis" x1="1041.75" y1="254.56436026839503" x2="1065.75" y2="254.56436026839503"/>
+<rect x="1372.65" y="211.86062682800957" width="112.20000000000002" height="798.1393731719904" fill="#176B87"/>
+<line class="axis" x1="1428.75" y1="231.78353979086626" x2="1428.75" y2="191.93771386515277"/>
+<line class="axis" x1="1416.75" y1="231.78353979086626" x2="1440.75" y2="231.78353979086626"/>
+<line class="axis" x1="1416.75" y1="191.93771386515277" x2="1440.75" y2="191.93771386515277"/>
+<rect x="250" y="1120" width="35" height="24" fill="#176B87"/>
+<text class="legend" x="298" y="1142">B0</text>
+<rect x="375.15" y="216.3948070195562" width="112.20000000000002" height="793.6051929804438" fill="#C35A21"/>
+<line class="axis" x1="431.25" y1="225.62804668234207" x2="431.25" y2="207.16156735677032"/>
+<line class="axis" x1="419.25" y1="225.62804668234207" x2="443.25" y2="225.62804668234207"/>
+<line class="axis" x1="419.25" y1="207.16156735677032" x2="443.25" y2="207.16156735677032"/>
+<rect x="750.15" y="214.60861482288624" width="112.20000000000002" height="795.3913851771138" fill="#C35A21"/>
+<line class="axis" x1="806.25" y1="228.25237521744953" x2="806.25" y2="200.96485442832306"/>
+<line class="axis" x1="794.25" y1="228.25237521744953" x2="818.25" y2="228.25237521744953"/>
+<line class="axis" x1="794.25" y1="200.96485442832306" x2="818.25" y2="200.96485442832306"/>
+<rect x="1125.15" y="210.80265144998202" width="112.20000000000002" height="799.197348550018" fill="#C35A21"/>
+<line class="axis" x1="1181.25" y1="229.2004310756821" x2="1181.25" y2="192.40487182428183"/>
+<line class="axis" x1="1169.25" y1="229.2004310756821" x2="1193.25" y2="229.2004310756821"/>
+<line class="axis" x1="1169.25" y1="192.40487182428183" x2="1193.25" y2="192.40487182428183"/>
+<rect x="1500.15" y="215.79024966068323" width="112.20000000000002" height="794.2097503393168" fill="#C35A21"/>
+<line class="axis" x1="1556.25" y1="224.51511154441698" x2="1556.25" y2="207.06538777694948"/>
+<line class="axis" x1="1544.25" y1="224.51511154441698" x2="1568.25" y2="224.51511154441698"/>
+<line class="axis" x1="1544.25" y1="207.06538777694948" x2="1568.25" y2="207.06538777694948"/>
+<rect x="580" y="1120" width="35" height="24" fill="#C35A21"/>
+<text class="legend" x="628" y="1142">B6</text>
+</svg>

@@ -1,0 +1,9 @@
+method,attack_type,malicious_submissions,malicious_approved,malicious_approval_rate,benign_submissions,benign_approved,benign_approval_rate
+B4,none,0,0,,45,26,0.5777777777777777
+B4,label_flip,9,1,0.1111111111111111,36,17,0.4722222222222222
+B4,sign_flip,9,9,1.0,36,22,0.6111111111111112
+B4,random_weights,9,5,0.5555555555555556,36,16,0.4444444444444444
+B7,none,0,0,,45,29,0.6444444444444445
+B7,label_flip,9,1,0.1111111111111111,36,21,0.5833333333333334
+B7,sign_flip,9,9,1.0,36,22,0.6111111111111112
+B7,random_weights,9,9,1.0,36,22,0.6111111111111112

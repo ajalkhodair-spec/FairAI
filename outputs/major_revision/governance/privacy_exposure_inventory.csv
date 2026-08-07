@@ -1,0 +1,19 @@
+field,visibility,location,encryption,potential_leakage,current_mitigation,residual_risk,evidence_type,source
+raw_training_data,private,local_node,environment_dependent,records and protected attributes,not uploaded by pipeline,host or client compromise,implementation,docs/revision/privacy_scope.md
+model_artifact,public_to_participants,IPFS,not_encrypted,model inversion and membership signals,CID integrity and policy-gated retrieval,no confidentiality guarantee,implementation,scripts/ipfs_adapter.py
+model_parameters,public_to_participants,model artifact,not_encrypted,parameter and update leakage,raw records omitted,inversion and membership risk remains,implementation,fairai_revision/models.py
+fairness_metrics,public,IPFS_and_verifier_inputs,not_encrypted,group outcome and population information,aggregate metrics and minimum group size,small-group and distribution leakage,implementation,fairai_revision/fairness.py
+public_inputs,public,proof_and_verifier,not_encrypted,identity policy threshold and metric correlation,canonical bounded schema,linkability remains,implementation,circuits/FairnessEligibilityV2.circom
+proof,public,IPFS_or_transaction,not_encrypted,statement and timing metadata,zero-knowledge hides witness under cryptographic assumptions,public statement remains visible,analytical,docs/revision/proof_nonclaims.md
+metadata,public_to_participants,IPFS,not_encrypted,software dataset model and execution details,schema minimization,metadata leakage remains,implementation,scripts/fairai_mvp.py
+manifest,public_to_participants,IPFS,not_encrypted,artifact graph and provenance,CID and digest binding,relationship disclosure remains,implementation,scripts/fairai_mvp.py
+CIDs,public,on_chain_and_reports,not_encrypted,artifact correlation and access pattern,content addressing,global linkability and availability metadata,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+node_id,public,on_chain,not_encrypted,participant linkability,pseudonymous bytes32 identifier,re-identification by context,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+round_id,public,on_chain,not_encrypted,participation cadence,coarse workflow identifier,timing correlation,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+policy_version,public,on_chain_or_signed_decision,not_encrypted,governance configuration history,version binding,policy evolution is observable,implementation,hardhat/contracts/FairAISignedVerifierV2.sol
+timestamp,public,on_chain,not_encrypted,activity timing and availability,block timestamp only,timing correlation,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+approval_status,public,on_chain,not_encrypted,participant performance or compliance inference,explicit audit purpose,reputational and attribute inference,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+ethereum_sender,public,on_chain,not_encrypted,account and participant linkability,role-based authorization,address correlation,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+transaction_events,public,on_chain,not_encrypted,workflow and artifact graph,immutable audit purpose,permanent metadata leakage,implementation,hardhat/contracts/FairAIEthicalLedger.sol
+gas,public,on_chain,not_encrypted,operation and payload-size inference,none,size and behavior fingerprinting,implementation,outputs/major_revision/gas-benchmark-30rep-6f80450/blockchain/gas_summary.csv
+timing,observable,host_network_and_chain,not_encrypted,client workload and availability inference,aggregate reporting only,network observer can correlate activity,analytical,docs/revision/privacy_threat_analysis.md

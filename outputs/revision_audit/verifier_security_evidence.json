@@ -1,0 +1,40 @@
+{
+  "command": [
+    "npx",
+    "hardhat",
+    "test",
+    "test/FairAISignedVerifierV2.js",
+    "test/FairAIV2CompositeVerifier.js",
+    "test/FairAIEthicalLedger.js"
+  ],
+  "evidence_type": "measured",
+  "log_sha256": "0e5c40fe64305a68d423bee4ad80939d3f72bd0e064f8002f37e5ea7a3034d84",
+  "passed_cases": [
+    "accepts and consumes a valid domain-separated decision (408ms)",
+    "rejects unauthorized signers and changed signed fields",
+    "binds chain ID and verifying contract",
+    "rejects expiration, nonce reuse, and exact replay",
+    "rejects signatures after signer revocation",
+    "rejects malformed signatures and public-signal mismatches",
+    "demonstrates the authorized-key compromise trust limitation",
+    "accepts a real V2 proof only with its bound signed decision",
+    "rejects ledger context changes and signed-decision replay",
+    "records a signed failed-proof decision as rejected (39ms)",
+    "registers nodes by node-operator role only",
+    "approves verified model CIDs and exposes eligible models",
+    "rejects unverified proofs and excludes them from eligible models",
+    "rejects unregistered nodes, duplicate submissions, empty CIDs, and reused CIDs",
+    "publishes a global model only with approved participant models",
+    "enforces verifier authorization and round lifecycle",
+    "cancels a closed round when no model is eligible",
+    "hardens role and verifier administration"
+  ],
+  "passed_count": 18,
+  "runtime_ms": 1626.3008330133744,
+  "schema_version": "fairai.verifier_security.v1",
+  "test_files": [
+    "test/FairAISignedVerifierV2.js",
+    "test/FairAIV2CompositeVerifier.js",
+    "test/FairAIEthicalLedger.js"
+  ]
+}

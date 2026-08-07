@@ -7,6 +7,12 @@ __pycache__/
 *.py[cod]
 .pytest_cache/
 .coverage
+.venv/
+.tools/
+azure/runtime_topology.json
+
+data/raw/
+data/processed/
 
 node_modules/
 npm-debug.log*
@@ -16,9 +22,29 @@ hardhat/cache/
 hardhat/deployments/
 
 outputs/
+!outputs/
+outputs/*
+!outputs/revision_audit/
+!outputs/revision_audit/baseline_manifest.json
+!outputs/revision_audit/current_evidence_freeze.json
+!outputs/revision_audit/v2_proof_benchmark.json
+!outputs/revision_audit/v2_gas_summary.csv
+!outputs/revision_audit/v2_gas_benchmark_summary.json
+!outputs/revision_audit/v2_gas_run_manifest.json
+!outputs/revision_audit/verifier_security_evidence.json
+!outputs/revision_audit/verifier_security_run_manifest.json
+!outputs/revision_audit/fairfed-scaling-analysis/
+!outputs/revision_audit/fairfed-scaling-analysis/*
+!outputs/revision_audit/infrastructure-analysis/
+!outputs/revision_audit/infrastructure-analysis/*
+!outputs/revision_audit/infrastructure-analysis-v2/
+!outputs/revision_audit/infrastructure-analysis-v2/*
+!outputs/revision_audit/adversarial-kubo-v2-analysis/
+!outputs/revision_audit/adversarial-kubo-v2-analysis/*
 build/
 *.wtns
 *.zkey
 *.ptau
+!zk/artifacts/v2/FairnessEligibilityV2_final.zkey
 
 results/**/*.zip

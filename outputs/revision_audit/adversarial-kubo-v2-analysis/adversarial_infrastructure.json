@@ -1,0 +1,17 @@
+{
+  "approved_records": 209,
+  "evidence_type": "derived",
+  "executions": 24,
+  "ipfs_retrieval_checks": 2664,
+  "ipfs_retrievals_verified": 2664,
+  "ledger_records": 360,
+  "proof_decisions": 360,
+  "proofs_generated": 209,
+  "rejected_records": 151,
+  "round_states": {
+    "Archived": 70,
+    "Cancelled": 2
+  },
+  "rounds": 72,
+  "schema_version": "fairai.adversarial_infrastructure.v1"
+}

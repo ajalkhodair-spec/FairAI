@@ -1,128 +1,224 @@
-# FairAI MVP
+# FairAI Research Implementation
 
-FairAI MVP is a tested research prototype for blockchain/IPFS-based ethical verification and auditability in federated AI workflows. It implements a small-scale, reproducible version of the FairAI framework with smart-contract approval gates, IPFS artifact traceability, verifier-mediated proof decisions, approved-only aggregation, and exported experiment results.
+FairAI is a manifest-driven research implementation of fairness-gated
+federated learning with smart-contract governance and IPFS artifact
+traceability. It preserves the submitted three-node MVP and adds real-data,
+multi-seed, multi-round, and bounded multi-host validation infrastructure.
 
-This repository is intended as a research artifact and framework validation MVP. It is not a security-audited production deployment.
+This repository is not a security-audited production deployment. It is a
+reproducible, bounded local research implementation with explicit scientific
+nonclaims.
 
-## Scope
+## Demonstrated Scope
 
-The implementation is intentionally scoped for reproducibility:
+- checksum-pinned Adult and COMPAS acquisition;
+- train-only tabular preprocessing;
+- federated logistic regression and a deterministic small MLP;
+- IID and label/group Dirichlet client partitions;
+- 3, 5, 10, 20, and 50 logical-client experiments;
+- demographic parity, equal opportunity, equalized odds, and subgroup
+  accuracy gaps;
+- versioned fairness-policy profiles and approved-only aggregation;
+- per-round on-chain eligibility checks followed by CID retrieval and
+  aggregation of the retrieved model parameters;
+- sample-weighted FedAvg and coordinate-wise median;
+- the published FairFed server weighting rule with signed EOD and accuracy
+  fallback;
+- Solidity roles, node registration, duplicate-CID rejection, round lifecycle,
+  eligible-model retrieval, global-model publication, and audit events;
+- EIP-712 verifier decisions with domain separation, expiry, revocation, and
+  nonce/digest replay protection;
+- packaged Circom 2.1.6 V2 R1CS/WASM/ZKey/VKey artifacts, direct Groth16
+  verification, composite proof/signature approval, and cryptographic negative
+  tests;
+- strict B2/B4/B7 two-peer Kubo adapters and three-host Azure deployment
+  infrastructure;
+- deterministic poisoning scenarios and A1-A14 security evidence;
+- full-path false-metric and approved-artifact-unavailable trust-boundary tests;
+- repeated Hardhat gas and sequential/concurrent throughput measurements, plus
+  modeled cost scenarios;
+- run manifests, statistical tables, a 40-sheet workbook, and figure-data
+  exports.
 
-- local node data is generated and never published;
-- each node trains a local logistic model;
-- each node computes accuracy and demographic parity gap;
-- a Groth16 circuit proves that public metrics meet policy thresholds;
-- public metric/count signals include accuracy, fairness gap, sample counts, correct predictions, and per-group positive prediction counts;
-- artifacts are published through an IPFS adapter: Kubo HTTP API, Kubo `ipfs add`, or deterministic local SHA-256 fallback;
-- Kubo runs perform CID readback validation and pinning before aggregation/publication;
-- `hardhat/contracts/FairAIEthicalLedger.sol` implements the ethical verification smart contract;
-- `hardhat/contracts/FairAISignedVerifier.sol` verifies signed Groth16 eligibility decisions from a dedicated verifier service address;
-- `hardhat/contracts/FairAIMultisigAdmin.sol` provides a 2-of-N admin executor for production-style governance;
-- `hardhat/contracts/FairAIZKVerifierMock.sol` is only for deterministic fixture tests; `hardhat/contracts/FairnessEligibilityGroth16Verifier.sol` and `FairAIGroth16VerifierAdapter.sol` are retained for direct Groth16 integration work;
-- the ledger uses explicit roles: admin, node operator, verifier, and aggregator;
-- the contract enforces verifier-contract checks, explicit round lifecycle, duplicate-CID rejection, approval/rejection, and on-chain global model publication;
-- the Python runner deploys the contract on the local Hardhat network, submits model CID records as verifier transactions, reads eligible model CIDs back from the contract, publishes the global model on-chain, and archives the round;
-- the master layer retrieves only approved model CIDs and aggregates them with FedAvg;
-- run outputs include a ledger, metrics CSV, global model, and report.
+## Boundaries
 
-## What Is Validated
+- The V2 phase-2 setup has one experimental contributor. A governed multi-party
+  ceremony is required before production deployment.
+- Strict local two-peer Kubo timings, publisher outage/recovery, and B2/B4/B7
+  runs are included. Consumer outage, WAN behavior, Docker Compose, and Azure
+  execution are not claimed as measured evidence.
+- FairFed implements the published server aggregation rule; it does not claim
+  to reproduce every local debiasing variant from the paper.
+- Raw training data stay local, but the implementation does not provide a
+  formal guarantee against membership inference, model inversion,
+  model-update leakage, or metadata leakage.
+- Fairness is the directly operationalized ethical dimension. The system does
+  not mathematically evaluate all ethical principles.
 
-- Local client training with private synthetic node data.
-- IPFS/Kubo artifact upload, CID readback validation, and pinning.
-- Manifest/CID traceability across model, proof, public input, metrics, metadata, global model, and report artifacts.
-- Smart-contract role controls, round lifecycle, duplicate rejection, approval/rejection records, eligible-model retrieval, and global model publication.
-- Signed verifier-service workflow after local Groth16 verification.
-- Approved-only FedAvg aggregation.
-- Repeated experimental runs with CSV, spreadsheet, figure, and report outputs.
-- GitHub Actions tests for Python workflow logic and Solidity contracts.
+See [BLOCKERS.md](BLOCKERS.md), [privacy_scope.md](docs/revision/privacy_scope.md),
+and [known_undetected_threats.md](docs/revision/known_undetected_threats.md).
 
-## Current Limitations
+## Requirements
 
-- The experiments use synthetic data and a small number of local nodes.
-- The default blockchain environment is local Hardhat.
-- The IPFS path is intended for local/Docker Kubo validation unless deployed with persistent pinning infrastructure.
-- The result-generation workflow uses a signed verifier-service decision after local Groth16 verification; direct on-chain Groth16 verifier integration remains included for further integration work.
-- The contracts and verifier flow have not received an external security audit.
-- Do not use this repository as a mainnet production deployment without audit, operational monitoring, key management, persistent IPFS availability, and a full threat review.
+- Python 3.11 or newer
+- Node.js 20
+- Docker Desktop for Compose-based Kubo scenarios, or two native Kubo 0.29.0
+  peers for `ipfs_benchmark_native.yaml`
+- Circom 2.1.6 and snarkjs 0.7.5 for V2 artifact regeneration
 
-## Quick Start
-
-```sh
-python3 -m unittest discover -s tests
-cd hardhat && npm test && cd ..
-python3 scripts/fairai_mvp.py --output outputs/fairai_mvp_run
-```
-
-Run with Dockerized Kubo IPFS:
-
-```sh
-./scripts/run_with_ipfs.sh outputs/fairai_mvp_run
-```
-
-This starts `ipfs/kubo` from `docker-compose.ipfs.yml` and sets:
-
-```sh
-FAIRAI_IPFS_API=http://127.0.0.1:5001
-```
-
-If Kubo is unavailable, the adapter falls back to deterministic `sha256-*` CIDs so tests and demos remain reproducible.
-For production-style verification, use strict mode so fallback storage is not accepted:
-
-```sh
-FAIRAI_IPFS_API=http://127.0.0.1:5001 python3 scripts/fairai_mvp.py --output outputs/fairai_mvp_run --require-real-ipfs
-```
-
-Run repeated experiments:
+Install:
 
 ```sh
-FAIRAI_IPFS_API=http://127.0.0.1:5001 python3 scripts/run_experiments.py --output outputs/fairai_mvp_experiment --trials 3 --require-real-ipfs
-```
-
-This writes:
-
-- `experiment_summary.csv`
-- `experiment_summary.json`
-- one full FairAI run directory per trial
-
-Deploy contracts:
-
-```sh
+python3 -m venv .venv
+. .venv/bin/activate
+python -m pip install -r requirements-lock.txt
 cd hardhat
-npx hardhat run scripts/deploy.js --network hardhat
+npm ci
+cd ..
 ```
 
-For Sepolia/testnet deployment, set:
+Install report-only dependencies when regenerating PNG figures:
 
 ```sh
-SEPOLIA_RPC_URL=...
-PRIVATE_KEY=...
-npx hardhat run scripts/deploy.js --network sepolia
+python -m pip install -r requirements-report.txt
 ```
 
-Deployment metadata is written to `hardhat/deployments/<network>.json`.
-
-See `PRODUCTION_READINESS.md` before deploying outside a local/demo environment.
-
-The ZK setup expects a Powers of Tau file at:
-
-```text
-zk/powersoftau_final.ptau
-```
-
-You can also point to another local setup file:
+## Verification
 
 ```sh
-FAIRAI_PTAU_PATH=/path/to/powersoftau_final.ptau python3 scripts/fairai_mvp.py
+make test
+make revision-smoke
 ```
 
-## Results
+Run the submitted-state reproduction with strict Kubo:
 
-Curated experiment outputs are included under `results/q1_results_package/`, including raw CSVs, figures, spreadsheet tables, report text, and LaTeX snippets.
+```sh
+docker compose -f docker-compose.ipfs.yml up -d --wait
+FAIRAI_IPFS_API=http://127.0.0.1:5001 \
+  python -m fairai_revision.run \
+  --config configs/revision/legacy_mvp.yaml \
+  --run-id legacy_mvp
+```
+
+Run core and expanded experiments:
+
+```sh
+make revision-core
+python -m fairai_revision.run --config configs/revision/adult_mlp.yaml
+make revision-scaling
+python -m fairai_revision.run --config configs/revision/heterogeneity.yaml
+make revision-fairness
+python -m fairai_revision.run --config configs/revision/adversarial.yaml
+python -m fairai_revision.run --config configs/revision/gas_benchmark.yaml
+```
+
+Run the strict two-peer IPFS benchmark:
+
+```sh
+docker compose -f docker-compose.ipfs.yml up -d --wait
+make revision-ipfs
+```
+
+The benchmark fails if either real Kubo endpoint is unavailable. It never
+records fallback CIDs as IPFS evidence.
+
+Run the two focused trust-boundary scenarios from fresh Kubo volumes:
+
+```sh
+docker compose -f docker-compose.ipfs.yml down -v
+docker compose -f docker-compose.ipfs.yml up -d --wait
+python -m fairai_revision.run --config configs/revision/false_metric_reporting.yaml
+
+docker compose -f docker-compose.ipfs.yml down -v
+docker compose -f docker-compose.ipfs.yml up -d --wait
+python -m fairai_revision.run --config configs/revision/approved_artifact_failure.yaml
+```
+
+The tracked native-peer configuration and bounded full-path suite are:
+
+```sh
+make revision-ipfs-native
+make revision-kubo-v2
+make revision-kubo-v2-adversarial
+```
+
+The committed derived evidence is under
+`outputs/revision_audit/infrastructure-analysis-v2/`.
+The strict poisoning analysis is under
+`outputs/revision_audit/adversarial-kubo-v2-analysis/`.
+The native Kubo archive used for those measurements is pinned in
+`infrastructure/toolchain.lock.json`.
+
+Run the isolated publisher outage/recovery benchmark with the pinned binary:
+
+```sh
+FAIRAI_KUBO_BINARY=/absolute/path/to/ipfs make revision-ipfs-recovery
+```
+
+Run the measured V2 proof benchmark without Docker:
+
+```sh
+make revision-proof
+```
+
+The tracked V2 bundle is checksum-validated before every proof. The benchmark
+labels its single-contributor setup and does not imply a production ceremony.
+
+## Azure Matrix
+
+The bounded Azure topology uses three physical hosts and distributes 5, 10, or
+20 logical clients across two workers. The local scaling experiment reaches 50
+logical clients; neither count should be described as a VM count.
+
+Deployment, private Kubo setup, remote-worker configuration, matrix execution,
+result upload, and teardown are documented in [azure/README.md](azure/README.md).
+The Bicep template compiles locally, but no Azure resources or Azure results are
+claimed in the repository until a subscription owner runs and records them.
+
+## Report Generation
+
+```sh
+python -m scripts.prepare_results_package
+python -m scripts.build_latex_tables
+python -m scripts.build_revision_figures
+python scripts/render_revision_png_figures.py
+node scripts/build_results_workbook.mjs
+```
+
+The workbook builder uses `@oai/artifact-tool`; install it in the report
+environment before running that command.
+The committed publication package also includes deterministic bootstrap
+statistics and SHA-256 release checksums.
+
+Primary tracked evidence is under `outputs/major_revision/`. Each measured run
+contains a manifest with its commit, configuration hash, dataset checksum,
+partition checksum, timestamps, and completion status. The output directory
+contract is documented in
+[output_schema.md](docs/revision/output_schema.md).
+
+## Data Preparation
+
+Dataset source URLs, license notes, and checksums are recorded in
+`data/raw/<dataset>/download_manifest.json` when acquisition is run. Raw data
+are ignored by Git. Dataset loaders reject checksum mismatches and fit
+preprocessing only on the training split.
+
+## Troubleshooting
+
+- Docker permission errors: grant the shell access to Docker Desktop's socket,
+  then rerun the strict Kubo command.
+- Circom mismatch: run `python scripts/check_zk_toolchain.py`; do not use
+  legacy circuit artifacts as V2 evidence.
+- Existing output directory: choose a new `--run-id`, or use `--resume` only
+  with the identical configuration.
+- Missing raw datasets: run the checksum-pinned acquisition command documented
+  in [EXECUTION_RUNBOOK.md](docs/revision/EXECUTION_RUNBOOK.md).
 
 ## Citation
 
-If you use this repository, cite it as a research software artifact. A machine-readable citation file is provided in `CITATION.cff`.
+Use [CITATION.cff](CITATION.cff). Cite the versioned release URL once the
+corresponding GitHub release has been published.
 
 ## License
 
-This project is released under the MIT License. See `LICENSE`.
+MIT. See [LICENSE](LICENSE).

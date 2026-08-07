@@ -1,0 +1,19 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "gas_benchmark",
+  "executor": "gas_benchmark",
+  "evidence_type": "measured",
+  "seed": 12001,
+  "dataset": "synthetic_transactions",
+  "model": "not_applicable",
+  "clients": 20,
+  "rounds": 1,
+  "local_epochs": 1,
+  "method": "hardhat_operation_gas",
+  "fairness_policy": "submitted_policy",
+  "attack_profile": "replay_rejection",
+  "batch_sizes": [1, 5, 10, 20],
+  "repetitions": 30,
+  "modeled_gas_price_gwei": [10, 30, 100],
+  "modeled_eth_usd": [2000, 3500]
+}

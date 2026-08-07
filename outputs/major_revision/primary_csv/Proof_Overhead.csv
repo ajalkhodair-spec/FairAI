@@ -1,0 +1,4 @@
+run_id,stage,n,mean_ms,std_ms,median_ms,p95_ms,minimum_ms,maximum_ms,valid_proofs_verified,negative_cases_rejected,setup_type,production_ceremony_required,evidence_type,source_file
+proof-v2-30rep-c4e7124,witness,30,30.680790232145227,0.9486238336019117,30.67358299449552,32.150791987078264,29.20491699478589,32.67245800816454,30,6,single_contributor_experimental,True,measured_local,outputs/revision_audit/v2_proof_benchmark.json
+proof-v2-30rep-c4e7124,proof,30,257.5118986297942,8.023485251442635,256.176750495797,264.58870799979195,248.2782079896424,293.3236659737304,30,6,single_contributor_experimental,True,measured_local,outputs/revision_audit/v2_proof_benchmark.json
+proof-v2-30rep-c4e7124,verification,30,213.59060546868326,4.146036016021444,213.3954159944551,219.56754199345596,207.27983402321115,221.64766601053998,30,6,single_contributor_experimental,True,measured_local,outputs/revision_audit/v2_proof_benchmark.json

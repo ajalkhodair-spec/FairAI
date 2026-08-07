@@ -1,0 +1,4 @@
+scenario,expected,observed,fail_closed,recovery_measured,evidence_type,source
+A7_unreachable_endpoint,explicit retrieval failure,StrictIPFSError,true,false,tested,tests/test_revision_ipfs.py
+A8_changed_bytes,digest or content mismatch,StrictIPFSError,true,false,tested,tests/test_revision_ipfs.py
+publisher_outage_recovery,retry and integrity-preserving recovery,blocked by Docker socket access,not_measured,false,blocked,BLOCKERS.md

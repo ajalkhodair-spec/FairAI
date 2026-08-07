@@ -1,0 +1,35 @@
+{
+  "analysis_git_commit": "0d9212f344a4793aa5af0f9ed58cf876d3dcb7b2",
+  "bounded_input": {
+    "configuration_hash": "d27ecc90f468e3d439d4a0856a6866da02ea314e579951703f828de5b8c2c889",
+    "git_commit": "e17a1f478c69242e09cececc001b0bc826261469",
+    "metrics_sha256": "b321fdcf43642fcf3d48953fb840a9f1a94756e9870e68dea30f80dc154e46b6",
+    "run_id": "kubo-v2-bounded-e17a1f4"
+  },
+  "evidence_type": "derived",
+  "ipfs_input": {
+    "configuration_hash": "28b0750dd1a62f7094f096b2a92d0de48403da77303dce65b02cc3b417b12766",
+    "git_commit": "0d9212f344a4793aa5af0f9ed58cf876d3dcb7b2",
+    "kubo_version": "0.29.0",
+    "manifest_sha256": "f1962bf35bb275de3081741d6358fad8378b950d7ee868c3f611d42664cdfda1",
+    "raw_sha256": "119e31d45b020652e03fd8be738831b4429a045ecf41279dfaeed235204c4d52",
+    "run_id": "ipfs-native-pin-cold-30rep"
+  },
+  "outputs": {
+    "bounded_metrics.csv": "654fd0371228944404b824407db1aa1fd02921975efd3ad7b5188817ead033ea",
+    "infrastructure_summary.json": "629e78209c349aa568a4c91e8ed4ef2a24101b29830b6c1b356b453278bfe243",
+    "ipfs_concurrency.csv": "5a19f57287966df6847d80af68cf8adbf5e5ad9599bb44916a8102b6ccaca7c9",
+    "ipfs_recovery.csv": "6250b4c15ac133932f1fdd1697710f65cb4d6fe661b7b1cabae705d855b31b38",
+    "ipfs_sequential.csv": "0899c7ed4a8a59fe33bec5b6230c38b7672ba5b3a36f922f7b347c27d7dfc201"
+  },
+  "recovery_input": {
+    "configuration_hash": "1aae3ededc16e9ee8935b2b9d70ab2c08b459ccf7766f2fdf5d5e807131c1a98",
+    "git_commit": "6ba3a9cf5e766a465544172ba51b55c22f9f2828",
+    "kubo_version": "0.29.0",
+    "manifest_sha256": "487fb0a2a09c1ac7da03789c001a283be5eb24dddba41cbde94278a8a52fe1f9",
+    "raw_sha256": "8acc6905cefe770e2c433cca8254638822a3aa26043b62e9214a658e4d2d700f",
+    "run_id": "ipfs-recovery-30rep-6ba3a9c",
+    "summary_sha256": "d2df23bb4f81a0478108e77025f5687a90649724976c1d9c585debe73e2d222c"
+  },
+  "schema_version": "fairai.infrastructure_analysis_manifest.v1"
+}

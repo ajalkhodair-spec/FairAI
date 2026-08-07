@@ -1,0 +1,330 @@
+{
+  "client_counts": [
+    10
+  ],
+  "dataset": "adult",
+  "experiment_seeds": [
+    6001,
+    6002,
+    6003,
+    6004,
+    6005,
+    6006,
+    6007,
+    6008,
+    6009,
+    6010
+  ],
+  "methods_executed": [
+    "B0"
+  ],
+  "methods_not_executed": {
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version"
+  },
+  "partitions": {
+    "seed_6001/clients_10/iid": "589721512761da5093f7a410da66dd6926d7bf6b14f888171f60a574c92d8601",
+    "seed_6001/clients_10/joint_dirichlet_0.3": "17db8342fdc45d45f21aba5046ebe3d8413944aacd6f70f9a8a76b2dabe032d2",
+    "seed_6001/clients_10/joint_dirichlet_1.0": "9e6089f163b03eeac8b76fb6eb24c5c2566d885b5d6a213e56e78c2c34ff66b4",
+    "seed_6002/clients_10/iid": "d0707e2e4553f470f55e584515cf5a014f86ea7cce648ab9ba6aedbcc50fd20a",
+    "seed_6002/clients_10/joint_dirichlet_0.3": "68e0a41dbe0e2404369d9f336a980a03c6fdab0c1955acaeba79f848aeb70c46",
+    "seed_6002/clients_10/joint_dirichlet_1.0": "9c70a5f81422337334620f6d16c9ff0ac3c68d516141db68d85e50e2e4f14a56",
+    "seed_6003/clients_10/iid": "bb5f42d4e3239986152cf14d394913583747f74c2fb32fbf22eb9afedd44ffd5",
+    "seed_6003/clients_10/joint_dirichlet_0.3": "fb43019f1df785786ccfb17a896450435306a57e760520089386690c18c78887",
+    "seed_6003/clients_10/joint_dirichlet_1.0": "90ac1e38d88b9ff077a0887e9a955fae35e4e4b88814ba7f7dfa66f3a4bf436e",
+    "seed_6004/clients_10/iid": "7f09a67be0e2f2ba18e8ac925b27b0b601d23c850a45c8226aed52ac5f2210d8",
+    "seed_6004/clients_10/joint_dirichlet_0.3": "f7f84979170fb2dc892e8aae28ae41bb57432ad148ef6f5edd19456682049dc1",
+    "seed_6004/clients_10/joint_dirichlet_1.0": "4d1c94c9e8ab6af3ffb8b7a9b75a920997d05b7b33f972368a41b22e1c158912",
+    "seed_6005/clients_10/iid": "9a1f2cdefb92d85a3987ed1e2aaf0c02370862600c53646374bdb28a410d3d9d",
+    "seed_6005/clients_10/joint_dirichlet_0.3": "c3233a9a0937aacdd45e54e7b0cc2b5c2f564ca8ac20555737dcf978042eceff",
+    "seed_6005/clients_10/joint_dirichlet_1.0": "b2bf44e55e36c5463bb7038fa030d363c35588e8dfc9309059871b283cd85f79",
+    "seed_6006/clients_10/iid": "ed09291c5aad9f7ac35a0321726fdd75da69298432d43f0141163fbcb2634935",
+    "seed_6006/clients_10/joint_dirichlet_0.3": "cd751cefe5377885b58ec23657af626b8da39e057fbec65cc933c8258e998fd3",
+    "seed_6006/clients_10/joint_dirichlet_1.0": "a25ca87dbb8aff59a6723e6029d379825902cbdbf10fae4211cf43390ba4d2af",
+    "seed_6007/clients_10/iid": "946dc9951034f9872d4bdcf30896e3b81e8b274d8a4bc7fb6dcd96c645da333e",
+    "seed_6007/clients_10/joint_dirichlet_0.3": "ade0265ea25d23030c583500da167fb13cfdfc0675c14c7f21249d3bddf09c1c",
+    "seed_6007/clients_10/joint_dirichlet_1.0": "0620e303f54833229efda8e8f397be82625dbbf48d96a7e8d07d0c2ff10d4e46",
+    "seed_6008/clients_10/iid": "03eeaa1fe92e7e64ac8424e1e27e0d3216ac6d1a5dc12fa704cb8ca5f49a622e",
+    "seed_6008/clients_10/joint_dirichlet_0.3": "9385d4da9dfdf92a75406f73d0ad3eb270cf7380070ae9448f9bd1444026082e",
+    "seed_6008/clients_10/joint_dirichlet_1.0": "be770ade769b5bd1b3ad2546fe58f2eac928dfc1d748b53884cc5ca797e4d4a8",
+    "seed_6009/clients_10/iid": "f31df130e018406b95012adb8d96e1833f0c522fed32f7c9dad742ab9c39b1ec",
+    "seed_6009/clients_10/joint_dirichlet_0.3": "19cbc46a16c6dc31289b1ea375216bf8b78c7f591e3298a6c2c4f0eeb6daeb28",
+    "seed_6009/clients_10/joint_dirichlet_1.0": "3ad47b7adc90b2330946333e6fb07862862a1cccb27bb0e66e913c481df7b024",
+    "seed_6010/clients_10/iid": "210217b8bb672b1ccc8158952950494e36a6446d58fade7bcc7d12169f1bc262",
+    "seed_6010/clients_10/joint_dirichlet_0.3": "5f7720df76667a03f95243a8adee60216256d225d7622106bcce707541f8f445",
+    "seed_6010/clients_10/joint_dirichlet_1.0": "c2809f3092d05dce06cd0a847c860aa1c33102a88fb7dfd5bfba8d5627d55ec2"
+  },
+  "results": [
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7739226519337017,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 93.35424998425879,
+      "seed": 6001,
+      "test_accuracy": 0.7743691899070385
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7734806629834254,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 78.20129202445969,
+      "seed": 6001,
+      "test_accuracy": 0.7742363877822045
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7717127071823204,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.3170840034727,
+      "seed": 6001,
+      "test_accuracy": 0.7731075697211155
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7737016574585636,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 82.80608299537562,
+      "seed": 6002,
+      "test_accuracy": 0.7745019920318725
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7725966850828729,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 77.27875001728535,
+      "seed": 6002,
+      "test_accuracy": 0.7735723771580345
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7712707182320442,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.19724998949096,
+      "seed": 6002,
+      "test_accuracy": 0.7729747675962816
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7732596685082873,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 74.88716699299403,
+      "seed": 6003,
+      "test_accuracy": 0.7743027888446216
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7734806629834254,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 75.02929199836217,
+      "seed": 6003,
+      "test_accuracy": 0.7737715803452855
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7721546961325967,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.24745902628638,
+      "seed": 6003,
+      "test_accuracy": 0.7733067729083666
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7734806629834254,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 75.62579200020991,
+      "seed": 6004,
+      "test_accuracy": 0.7742363877822045
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7728176795580111,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 84.5195000001695,
+      "seed": 6004,
+      "test_accuracy": 0.7736387782204516
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7717127071823204,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 80.19675000105053,
+      "seed": 6004,
+      "test_accuracy": 0.7729083665338645
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7734806629834254,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 75.96387498779222,
+      "seed": 6005,
+      "test_accuracy": 0.7743691899070385
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7734806629834254,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 75.92387500335462,
+      "seed": 6005,
+      "test_accuracy": 0.7744355909694555
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7730386740331492,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 77.93408300494775,
+      "seed": 6005,
+      "test_accuracy": 0.7737715803452855
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7739226519337017,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 76.25112499226816,
+      "seed": 6006,
+      "test_accuracy": 0.7745019920318725
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7734806629834254,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 78.04558298084885,
+      "seed": 6006,
+      "test_accuracy": 0.7741035856573705
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7723756906077348,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 72.94916699174792,
+      "seed": 6006,
+      "test_accuracy": 0.7733731739707835
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7734806629834254,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 79.87941597821191,
+      "seed": 6007,
+      "test_accuracy": 0.7739707835325366
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7728176795580111,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 75.87249999050982,
+      "seed": 6007,
+      "test_accuracy": 0.7735723771580345
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7728176795580111,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 79.13162501063198,
+      "seed": 6007,
+      "test_accuracy": 0.7733067729083666
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7732596685082873,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 78.83750001201406,
+      "seed": 6008,
+      "test_accuracy": 0.7747675962815405
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7737016574585636,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 83.36270897416398,
+      "seed": 6008,
+      "test_accuracy": 0.7740371845949535
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7743646408839779,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 77.02937501017004,
+      "seed": 6008,
+      "test_accuracy": 0.7767596281540504
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7737016574585636,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 78.16687499871477,
+      "seed": 6009,
+      "test_accuracy": 0.7743691899070385
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7717127071823204,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 78.25587497791275,
+      "seed": 6009,
+      "test_accuracy": 0.7731739707835326
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7714917127071823,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 76.18433301104233,
+      "seed": 6009,
+      "test_accuracy": 0.7728419654714476
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7737016574585636,
+      "method": "B0",
+      "partition": "iid",
+      "runtime_ms": 78.43483300530352,
+      "seed": 6010,
+      "test_accuracy": 0.7746347941567066
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7728176795580111,
+      "method": "B0",
+      "partition": "joint_dirichlet_1.0",
+      "runtime_ms": 76.21583400759846,
+      "seed": 6010,
+      "test_accuracy": 0.7735723771580345
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7717127071823204,
+      "method": "B0",
+      "partition": "joint_dirichlet_0.3",
+      "runtime_ms": 75.30504200258292,
+      "seed": 6010,
+      "test_accuracy": 0.7731739707835326
+    }
+  ],
+  "split_seed": 6001,
+  "test_set_usage": "evaluated once after final round for each paired method"
+}

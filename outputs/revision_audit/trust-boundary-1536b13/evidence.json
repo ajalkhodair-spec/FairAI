@@ -1,0 +1,68 @@
+{
+  "approved_artifact_unavailable": {
+    "aggregation_started": false,
+    "cancellation_tx_hash": "0x1f3d085f412e0006d1104eb21c29b0bb39a22a43dbec764d0acce050e6d1007e",
+    "eligible_model_cids": [
+      "bafkreiheob4l5mecplqxszxewprjjafglr6mdmpdjvg3fxsuy7cunuoiby",
+      "bafkreihovjumobwdhj564gb36d6kllgkhdez7j577kztafcjlysbwmoldy",
+      "bafkreiej5yyutjqibzy6e7z65j6veyzbwu3toxwkerm64hjvxi4gaotuoy"
+    ],
+    "fault_injections": [
+      {
+        "cid": "bafkreiej5yyutjqibzy6e7z65j6veyzbwu3toxwkerm64hjvxi4gaotuoy",
+        "client_id": "2",
+        "consumer_unpinned": true,
+        "garbage_collection_completed": true,
+        "publisher_unpinned": true,
+        "round_id": 1,
+        "type": "approved_artifact_unavailable"
+      }
+    ],
+    "final_state": "Cancelled",
+    "global_model_published": false,
+    "reason": "APPROVED_ARTIFACT_UNAVAILABLE",
+    "reason_code": "0x1cd6eb0749c67ed4e9192c1784bfb81b60f85abd7d5be3d0971cfdae54f41444",
+    "round_id": 1
+  },
+  "claim_boundary": "The proof establishes compliance and binding for supplied metrics; it does not establish correct derivation from private data.",
+  "evidence_type": "derived_from_measured_full_path_runs",
+  "false_metric_reporting": {
+    "aggregated": true,
+    "approved_model_retrieval_verified": true,
+    "client_id": "0",
+    "eligible_model_cids": [
+      "bafkreieveiaeuwforkblan5mx7w6ls6wdx6uwbxyxow43m2vf433bi6xw4"
+    ],
+    "fabricated_metrics": {
+      "accuracy": 0.99,
+      "demographic_parity_gap": 0.0,
+      "equal_opportunity_gap": 0.0,
+      "equalized_odds_gap": 0.0,
+      "subgroup_accuracy_gap": 0.0
+    },
+    "genuine_metrics": {
+      "accuracy": 0.7637426900584795,
+      "demographic_parity_gap": 0.0219435736677116,
+      "equal_opportunity_gap": 0.06331679073614557,
+      "equalized_odds_gap": 0.06331679073614557,
+      "subgroup_accuracy_gap": 0.17137931034482756
+    },
+    "genuine_policy_approved": false,
+    "model_cid": "bafkreieveiaeuwforkblan5mx7w6ls6wdx6uwbxyxow43m2vf433bi6xw4",
+    "on_chain_approved": true,
+    "proof_generated_over": "fabricated_metrics",
+    "reported_policy_approved": true,
+    "round_final_state": "Archived",
+    "round_id": 1,
+    "submission_tx_hash": "0x6d856da537293fe0b9bbb3b5bcbaa8b85b338ec9940395fe75ad057d4d9b88e6"
+  },
+  "inputs": {
+    "false_metric_commit": "1536b13e05d6051ed67a0dfcaf349648359d344a",
+    "false_metric_contract_sha256": "a7991ece863723563e2471d4625551b14c3df5195c7a64f688a6ca09e4ee0e08",
+    "false_metric_run": "false-metric-full-path-1536b13",
+    "unavailable_commit": "1536b13e05d6051ed67a0dfcaf349648359d344a",
+    "unavailable_contract_sha256": "ea9f3ac8584c57cbf8b8640d204ee715136ae0155d850bcf2b7cddc828144f3c",
+    "unavailable_run": "approved-artifact-fail-closed-1536b13"
+  },
+  "schema_version": "fairai.trust_boundary_evidence.v1"
+}

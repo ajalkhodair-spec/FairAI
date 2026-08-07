@@ -1,0 +1,446 @@
+{
+  "client_counts": [
+    10
+  ],
+  "dataset": "adult",
+  "experiment_seeds": [
+    7001,
+    7002,
+    7003,
+    7004,
+    7005,
+    7006,
+    7007,
+    7008,
+    7009,
+    7010
+  ],
+  "methods_executed": [
+    "B3"
+  ],
+  "methods_not_executed": {
+    "B4": "V2 Groth16 artifacts are blocked by the local Circom version; B3 isolates the measured policy-gate effect"
+  },
+  "partitions": {
+    "seed_7001/clients_10/joint_dirichlet_0.3": "5d98509f6a91b6d754b6610d121c5c219aea8da1803f4668f527ea738f76316b",
+    "seed_7002/clients_10/joint_dirichlet_0.3": "9da2287d8c2aac808485d5993875cc8615ba8993a247ea9a500da1bb4e9281ab",
+    "seed_7003/clients_10/joint_dirichlet_0.3": "55441a657ea3cd54cc39900abed9f07f726b1d93cebfa2c0fea9adc29ec79cb0",
+    "seed_7004/clients_10/joint_dirichlet_0.3": "2b2737b8aa5bcbbfbe5454bc28a6e85ecb2c11f81dea0cf67fbf7ca7405d9285",
+    "seed_7005/clients_10/joint_dirichlet_0.3": "dfd22b26cda9246d90f2ea0410ae54d565aedafff69da6a1e6f73f5ca07db70f",
+    "seed_7006/clients_10/joint_dirichlet_0.3": "758f320a2f71303dd1248a1a5e39ebd0a4c6880c6a2d382584d6b5a890a97e7d",
+    "seed_7007/clients_10/joint_dirichlet_0.3": "a27b0e9e8f3505153ccbeba4d320e472f63ffa4c55db21cbfaa50c0d395ebe7e",
+    "seed_7008/clients_10/joint_dirichlet_0.3": "3fb071c102ca85965ae9384b0f5243fc56e99ba1e9a6cfac74fd5afa4839a06a",
+    "seed_7009/clients_10/joint_dirichlet_0.3": "6a1a8c6e1261f7d38692b99d113de331b60b87ba91240e69baad1b13a55dd3b2",
+    "seed_7010/clients_10/joint_dirichlet_0.3": "378409537fb9bf54f818c16b0561cc86c4d323f048028cd46878708b8ec01f9b"
+  },
+  "policy_profiles": [
+    "lenient",
+    "submitted",
+    "moderate",
+    "strict"
+  ],
+  "results": [
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7633149171270718,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 82.64433397562243,
+      "seed": 7001,
+      "test_accuracy": 0.7662018592297477
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7569060773480663,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 76.8831669993233,
+      "seed": 7001,
+      "test_accuracy": 0.7593625498007968
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.6026519337016575,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 75.59475000016391,
+      "seed": 7001,
+      "test_accuracy": 0.598339973439575
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7513812154696132,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 73.62354200449772,
+      "seed": 7001,
+      "test_accuracy": 0.7548472775564409
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7529281767955801,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 65.71799999801442,
+      "seed": 7002,
+      "test_accuracy": 0.7565737051792829
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7524861878453039,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 65.94395800493658,
+      "seed": 7002,
+      "test_accuracy": 0.7562416998671979
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7770165745856353,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 66.19695900008082,
+      "seed": 7002,
+      "test_accuracy": 0.7819389110225764
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.24883977900552487,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 65.49416700727306,
+      "seed": 7002,
+      "test_accuracy": 0.2456839309428951
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7619889502762431,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 72.86470898543485,
+      "seed": 7003,
+      "test_accuracy": 0.7645418326693227
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7569060773480663,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 72.92333300574683,
+      "seed": 7003,
+      "test_accuracy": 0.7596281540504648
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7560220994475139,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 72.77883301139809,
+      "seed": 7003,
+      "test_accuracy": 0.7585657370517929
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7518232044198895,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 73.09599997824989,
+      "seed": 7003,
+      "test_accuracy": 0.7552456839309429
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7571270718232044,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 67.11025000549853,
+      "seed": 7004,
+      "test_accuracy": 0.7601593625498008
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7571270718232044,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 67.41275000968017,
+      "seed": 7004,
+      "test_accuracy": 0.7601593625498008
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.75646408839779,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 68.64183401921764,
+      "seed": 7004,
+      "test_accuracy": 0.7595617529880478
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7513812154696132,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 71.6883749992121,
+      "seed": 7004,
+      "test_accuracy": 0.754581673306773
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7573480662983425,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 73.8608330138959,
+      "seed": 7005,
+      "test_accuracy": 0.7597609561752988
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.756243093922652,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 73.296249989653,
+      "seed": 7005,
+      "test_accuracy": 0.7592297476759629
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7558011049723757,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 73.74820800032467,
+      "seed": 7005,
+      "test_accuracy": 0.7588313413014608
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.24883977900552487,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 73.1400000222493,
+      "seed": 7005,
+      "test_accuracy": 0.2456839309428951
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7706077348066298,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 73.82333299028687,
+      "seed": 7006,
+      "test_accuracy": 0.7730411686586985
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7622099447513813,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 72.961124998983,
+      "seed": 7006,
+      "test_accuracy": 0.7638778220451528
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7619889502762431,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 70.09858297533356,
+      "seed": 7006,
+      "test_accuracy": 0.7630146082337318
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.24883977900552487,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 69.78595798136666,
+      "seed": 7006,
+      "test_accuracy": 0.2456839309428951
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7679558011049724,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 69.4245419872459,
+      "seed": 7007,
+      "test_accuracy": 0.7720451527224436
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.76,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 69.69541701255366,
+      "seed": 7007,
+      "test_accuracy": 0.7618857901726428
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.756243093922652,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 73.70295899454504,
+      "seed": 7007,
+      "test_accuracy": 0.7592961487383798
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7522651933701657,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 69.87695800489746,
+      "seed": 7007,
+      "test_accuracy": 0.7560424966799468
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.761767955801105,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 73.3799579902552,
+      "seed": 7008,
+      "test_accuracy": 0.7643426294820718
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.756243093922652,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 71.75949998782016,
+      "seed": 7008,
+      "test_accuracy": 0.7594289508632138
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7560220994475139,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 72.73720798548311,
+      "seed": 7008,
+      "test_accuracy": 0.7588313413014608
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.24883977900552487,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 70.79474997590296,
+      "seed": 7008,
+      "test_accuracy": 0.2456839309428951
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7670718232044199,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 72.19395798165351,
+      "seed": 7009,
+      "test_accuracy": 0.7706507304116866
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7566850828729281,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 72.33654201263562,
+      "seed": 7009,
+      "test_accuracy": 0.7595617529880478
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7577900552486188,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 74.77470900630578,
+      "seed": 7009,
+      "test_accuracy": 0.7606241699867198
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.24883977900552487,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 75.8444580133073,
+      "seed": 7009,
+      "test_accuracy": 0.2456839309428951
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7615469613259669,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "lenient",
+      "runtime_ms": 68.20262499968521,
+      "seed": 7010,
+      "test_accuracy": 0.7645418326693227
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7580110497237569,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "submitted",
+      "runtime_ms": 67.8302499873098,
+      "seed": 7010,
+      "test_accuracy": 0.7605577689243028
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7641988950276243,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "moderate",
+      "runtime_ms": 68.79095899057575,
+      "seed": 7010,
+      "test_accuracy": 0.7665338645418327
+    },
+    {
+      "client_count": 10,
+      "final_validation_accuracy": 0.7555801104972376,
+      "method": "B3",
+      "partition": "joint_dirichlet_0.3",
+      "policy_profile": "strict",
+      "runtime_ms": 67.9349169950001,
+      "seed": 7010,
+      "test_accuracy": 0.7576361221779548
+    }
+  ],
+  "split_seed": 7001,
+  "test_set_usage": "evaluated once after final round for each paired method"
+}

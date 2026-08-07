@@ -1,0 +1,52 @@
+{
+  "mean_approval_rate": 0.666667,
+  "mean_global_accuracy": 0.938889,
+  "mean_global_demographic_parity_gap": 0.144269,
+  "mean_ipfs_retrieval_ms": 0.867476,
+  "mean_proof_generation_ms": 612.479111,
+  "rows": [
+    {
+      "approval_rate": 0.666667,
+      "approved_nodes": 2,
+      "global_accuracy": 0.938889,
+      "global_demographic_parity_gap": 0.144269,
+      "global_model_cid": "bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm",
+      "global_publication_gas": "449664",
+      "mean_ipfs_retrieval_ms": 0.913286,
+      "mean_proof_generation_ms": 610.530667,
+      "rejected_nodes": 1,
+      "report_cid": "bafkreidd5t3eajyaausmutuqdjmysjwrwzt7f2w6ekan6drnxs5wubddou",
+      "runtime_ms": 3993.614,
+      "trial": 1
+    },
+    {
+      "approval_rate": 0.666667,
+      "approved_nodes": 2,
+      "global_accuracy": 0.938889,
+      "global_demographic_parity_gap": 0.144269,
+      "global_model_cid": "bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm",
+      "global_publication_gas": "449664",
+      "mean_ipfs_retrieval_ms": 0.822143,
+      "mean_proof_generation_ms": 618.866333,
+      "rejected_nodes": 1,
+      "report_cid": "bafkreic4dq65vjgbbiqyrtoaehwclnufgb2simp3cf5rq7osw4u6tqoere",
+      "runtime_ms": 3117.294,
+      "trial": 2
+    },
+    {
+      "approval_rate": 0.666667,
+      "approved_nodes": 2,
+      "global_accuracy": 0.938889,
+      "global_demographic_parity_gap": 0.144269,
+      "global_model_cid": "bafkreihanoztcqq4p2irdkranl4ewrgo7bdvhhqaih6j77rbaupccjn4zm",
+      "global_publication_gas": "449664",
+      "mean_ipfs_retrieval_ms": 0.867,
+      "mean_proof_generation_ms": 608.040333,
+      "rejected_nodes": 1,
+      "report_cid": "bafkreic7wvciflg5xiomqwm34qd5jtkgcw3r4bjgjjsavrvmhkg5fcvscq",
+      "runtime_ms": 3037.353,
+      "trial": 3
+    }
+  ],
+  "trials": 3
+}

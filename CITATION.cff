@@ -3,7 +3,12 @@ title: "FairAI MVP: Blockchain/IPFS-Based Ethical Verification Framework"
 message: "If you use this software, please cite it using the metadata in this file."
 type: software
 year: 2026
-repository-code: "https://github.com/ajalkhodair-spec/FairAI-MVP"
+authors:
+  - name: "ajalkhodair-spec"
+version: "0.2.0"
+date-released: "2026-08-07"
+repository-code: "https://github.com/ajalkhodair-spec/FairAI"
+url: "https://github.com/ajalkhodair-spec/FairAI"
 abstract: "A tested research MVP for blockchain/IPFS-based ethical verification, artifact traceability, approval gating, and auditability in federated AI workflows."
 keywords:
   - federated learning

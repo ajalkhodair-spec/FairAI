@@ -1,0 +1,13 @@
+run_id,trial,operation,node_id,gas_used,source_file
+legacy_mvp-trial-1,1,model_submission,1,760819,raw/trial_1/metrics.csv
+legacy_mvp-trial-1,1,model_submission,2,743695,raw/trial_1/metrics.csv
+legacy_mvp-trial-1,1,model_submission,3,717757,raw/trial_1/metrics.csv
+legacy_mvp-trial-1,1,global_publication,,449664,raw/trial_1/run_summary.json
+legacy_mvp-trial-2,2,model_submission,1,760819,raw/trial_2/metrics.csv
+legacy_mvp-trial-2,2,model_submission,2,743695,raw/trial_2/metrics.csv
+legacy_mvp-trial-2,2,model_submission,3,717757,raw/trial_2/metrics.csv
+legacy_mvp-trial-2,2,global_publication,,449664,raw/trial_2/run_summary.json
+legacy_mvp-trial-3,3,model_submission,1,760819,raw/trial_3/metrics.csv
+legacy_mvp-trial-3,3,model_submission,2,743695,raw/trial_3/metrics.csv
+legacy_mvp-trial-3,3,model_submission,3,717757,raw/trial_3/metrics.csv
+legacy_mvp-trial-3,3,global_publication,,449664,raw/trial_3/run_summary.json

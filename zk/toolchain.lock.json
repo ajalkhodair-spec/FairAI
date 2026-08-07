@@ -1,0 +1,13 @@
+{
+  "schema_version": "fairai.zk_toolchain.v1",
+  "circom_version": "2.1.6",
+  "snarkjs_version": "0.7.5",
+  "curve": "bn128",
+  "powers_of_tau": {
+    "filename": "pot12_final_phase2.ptau",
+    "sha256": "88d726a18cf777c52f2b6c8a028235ccbcc078e0041b5e9b7607221d8d8b67dd",
+    "tracked": false
+  },
+  "legacy_circuit": "circuits/FairnessEligibility.circom",
+  "v2_circuit": "circuits/FairnessEligibilityV2.circom"
+}

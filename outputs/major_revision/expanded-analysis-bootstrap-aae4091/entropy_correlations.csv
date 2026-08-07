@@ -1,0 +1,13 @@
+entropy_metric,outcome,n,spearman_rho,p_value
+mean_label_entropy,accuracy,30,0.6873127402962969,2.720512421027912e-05
+mean_label_entropy,macro_f1,30,0.6971620445071995,1.862100928403899e-05
+mean_label_entropy,demographic_parity_gap,30,0.6986316652420032,1.757446921361904e-05
+mean_label_entropy,equal_opportunity_gap,30,-0.15497668137748552,0.41351051327990346
+mean_label_entropy,equalized_odds_gap,30,-0.15497668137748552,0.41351051327990346
+mean_label_entropy,subgroup_accuracy_gap,30,-0.598865060628205,0.00047160874251251804
+mean_group_entropy,accuracy,30,0.665924726335699,5.9072994112387766e-05
+mean_group_entropy,macro_f1,30,0.6775738389144046,3.9027816189278704e-05
+mean_group_entropy,demographic_parity_gap,30,0.7039715251037255,1.4202035514441679e-05
+mean_group_entropy,equal_opportunity_gap,30,-0.10532179639590611,0.579644888312218
+mean_group_entropy,equalized_odds_gap,30,-0.10532179639590611,0.579644888312218
+mean_group_entropy,subgroup_accuracy_gap,30,-0.6264604777660339,0.00021257660596585133

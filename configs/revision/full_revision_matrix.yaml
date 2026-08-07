@@ -1,0 +1,29 @@
+{
+  "schema_version": "fairai.revision.config.v1",
+  "scenario_id": "full_revision_matrix",
+  "executor": "planned",
+  "evidence_type": "derived",
+  "seed": 13001,
+  "dataset": "multiple",
+  "model": "multiple",
+  "clients": 20,
+  "rounds": 5,
+  "local_epochs": 3,
+  "method": "R0_R7",
+  "fairness_policy": "multiple",
+  "attack_profile": "multiple",
+  "suite_configs": [
+    "legacy_mvp.yaml",
+    "adult_core.yaml",
+    "compas_core.yaml",
+    "adult_mlp.yaml",
+    "scaling.yaml",
+    "heterogeneity.yaml",
+    "threshold_sensitivity.yaml",
+    "proof_binding.yaml",
+    "verifier_security.yaml",
+    "adversarial.yaml",
+    "ipfs_benchmark.yaml",
+    "gas_benchmark.yaml"
+  ]
+}

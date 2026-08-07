@@ -1,0 +1,56 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "fairai.revision.config.v1",
+  "type": "object",
+  "required": [
+    "schema_version",
+    "scenario_id",
+    "executor",
+    "evidence_type",
+    "seed",
+    "dataset",
+    "model",
+    "clients",
+    "rounds",
+    "local_epochs",
+    "method",
+    "fairness_policy",
+    "attack_profile"
+  ],
+  "properties": {
+    "schema_version": {"const": "fairai.revision.config.v1"},
+    "scenario_id": {"type": "string", "minLength": 1},
+    "executor": {"type": "string", "minLength": 1},
+    "evidence_type": {
+      "enum": ["measured", "derived", "modeled", "estimated"]
+    },
+    "seed": {"type": "integer"},
+    "clients": {"type": "integer", "minimum": 1},
+    "rounds": {"type": "integer", "minimum": 1},
+    "local_epochs": {"type": "integer", "minimum": 1},
+    "partitions": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {
+        "enum": [
+          "iid",
+          "label_dirichlet_1.0",
+          "label_dirichlet_0.3",
+          "joint_dirichlet_1.0",
+          "joint_dirichlet_0.3"
+        ]
+      }
+    },
+    "minimum_samples_per_client": {"type": "integer", "minimum": 1},
+    "partition_max_attempts": {"type": "integer", "minimum": 1}
+    ,
+    "experiment_seeds": {
+      "type": "array",
+      "minItems": 1,
+      "uniqueItems": true,
+      "items": {"type": "integer"}
+    }
+  },
+  "additionalProperties": true
+}

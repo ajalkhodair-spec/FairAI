@@ -1,0 +1,3 @@
+scenario,expected_control,observed_result,round_state,on_chain_approved,aggregated,reason,evidence_type,source_file
+false_metric_reporting,proof binds supplied metrics,fabricated metrics approved and aggregated,Archived,True,True,The proof establishes compliance and binding for supplied metrics; it does not establish correct derivation from private data.,derived_from_measured_full_path_runs,outputs/revision_audit/trust-boundary-1536b13/evidence.json
+approved_artifact_unavailable,fail closed before aggregation,round cancelled and no global model published,Cancelled,True,False,APPROVED_ARTIFACT_UNAVAILABLE,derived_from_measured_full_path_runs,outputs/revision_audit/trust-boundary-1536b13/evidence.json
