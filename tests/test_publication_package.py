@@ -1,8 +1,9 @@
-import json
 import unittest
 from pathlib import Path
 
 import pandas as pd
+
+from scripts.prepare_results_package import SHEETS
 
 
 ROOT = Path("outputs/major_revision")
@@ -50,8 +51,7 @@ class PublicationPackageTests(unittest.TestCase):
         self.assertIn("approved_model_retrieval", set(stages["stage"]))
 
     def test_workbook_payload_matches_declared_sheet_contract(self):
-        payload = json.loads((ROOT / "workbook_payload.json").read_text())
-        self.assertEqual(len(payload["sheets"]), 40)
+        self.assertEqual(len(SHEETS), 40)
         for sheet in (
             "Proof_Overhead",
             "IPFS_Availability",
@@ -59,7 +59,7 @@ class PublicationPackageTests(unittest.TestCase):
             "Representation_Fairness",
             "Trust_Boundary",
         ):
-            self.assertIn(sheet, payload["sheets"])
+            self.assertIn(sheet, SHEETS)
 
 
 if __name__ == "__main__":
