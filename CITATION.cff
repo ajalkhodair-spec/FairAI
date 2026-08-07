@@ -5,7 +5,7 @@ type: software
 year: 2026
 authors:
   - name: "ajalkhodair-spec"
-version: "0.2.0"
+version: "0.2.1"
 date-released: "2026-08-07"
 repository-code: "https://github.com/ajalkhodair-spec/FairAI"
 url: "https://github.com/ajalkhodair-spec/FairAI"
