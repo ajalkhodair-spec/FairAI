@@ -111,6 +111,7 @@ make revision-fairness
 python -m fairai_revision.run --config configs/revision/adversarial.yaml
 python -m fairai_revision.run --config configs/revision/gas_benchmark.yaml
 ```
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.21838694.svg)](https://doi.org/10.5281/zenodo.21838694)
 
 Run the strict two-peer IPFS benchmark:
 
