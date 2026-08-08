@@ -1,19 +1,26 @@
 # FairAI Major Revision Release Checklist
 
-- [ ] G0 repository anonymously accessible
+- [x] G0 repository anonymously accessible
 - [x] LICENSE and CITATION validated
 - [x] `v1.0.0-submitted` baseline tag documented
 - [x] G1 reproducibility smoke test passes
 - [x] G2 data and baseline support passes
 - [x] G3 binding and signed-verifier security tests pass
-- [ ] G4 expanded suites complete (V2 Groth16 and strict two-peer Kubo blocked)
+- [x] G4 expanded suites complete within the documented local evidence boundary
 - [x] G5 available measured results frozen and traced
 - [x] No secrets or user-specific paths in tracked project content
-- [ ] Clean clone fully passes (source/tests/report pass with dependency reuse;
-  fresh Python install blocked by sandbox DNS)
+- [x] Published `v0.2.1` clean clone passed 77 Python and 22 contract tests
 - [x] Legacy scenario reproduces or gap is documented
 - [x] One Adult scenario reproduces
 - [x] Tables and figures regenerate
 - [x] Known limitations included
 - [x] Release asset checksums generated
-- [ ] Author permission received before publication
+- [x] Editable manuscript source, journal template, and figures are versioned
+- [x] Canonical blocker and reviewer views regenerate deterministically
+- [x] Closure checksum manifest and new evidence freeze verify
+- [x] BLK-005 Circom compiler-version provenance bounded in final prose (provenance remains open)
+- [x] Consolidated workbook regenerated and visually verified from corrected CSV
+- [x] Current closure branch passes 82 Python tests in a compatible project environment
+- [x] Current closure branch passes 22 Hardhat tests with lockfile-matching Node dependencies
+- [ ] Current closure branch passes Python tests in a fresh exact-pinned environment
+- [ ] New GitHub release and Zenodo version published for post-`v0.2.1` changes

@@ -30,9 +30,9 @@ nonclaims.
   eligible-model retrieval, global-model publication, and audit events;
 - EIP-712 verifier decisions with domain separation, expiry, revocation, and
   nonce/digest replay protection;
-- packaged Circom 2.1.6 V2 R1CS/WASM/ZKey/VKey artifacts, direct Groth16
-  verification, composite proof/signature approval, and cryptographic negative
-  tests;
+- packaged V2 R1CS/WASM/ZKey/VKey artifacts whose manifest declares Circom
+  2.1.6, direct Groth16 verification, composite proof/signature approval, and
+  cryptographic negative tests;
 - strict B2/B4/B7 two-peer Kubo adapters and three-host Azure deployment
   infrastructure;
 - deterministic poisoning scenarios and A1-A14 security evidence;
@@ -67,6 +67,10 @@ and [known_undetected_threats.md](docs/revision/known_undetected_threats.md).
 - Docker Desktop for Compose-based Kubo scenarios, or two native Kubo 0.29.0
   peers for `ipfs_benchmark_native.yaml`
 - Circom 2.1.6 and snarkjs 0.7.5 for V2 artifact regeneration
+
+The tracked V2 artifact manifest declares Circom 2.1.6, but the archive does
+not contain a contemporaneous compiler transcript proving that declaration;
+see [circom_version_reconciliation.md](docs/revision/circom_version_reconciliation.md).
 
 Install:
 
@@ -180,15 +184,22 @@ claimed in the repository until a subscription owner runs and records them.
 ## Report Generation
 
 ```sh
-python -m scripts.prepare_results_package
+python -m scripts.prepare_results_package --primary-csv-only
 python -m scripts.build_latex_tables
 python -m scripts.build_revision_figures
 python scripts/render_revision_png_figures.py
 node scripts/build_results_workbook.mjs
+python -m scripts.build_blocker_view
+python -m scripts.build_reviewer_evidence_views
+python -m scripts.build_release_checksums
+python -m scripts.build_closure_evidence
 ```
 
-The workbook builder uses `@oai/artifact-tool`; install it in the report
-environment before running that command.
+The `--primary-csv-only` mode rebuilds the workbook payload from the 40 tracked
+canonical CSV sheets. Omit the flag only when the complete raw run directories
+listed by the experiment package are present. The workbook builder uses
+`@oai/artifact-tool`; install it in the report environment before running that
+command.
 The committed publication package also includes deterministic bootstrap
 statistics and SHA-256 release checksums.
 
@@ -197,6 +208,23 @@ contains a manifest with its commit, configuration hash, dataset checksum,
 partition checksum, timestamps, and completion status. The output directory
 contract is documented in
 [output_schema.md](docs/revision/output_schema.md).
+
+The canonical editable paper source is `manuscript/FairAI.tex`. Build it from
+the `manuscript/` directory with:
+
+```sh
+latexmk -pdf -interaction=nonstopmode -halt-on-error FairAI.tex
+```
+
+Before a release, require the generated views and both integrity layers to be
+current:
+
+```sh
+python -m scripts.build_blocker_view --verify
+python -m scripts.build_reviewer_evidence_views --verify
+python -m scripts.build_release_checksums --verify
+python -m scripts.build_closure_evidence --verify
+```
 
 ## Data Preparation
 
@@ -218,8 +246,10 @@ preprocessing only on the training split.
 
 ## Citation
 
-Use [CITATION.cff](CITATION.cff). Cite the versioned release URL once the
-corresponding GitHub release has been published.
+Use [CITATION.cff](CITATION.cff). Release `v0.2.1` is archived under version DOI
+`10.5281/zenodo.21838695`; concept DOI `10.5281/zenodo.21838694` resolves to the
+latest archived version. Closure changes made after `v0.2.1` require a new
+immutable GitHub release and Zenodo version before they are cited as published.
 
 ## License
 

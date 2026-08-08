@@ -1,9 +1,14 @@
 # Direct Groth16 Verification Status
 
-V2 compiles with the pinned Circom 2.1.6 build: 751 constraints, 19 public
-inputs, 2 private inputs, and 2 public outputs. The phase-2 Powers of Tau passes
+The V2 artifact manifest declares Circom 2.1.6 and records 751 constraints, 19
+public inputs, 2 private inputs, and 2 public outputs. The phase-2 Powers of Tau passes
 `snarkjs powersoftau verify`, and the generated ZKey passes verification against
 the R1CS and ceremony artifact.
+
+Historical run manifests and the current `circom` executable report `0.5.46`.
+No contemporaneous compiler build transcript is archived. Accordingly, the
+artifact-manifest declaration must not be generalized to every historical run;
+see `docs/revision/circom_version_reconciliation.md`.
 
 The repository contains checksum-manifested R1CS, WASM, ZKey, verification key,
 generated Solidity verifier, and acceptance proof fixture. Thirty local proof

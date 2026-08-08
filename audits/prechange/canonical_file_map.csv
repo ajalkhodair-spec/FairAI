@@ -1,0 +1,11 @@
+subject,canonical_file,secondary_views,status,action_required
+blockers,BLOCKERS.md,docs/revision/BLOCKERS.md,"canonical declared but content stale after release/DOI",update canonical then regenerate secondary view
+revision_status,docs/revision/STATUS.md,README.md,"single detailed status file but stale branch and publication state",update after authoritative state selection
+technical_decisions,docs/revision/DECISIONS.md,none,"canonical; historical decisions intentionally retained",append superseding decisions rather than rewrite history
+reviewer_evidence,docs/revision/REVIEWER_EVIDENCE_MAP.md,"outputs/major_revision/reviewer_evidence_map.json; outputs/major_revision/primary_csv/Reviewer_Evidence_Map.csv","canonical source declared but statuses use legacy categories and publication wording is stale",migrate to four required reviewer-status categories and regenerate views
+reviewer_gaps,docs/revision/REVIEWER_GAP_MATRIX.csv,none,"canonical candidate",reconcile with reviewer evidence map
+evidence_freeze,outputs/revision_audit/current_evidence_freeze.json,outputs/major_revision/release_checksums.sha256,"freeze references do not match all five current target hashes",create a new immutable freeze after reconciliation; do not overwrite historical freeze
+evidence_checksums,outputs/major_revision/release_checksums.sha256,none,"331 entries verify; manifest hash is ac2024ab...",retain as payload integrity source
+primary_workbook,outputs/major_revision/FairAI_Major_Revision_Results.xlsx,outputs/major_revision/primary_csv/,"workbook differs from hash in current evidence freeze",bind a corrected freeze to the chosen workbook
+manuscript_source,external local FairAI.tex,external local source archive,"located outside repository and release at audit time",establish a clean versioned manuscript package
+release_metadata,CITATION.cff,README.md,"v0.2.1 tag predates DOI metadata commits on main",select a new release state after scientific reconciliation

@@ -1,8 +1,11 @@
 # Known Limitations
 
-- V2 uses pinned Circom 2.1.6, a verified phase-2 Powers of Tau file, generated
-  Groth16 artifacts, and direct Solidity pairing-verifier tests. The experimental
-  phase-2 ZKey has one contributor and is not a production ceremony artifact.
+- The V2 artifact manifest declares Circom 2.1.6. Historical manifests and the
+  closure environment report 0.5.46, and no contemporaneous compiler transcript
+  was archived. The verified phase-2 Powers of Tau, generated Groth16 artifacts,
+  and direct pairing-verifier tests remain usable evidence, but compiler-build
+  provenance is unresolved. The experimental phase-2 ZKey has one contributor
+  and is not a production ceremony artifact.
 - Two native local Kubo 0.29.0 peers provide measured add, pin, cold/warm
   retrieval, concurrency, publisher outage availability, and restart recovery.
   Consumer outage, WAN behavior, and multi-host Kubo performance are not
@@ -30,7 +33,7 @@
 - Raw-data locality is not differential privacy or secure aggregation.
 - Hardhat gas is measured; public-chain fiat costs are modeled assumptions.
 - Contracts and cryptographic integration have not received an external audit.
-- Anonymous public repository accessibility, remote clean-clone validation, and
-  measured Azure multi-host execution remain pending.
+- Public repository accessibility and clean-clone validation are complete.
+  Measured Azure multi-host execution remains pending.
 
 See `BLOCKERS.md` for exact resolutions.

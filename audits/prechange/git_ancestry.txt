@@ -1,0 +1,54 @@
+FairAI pre-change Git ancestry audit
+Generated: 2026-08-08 (Asia/Riyadh)
+Initial status: NOT_READY
+
+Local checkout
+--------------
+Path: original local checkout (external to this audit workspace)
+Branch: main
+HEAD: ac966fbc1fa57a270feb539d7182de0d537b7b00
+Cached origin/main: 434ab67f067c8ab26f1908369f62d2e2b4ec3fe3
+Observed state: main...origin/main [behind 75]
+
+Candidate refs
+--------------
+major-revision-azure: f377a3d9064eee4f04c869749187cf28d5604a0f
+v0.2.0: ef6d163554364d5bbad7d294280ddaf3d6cba31d
+v0.2.1: cabcea687ba3d6476f98375617a9100f578aca85
+public/main: 434ab67f067c8ab26f1908369f62d2e2b4ec3fe3
+candidate ae623ad: absent from all locally available objects and refs
+
+Verified ancestry
+-----------------
+major-revision-azure is an ancestor of public/main: yes
+v0.2.1 is an ancestor of public/main: yes
+GitHub release v0.2.1 identifies commit: cabcea687ba3d6476f98375617a9100f578aca85
+Zenodo archive preview root: ajalkhodair-spec-FairAI-cabcea6
+
+Relevant linear history after the merge
+---------------------------------------
+434ab67 Restore README after DOI badge placement
+291939d Place Zenodo DOI badge in README header
+f74c107 Add Zenodo DOI to citation metadata
+a44782a Add Zenodo DOI badge
+cabcea6 Prepare v0.2.1 archival release
+ef6d163 Merge pull request #1 from ajalkhodair-spec/major-revision-azure
+f377a3d Validate publication evidence in CI
+
+Tree identities
+---------------
+v0.2.1 tree: bd8f2232cc73c3f96171057b58922cd4e1c7090d
+major-revision-azure tree: 6a7c6dda48b9a8087f0b0bc1bbc5be6c7eb9ea6c
+public/main tree: 7ceb10ab556b6f89082b17291b48bb7f53b058d8
+
+Diff boundary
+-------------
+v0.2.1..public/main changes only CITATION.cff and README.md.
+No runtime, contract, IPFS, experiment, or result file differs across that range.
+
+Conclusion
+----------
+The software/evidence payload in v0.2.1 and public/main is identical, but the
+metadata state is not identical. The stale local checkout is not a suitable
+authoritative closure state. The unexplained ae623ad identifier must be traced
+to an external source or formally retired as an invalid candidate.
