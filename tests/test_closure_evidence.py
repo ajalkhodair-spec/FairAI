@@ -57,6 +57,10 @@ class ClosureEvidenceTests(unittest.TestCase):
         self.assertEqual(
             freeze["target_count"], len(build_closure_evidence.closure_targets())
         )
+        self.assertEqual(
+            freeze["source_baseline_commit"],
+            build_closure_evidence.SOURCE_BASELINE_COMMIT,
+        )
 
     def test_manuscript_package_excludes_build_products(self):
         targets = build_closure_evidence.manuscript_targets()

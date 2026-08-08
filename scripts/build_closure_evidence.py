@@ -1,7 +1,6 @@
 import argparse
 import hashlib
 import json
-import subprocess
 from pathlib import Path
 
 
@@ -9,6 +8,7 @@ ROOT = Path(".")
 OUTPUT_ROOT = ROOT / "outputs" / "revision_audit"
 CHECKSUM_FILE = OUTPUT_ROOT / "closure_checksums.sha256"
 FREEZE_FILE = OUTPUT_ROOT / "closure_evidence_freeze.json"
+SOURCE_BASELINE_COMMIT = "434ab67f067c8ab26f1908369f62d2e2b4ec3fe3"
 FIXED_TARGETS = (
     ROOT / "BLOCKERS.md",
     ROOT / "README.md",
@@ -72,22 +72,13 @@ def render_checksums():
     )
 
 
-def git_head():
-    return subprocess.run(
-        ["git", "rev-parse", "HEAD"],
-        check=True,
-        capture_output=True,
-        text=True,
-    ).stdout.strip()
-
-
 def render_freeze(checksum_text):
     targets = closure_targets()
     hashes = {path.as_posix(): sha256_file(path) for path in targets}
     payload = {
         "schema_version": "fairai.closure_evidence_freeze.v1",
         "status": "compatibility_validated_pinned_clean_install_pending",
-        "source_baseline_commit": git_head(),
+        "source_baseline_commit": SOURCE_BASELINE_COMMIT,
         "release_lineage": {
             "previous_tag": "v0.2.1",
             "previous_commit": "cabcea687ba3d6476f98375617a9100f578aca85",
