@@ -2,11 +2,17 @@
 
 | ID | Status | Scope | Exact blocker or resolution | Scientific effect / next step |
 |---|---|---|---|---|
-| BLK-001 | Resolved | V2 Groth16 | Circom 2.1.6 was built from tag `v2.1.6`; the verified phase-2 Powers of Tau, R1CS, ZKey, VKey, real proof, generated Solidity verifier, composite verifier, and negative suite all pass. | Thirty valid proof repetitions and six rejection cases are measured. A multi-party phase-2 ceremony remains required before production deployment. |
+| BLK-001 | Resolved bounded | V2 Groth16 | The checksum-manifested phase-2 Powers of Tau, R1CS, ZKey, VKey, real proof, generated Solidity verifier, composite verifier, and negative suite pass. The artifact manifest declares Circom 2.1.6; compiler-version provenance is tracked separately in BLK-005. | Thirty valid proof repetitions and six rejection cases are measured. A multi-party phase-2 ceremony remains required before production deployment. |
 | BLK-002 | Resolved bounded | Two-peer IPFS | Two native Kubo 0.29.0 peers completed 30-repeat add/pin/cold/warm/concurrency measurements, 30 publisher outage/recovery trials, and strict B2/B4/B7 runs at 5/10 clients. | Consumer outage, WAN, Docker Compose, and multi-host measurements remain limitations rather than completed evidence. |
 | BLK-003 | Resolved | FairFed | The published stateful server weighting rule, signed EOD sufficient-statistic calculation, beta-zero equivalence, accuracy fallback, deterministic tests, and paired Adult/COMPAS runs are complete. | Report the observed accuracy-fairness trade-off; do not claim reproduction of every local debiasing variant. |
-| BLK-004 | Resolved | Public repository | The revision branch is publicly available at `https://github.com/ajalkhodair-spec/FairAI`, pull request `#1` is open, GitHub Actions run `31160131439` passed, and an anonymous depth-one clone of commit `d131023df6ab9002b8244474ef1f03a9453aee2b` passed 77 Python and 22 contract tests. | Anonymous access and clean-clone reproduction are verified. A versioned GitHub release and archival DOI remain publication actions after review and merge. |
+| BLK-004 | Resolved | Public repository | Pull request `#1` was merged, GitHub release `v0.2.1` points to commit `cabcea687ba3d6476f98375617a9100f578aca85`, and Zenodo version DOI `10.5281/zenodo.21838695` archives a source tree rooted at `cabcea6`. The earlier anonymous depth-one clone of commit `d131023df6ab9002b8244474ef1f03a9453aee2b` passed 77 Python and 22 contract tests. | Public access, clean-clone reproduction, release publication, and archival DOI assignment are verified. A new immutable release is required if the reconciled manuscript-supporting package changes after `v0.2.1`. |
+| BLK-005 | Open | V2 compiler provenance | The V2 artifact manifest declares Circom 2.1.6, while many historical run manifests and the current executable report 0.5.46. No contemporaneous compiler build transcript was located in the public package. | Do not claim that every run used or regenerated artifacts with Circom 2.1.6. Resolve with contemporaneous evidence or describe the artifact-manifest declaration and historical environment values separately. |
 
-All four tracked revision blockers are resolved within their stated bounds.
+The original four revision blockers are resolved within their stated bounds.
+BLK-005 remains open as a publication-provenance blocker.
 Unmeasured recovery, multi-host, and public-chain scenarios remain labeled
 limitations rather than completed evidence.
+
+Publication closure discrepancies are tracked separately in
+`audits/prechange/evidence_discrepancy_report.md`; they do not retroactively
+change the bounded experimental results recorded here.

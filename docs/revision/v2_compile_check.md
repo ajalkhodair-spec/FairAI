@@ -31,7 +31,8 @@ SHA-256:
 - generated WASM:
   `76d7c7f9f28569eec5c038393a1aa253ad361d3d4cbd9b98c8e6c4865f57ac1c`
 
-The generated files remain temporary and untracked. This check does not replace
-the pinned Circom 2.1.6 toolchain, trusted setup, ZKey verification, proof
-generation, or 30-repetition proof benchmark. It removes only uncertainty that
-the checked V2 source can compile under a compatible Circom 2 compiler.
+The generated files remain temporary and untracked. This check does not prove
+the artifact manifest's Circom 2.1.6 declaration and does not replace trusted
+setup, ZKey verification, proof generation, or the 30-repetition proof
+benchmark. It removes only uncertainty that the checked V2 source can compile
+under a compatible Circom 2 compiler.

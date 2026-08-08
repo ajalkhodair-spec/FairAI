@@ -30,6 +30,6 @@ output creation, hashing, manifest generation, and resume behavior. It does not
 claim to validate blockchain, IPFS, or Groth16.
 
 The current CI circuit check validates the expected legacy source bindings and
-threshold constraints. Full circuit regeneration remains blocked until the
-clean environment pins a compatible Circom 2 binary and obtains the documented
-Powers of Tau artifact.
+threshold constraints. The tracked V2 bundle is checksum-verifiable and can
+generate and verify a real proof, but independently reproducing its original
+build remains blocked by the missing contemporaneous Circom compiler transcript.

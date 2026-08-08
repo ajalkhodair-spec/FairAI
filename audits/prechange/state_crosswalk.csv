@@ -1,0 +1,9 @@
+state_name,commit,parent_or_ancestry,tag_or_release,asset_checksums,contains_raw_evidence,contains_final_derived_evidence,contains_manuscript_source,status
+local_main,ac966fbc1fa57a270feb539d7182de0d537b7b00,"root commit; local checkout is 75 commits behind cached origin/main",none,not_applicable,limited,yes,no,stale_local_candidate
+candidate_ae623ad,unresolved,"object is absent from all locally available refs",none,unavailable,unknown,unknown,unknown,unverified_missing_object
+major_revision_azure,f377a3d9064eee4f04c869749187cf28d5604a0f,"ancestor of v0.2.0 and public/main",branch,not_applicable,yes,yes,no,verified_candidate_not_final
+release_tag_v0.2.1,cabcea687ba3d6476f98375617a9100f578aca85,"parent ef6d163; ancestor of public/main",v0.2.1,"GitHub generated source-archive checksums not exposed; internal 331-entry release checksum manifest verifies",yes,yes,no,verified_release_commit
+github_release_v0.2.1,cabcea687ba3d6476f98375617a9100f578aca85,"release page identifies commit cabcea6",v0.2.1,"two generated source assets; exact byte checksums not acquired",yes,yes,no,verified_metadata_partial_asset_verification
+zenodo_21838695,cabcea687ba3d6476f98375617a9100f578aca85,"archive preview root is ajalkhodair-spec-FairAI-cabcea6",10.5281/zenodo.21838695,"md5:a584f3e8967752fc2e9f81b184d17ecf; SHA-256 not exposed",yes,yes,no,verified_metadata_and_commit_partial_checksum
+public_main,434ab67f067c8ab26f1908369f62d2e2b4ec3fe3,"four commits after v0.2.1; only README.md and CITATION.cff differ from tag",main,"internal 331-entry release checksum manifest verifies",yes,yes,no,verified_latest_candidate
+desktop_manuscript,not_versioned,"outside repository ancestry",local editable source,"tex sha256 edd73c6efae0d714c5419e590f4b773825bf59f6a01d6a14bb88a7ae54ca4555; pdf sha256 af80081622a54421486b09c870d7595b67970861cfdde993abef132564771ee0",no,embedded_tables_and_figures,yes,located_unbound_to_release

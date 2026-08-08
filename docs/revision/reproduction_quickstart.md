@@ -27,7 +27,7 @@ make revision-ipfs
 For report data and figures:
 
 ```sh
-python scripts/prepare_results_package.py
+python scripts/prepare_results_package.py --primary-csv-only
 python scripts/build_revision_figures.py
 python scripts/render_revision_png_figures.py
 ```

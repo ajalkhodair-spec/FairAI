@@ -1,5 +1,9 @@
 # Current Reproducibility Gaps
 
+Historical note: this file records the gaps identified before the major-revision
+work. It is not the current release status. See `BLOCKERS.md` and
+`docs/revision/STATUS.md` for the reconciled state.
+
 - No committed Git baseline or configured remote in the inspected checkout.
 - Expected public repository URL is not anonymously resolvable.
 - No unified YAML configuration runner.
@@ -15,4 +19,3 @@
 - No Adult or COMPAS checksum, preprocessing, or license documentation.
 - No clean-clone reproduction record.
 - No test covers configuration hashes, environment capture, or result schemas.
-

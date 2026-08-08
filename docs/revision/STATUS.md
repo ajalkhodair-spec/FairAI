@@ -1,22 +1,31 @@
 # Major Revision Status
 
-- Active branch: `major-revision-azure`
+- Active branch: `major-revision-closure`
+- Reconciliation baseline: public `main` commit
+  `434ab67f067c8ab26f1908369f62d2e2b4ec3fe3`
 - Scope authority: reviewer reports, submitted manuscript, and
   `docs/revision/acceptance_scope.md`
-- Current phase: measured-evidence freeze followed by Azure execution and public
-  clean-clone validation
+- Current phase: evidence/manuscript reconciliation and immutable release
+  preparation
+- Release gate: `VALIDATION_PENDING_ENVIRONMENT`; see
+  `docs/revision/closure_verification_status.md`
 - No Azure resources or Azure results are claimed.
 
 ## Completed
 
-- Full local regression suite: 71 Python tests and 20 Solidity tests pass.
+- The published clean-clone validation recorded 77 Python tests and 22 Solidity
+  tests passing. Milestone 1 verification must rerun these suites after the
+  reconciliation changes.
 
 - Adult and COMPAS loaders, logistic regression and small MLP, IID and
   Dirichlet partitions, multi-round execution, and group-fairness policies.
 - B0-B7 implementation, including measured FairFed Adult/COMPAS comparisons and
   algorithmic scaling to 50 logical clients.
-- Pinned Circom 2.1.6 V2 artifacts, 30 valid proofs, six negative cases, direct
-  Solidity pairing verification, EIP-712 binding, and 30 gas receipts.
+- Checksum-manifested V2 artifacts that declare Circom 2.1.6, 30 valid proofs,
+  six negative cases, direct
+  Solidity pairing verification, EIP-712 binding, and a 30-execution local
+  Hardhat gas summary. Transaction-level direct-verifier receipt hashes are not
+  part of the public evidence package.
 - Two native Kubo 0.29.0 peers with 30-repeat upload, cold/warm retrieval, and
   concurrency measurements over 1 KiB through 10 MiB payloads.
 - Strict B2/B4/B7 execution at 5 and 10 clients, three seeds and three rounds:
@@ -27,8 +36,8 @@
   retrievals, 360 proof decisions, and 360 ledger records.
 - Bicep compilation and shell validation for the bounded three-host Azure
   topology; no deployment was performed.
-- 71 Python and 20 Solidity tests pass; Bicep compilation and Azure shell syntax
-  validation also pass.
+- GitHub release `v0.2.1` and Zenodo version DOI
+  `10.5281/zenodo.21838695` archive commit `cabcea6`.
 
 ## Preserved Failures
 
@@ -41,9 +50,15 @@
 
 ## Remaining
 
-- Deploy and measure the Azure 5/10/20-client matrix, then destroy resources.
-- Measure consumer outage, WAN/multi-host behavior, and Azure cost.
-- Configure and verify the public remote, anonymous clean clone, and release.
+- Bind the editable manuscript source to the reconciled evidence state.
+- Create a new evidence freeze with hashes matching every canonical target.
+- Reconcile historical Circom version metadata without altering run manifests.
+- Rebuild the manuscript and rerun clean-clone validation.
+- Publish a new immutable release and Zenodo version if any supporting artifact
+  differs from `v0.2.1`.
+- Azure deployment, WAN/multi-host measurements, public-chain execution, and
+  consumer-outage duration remain explicitly unmeasured limitations, not
+  prerequisites for the bounded local claims.
 
 The canonical claim boundaries are in `docs/revision/current_results.md`,
 `docs/revision/known_limitations.md`, and the root `BLOCKERS.md`.

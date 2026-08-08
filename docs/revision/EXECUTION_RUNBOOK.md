@@ -97,7 +97,7 @@ throughput.
   --adversarial outputs/major_revision/adversarial-5seed-e8733cb \
   --output outputs/revision_audit/expanded-analysis-current
 
-.venv/bin/python -m scripts.prepare_results_package
+.venv/bin/python -m scripts.prepare_results_package --primary-csv-only
 .venv/bin/python -m scripts.build_latex_tables
 .venv/bin/python -m scripts.build_revision_figures
 .venv/bin/python scripts/render_revision_png_figures.py

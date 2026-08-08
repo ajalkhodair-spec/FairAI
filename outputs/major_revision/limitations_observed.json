@@ -3,9 +3,9 @@
   "limitations": [
     {
       "id": "BLK-001",
-      "status": "Resolved",
+      "status": "Resolved bounded",
       "scope": "V2 Groth16",
-      "blocker": "Circom 2.1.6 was built from tag `v2.1.6`; the verified phase-2 Powers of Tau, R1CS, ZKey, VKey, real proof, generated Solidity verifier, composite verifier, and negative suite all pass.",
+      "blocker": "The checksum-manifested phase-2 Powers of Tau, R1CS, ZKey, VKey, real proof, generated Solidity verifier, composite verifier, and negative suite pass. The artifact manifest declares Circom 2.1.6; compiler-version provenance is tracked separately in BLK-005.",
       "effect": "Thirty valid proof repetitions and six rejection cases are measured. A multi-party phase-2 ceremony remains required before production deployment."
     },
     {
@@ -26,8 +26,15 @@
       "id": "BLK-004",
       "status": "Resolved",
       "scope": "Public repository",
-      "blocker": "The revision branch is publicly available at `https://github.com/ajalkhodair-spec/FairAI`, pull request `#1` is open, GitHub Actions run `31160131439` passed, and an anonymous depth-one clone of commit `d131023df6ab9002b8244474ef1f03a9453aee2b` passed 77 Python and 22 contract tests.",
-      "effect": "Anonymous access and clean-clone reproduction are verified. A versioned GitHub release and archival DOI remain publication actions after review and merge."
+      "blocker": "Pull request `#1` was merged, GitHub release `v0.2.1` points to commit `cabcea687ba3d6476f98375617a9100f578aca85`, and Zenodo version DOI `10.5281/zenodo.21838695` archives a source tree rooted at `cabcea6`. The earlier anonymous depth-one clone of commit `d131023df6ab9002b8244474ef1f03a9453aee2b` passed 77 Python and 22 contract tests.",
+      "effect": "Public access, clean-clone reproduction, release publication, and archival DOI assignment are verified. A new immutable release is required if the reconciled manuscript-supporting package changes after `v0.2.1`."
+    },
+    {
+      "id": "BLK-005",
+      "status": "Open",
+      "scope": "V2 compiler provenance",
+      "blocker": "The V2 artifact manifest declares Circom 2.1.6, while many historical run manifests and the current executable report 0.5.46. No contemporaneous compiler build transcript was located in the public package.",
+      "effect": "Do not claim that every run used or regenerated artifacts with Circom 2.1.6. Resolve with contemporaneous evidence or describe the artifact-manifest declaration and historical environment values separately."
     }
   ]
 }
