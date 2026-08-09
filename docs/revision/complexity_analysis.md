@@ -33,7 +33,9 @@ chunking, cache, and replication constants are empirical. The local two-peer
 suite measures 1 KiB through 10 MiB payloads and concurrency 1 through 20; it
 does not estimate WAN or outage-recovery constants. Direct V2 Groth16 cost is a
 function of `C_circuit`; witness, proving, off-chain verification, and direct
-pairing-verifier gas are measured with the pinned Circom 2.1.6 artifacts.
+pairing-verifier gas are measured with the checksum-manifested V2 artifacts.
+Their manifest declares Circom 2.1.6; compiler-build provenance is bounded in
+`docs/revision/circom_version_reconciliation.md`.
 
 The machine-readable mapping is
 `outputs/major_revision/complexity/complexity_analysis.csv`; measured Kubo and

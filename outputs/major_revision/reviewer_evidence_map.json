@@ -3,10 +3,10 @@
     "reviewer": "Editor",
     "comment_id": "E1",
     "concern": "Methodology detail",
-    "current_evidence": "Configuration runner, schemas, runbook, manifests, statistical methodology, and evidence map",
-    "gap": "Manuscript integration remains an author task",
+    "current_evidence": "Configuration runner, schemas, runbook, manifests, statistical methodology, evidence map, clean-clone validation, and archival publication",
+    "gap": "Editable manuscript integration is being bound to the reconciled evidence state",
     "planned_phase": "1-10",
-    "status": "complete_implementation",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -17,7 +17,7 @@
     "current_evidence": "Adult and COMPAS, LR and bounded MLP, multi-round paired seeds, IID and non-IID, attacks; 10-seed FairFed, 3-50 client algorithmic scaling, and strict B4/B7 poisoning",
     "gap": "Multi-host deployment remains outside the bounded local claim",
     "planned_phase": "3-10",
-    "status": "complete_bounded",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -28,7 +28,7 @@
     "current_evidence": "Adult and COMPAS; bounded B0/B3/B5 MLP; algorithmic 3/5/10/20/50 clients; strict B2/B4/B7 at 5/10 clients; IID and Dirichlet; 3/5/10 seeds",
     "gap": "B4 multi-host and 20/50-client infrastructure paths are not measured",
     "planned_phase": "4-10",
-    "status": "complete_bounded",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -36,10 +36,10 @@
     "reviewer": "Reviewer 1",
     "comment_id": "R1.2",
     "concern": "Proof semantics",
-    "current_evidence": "Pinned V2 compilation, canonical digest binding, generated Groth16 artifacts, 30-repeat proof timings, 30 on-chain verifier gas receipts, malformed-proof rejection, and full-path false-metric execution",
-    "gap": "The experimental ZKey used one contributor; correct metric derivation is demonstrably not proved",
+    "current_evidence": "Checksum-manifested V2 artifacts, canonical digest binding, generated Groth16 verifier, 30-repeat proof timings, a 30-execution local Hardhat direct-verifier gas summary, malformed-proof rejection, and full-path false-metric execution",
+    "gap": "Transaction-level direct-verifier receipt hashes are not archived; the experimental ZKey used one contributor; correct metric derivation is demonstrably not proved; compiler-version provenance is unresolved",
     "planned_phase": "7",
-    "status": "complete_with_limitation",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -50,7 +50,7 @@
     "current_evidence": "EIP-712 signer registry, revocation, nonce, digest, expiry, replay, tampering, and compromise tests",
     "gap": "Single-verifier compromise remains an accepted limitation",
     "planned_phase": "8-9",
-    "status": "complete_with_limitation",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -61,7 +61,7 @@
     "current_evidence": "B0, B1, B3, B5 FairFed, and B6 measured; strict two-peer B2/B4/B7 measured at 5/10 clients",
     "gap": "Infrastructure baselines have three seeds and remain local single-host evidence",
     "planned_phase": "6",
-    "status": "complete_bounded",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -72,7 +72,7 @@
     "current_evidence": "Protected-group DP, EO, equalized odds, SAG, undefined handling, threshold sensitivity and global outcomes",
     "gap": "B4 cryptographic policy sensitivity is not measured",
     "planned_phase": "5 and 9",
-    "status": "complete_B3_surrogate",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -83,7 +83,7 @@
     "current_evidence": "Exposure inventory, exact bounded raw-data-locality claim, privacy nonclaims and threat analysis",
     "gap": "No formal privacy or privacy-attack experiment is claimed",
     "planned_phase": "10",
-    "status": "complete_scope",
+    "status": "bounded_as_limitation",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -91,10 +91,10 @@
     "reviewer": "Reviewer 1",
     "comment_id": "R1.7",
     "concern": "Scalability and cost",
-    "current_evidence": "Algorithmic scaling to 50 clients; strict Kubo B2/B4/B7 at 5/10 clients; 2856 gas receipts including 30 V2 verifications; 240 throughput scenarios; 30 V2 proof repetitions",
-    "gap": "Azure multi-host and 20/50-client infrastructure measurements remain pending",
+    "current_evidence": "Algorithmic scaling to 50 clients; strict Kubo B2/B4/B7 at 5/10 clients; repeated ledger gas/throughput scenarios; 30 summarized local direct-verifier executions; 30 V2 proof repetitions",
+    "gap": "Azure multi-host and 20/50-client infrastructure measurements remain unmeasured",
     "planned_phase": "9",
-    "status": "partial_pending",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -105,7 +105,7 @@
     "current_evidence": "A1-A14 matrix, contract negative tests, poisoning with FedAvg and coordinate median, and 24 strict B4/B7 Kubo/V2 executions",
     "gap": "Three strict seeds and one 20% malicious-client ratio; fairness proof does not establish poisoning absence",
     "planned_phase": "8-9",
-    "status": "complete_bounded",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -116,7 +116,7 @@
     "current_evidence": "Strict two-peer Kubo 0.29.0; 30 repeats over 1 KiB-10 MiB; add/pin/cold/warm; concurrency 1/5/10/20; publisher recovery; approved-CID fail-closed cancellation",
     "gap": "Consumer outage duration, WAN, and multi-host recovery are not measured",
     "planned_phase": "9",
-    "status": "complete_bounded",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -127,7 +127,7 @@
     "current_evidence": "Formal code-aligned complexity and independently instrumented local training through global-publication stage timing",
     "gap": "Direct-verifier wall-clock latency and multi-host network timing are unavailable",
     "planned_phase": "10",
-    "status": "complete_bounded",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -135,10 +135,10 @@
     "reviewer": "Reviewer 2",
     "comment_id": "R2.3",
     "concern": "Public repository",
-    "current_evidence": "LICENSE, CITATION, baseline tag, release package and public checker",
-    "gap": "Active revision repo has no remote; anonymous revision URL unverified",
+    "current_evidence": "LICENSE, CITATION, public repository, anonymous clean-clone validation, GitHub release v0.2.1, and Zenodo DOI 10.5281/zenodo.21838695",
+    "gap": "A new immutable release/Zenodo version is required after closure changes",
     "planned_phase": "11",
-    "status": "blocked",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -149,7 +149,7 @@
     "current_evidence": "Fairness directly operationalized; qualitative ethics-scope matrix and bounded governance properties",
     "gap": "Broader ethical principles remain outside computational scope",
     "planned_phase": "10",
-    "status": "complete_scope",
+    "status": "analytically_addressed",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   },
@@ -160,7 +160,7 @@
     "current_evidence": "Per-client label/group/source entropy; final-round approval, exclusion, excluded-sample, and minority-heavy representation analysis",
     "gap": "IID approval is constant; no causal claim is made",
     "planned_phase": "4 and 9",
-    "status": "complete_bounded",
+    "status": "experimentally_evaluated",
     "evidence_type": "evidence_map",
     "source_file": "docs/revision/REVIEWER_EVIDENCE_MAP.md"
   }

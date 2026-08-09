@@ -1,0 +1,10 @@
+# GitHub release: https://github.com/ajalkhodair-spec/FairAI/releases/tag/v0.2.1
+# Release commit: cabcea687ba3d6476f98375617a9100f578aca85
+# GitHub presents two generated source assets (zip and tar.gz) but does not
+# publish their checksums on the release page. Their exact bytes were not
+# acquired during this read-only audit, so no SHA-256 value is fabricated here.
+#
+# The following is a checksum of the release's tracked, 331-entry internal
+# evidence checksum manifest, not a checksum of either GitHub source archive:
+ac2024ab954e9f4a4b826954b6d17e18e97aaeb79b204e3121588401a9685730  v0.2.1:outputs/major_revision/release_checksums.sha256
+# Verification result for entries in that manifest: 331 OK, 0 missing, 0 bad.

@@ -58,6 +58,25 @@ def records(frame):
     return json.loads(frame.to_json(orient="records"))
 
 
+def write_workbook_payload(root, workbook):
+    missing = [sheet for sheet in SHEETS if sheet not in workbook]
+    if missing:
+        raise ValueError(f"missing workbook sheets: {', '.join(missing)}")
+    payload = {
+        "schema_version": "fairai.workbook_payload.v1",
+        "sheets": {
+            sheet: {
+                "columns": list(workbook[sheet].columns),
+                "rows": records(workbook[sheet]),
+            }
+            for sheet in SHEETS
+        },
+    }
+    (root / "workbook_payload.json").write_text(
+        json.dumps(payload, indent=2) + "\n", encoding="utf-8"
+    )
+
+
 def add_trace(frame, run_id, evidence_type, source):
     result = frame.copy()
     if "run_id" not in result:
@@ -189,6 +208,11 @@ def flatten_proof_benchmark(path):
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", default="outputs/major_revision")
+    parser.add_argument(
+        "--primary-csv-only",
+        action="store_true",
+        help="rebuild workbook_payload.json from the published primary_csv sheets",
+    )
     parser.add_argument("--gas-run", default="gas-v2-30rep-4a08a15")
     parser.add_argument(
         "--analysis-dir",
@@ -221,6 +245,12 @@ def main():
     root = Path(args.output_root)
     csv_root = root / "primary_csv"
     csv_root.mkdir(parents=True, exist_ok=True)
+    if args.primary_csv_only:
+        workbook = {
+            sheet: read_csv(csv_root / f"{sheet}.csv") for sheet in SHEETS
+        }
+        write_workbook_payload(root, workbook)
+        return
 
     runs = {
         "adult_core": root / "adult-core-10seed-e01b72a",
@@ -685,19 +715,7 @@ def main():
         encoding="utf-8",
     )
 
-    payload = {
-        "schema_version": "fairai.workbook_payload.v1",
-        "sheets": {
-            sheet: {
-                "columns": list(workbook[sheet].columns),
-                "rows": records(workbook[sheet]),
-            }
-            for sheet in SHEETS
-        },
-    }
-    (root / "workbook_payload.json").write_text(
-        json.dumps(payload, indent=2) + "\n", encoding="utf-8"
-    )
+    write_workbook_payload(root, workbook)
     (root / "experiment_summary.json").write_text(
         json.dumps(
             {
