@@ -26,7 +26,7 @@ This file is the source of truth for the acceptance-oriented revision.
 | 8 | Verifier security | EIP-712, replay, expiry, revocation, compromise test | Complete |
 | 9 | Expanded experiment suites | R1-R7 measured with manifests | Partial: FairFed, 3-50 algorithmic scaling, 5/10-client strict Kubo, and targeted B4/B7 poisoning complete; Azure matrix pending |
 | 10 | Statistics and result freeze | Workbook, CSVs, tables, figures, evidence map | Complete for available evidence, including bootstrap CIs and local throughput |
-| 11 | Clean reproduction and release | G6 clean clone and release package | Partial: source/tests/Adult/report and native Kubo validated; public remote and Docker Compose validation pending |
+| 11 | Clean reproduction and release | G6 clean clone and release package | Complete within scope: public `v0.3.0` clone, exact-pinned install, tests, smoke, release archive, and Docker Compose Kubo integration validated |
 
 ## Dependencies
 

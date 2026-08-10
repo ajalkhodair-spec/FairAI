@@ -1,21 +1,19 @@
 # Major Revision Status
 
-- Active branch: `major-revision-closure`
-- Reconciliation baseline: public `main` commit
-  `434ab67f067c8ab26f1908369f62d2e2b4ec3fe3`
+- Published release: `v0.3.0`
+- Release commit: `6c064d0d3e01d0b6493b6650cb781379c7044fcd`
 - Scope authority: reviewer reports, submitted manuscript, and
   `docs/revision/acceptance_scope.md`
-- Current phase: evidence/manuscript reconciliation and immutable release
-  preparation
-- Release gate: `VALIDATION_PENDING_ENVIRONMENT`; see
+- Current phase: published bounded research release and reviewer verification
+- Release gate: `CLOSED_WITH_DOCUMENTED_LIMITATIONS`; see
   `docs/revision/closure_verification_status.md`
 - No Azure resources or Azure results are claimed.
 
 ## Completed
 
-- The published clean-clone validation recorded 77 Python tests and 22 Solidity
-  tests passing. Milestone 1 verification must rerun these suites after the
-  reconciliation changes.
+- The anonymous `v0.3.0` clean-clone validation recorded 82 Python tests and 22
+  Solidity tests passing from exact-pinned dependencies. The revision smoke
+  scenario and real two-peer Kubo Docker Compose integration also completed.
 
 - Adult and COMPAS loaders, logistic regression and small MLP, IID and
   Dirichlet partitions, multi-round execution, and group-fairness policies.
@@ -36,8 +34,8 @@
   retrievals, 360 proof decisions, and 360 ledger records.
 - Bicep compilation and shell validation for the bounded three-host Azure
   topology; no deployment was performed.
-- GitHub release `v0.2.1` and Zenodo version DOI
-  `10.5281/zenodo.21838695` archive commit `cabcea6`.
+- GitHub release `v0.3.0` and Zenodo version DOI
+  `10.5281/zenodo.21864931` archive commit `6c064d0`.
 
 ## Preserved Failures
 
@@ -50,12 +48,9 @@
 
 ## Remaining
 
-- Bind the editable manuscript source to the reconciled evidence state.
-- Create a new evidence freeze with hashes matching every canonical target.
-- Reconcile historical Circom version metadata without altering run manifests.
-- Rebuild the manuscript and rerun clean-clone validation.
-- Publish a new immutable release and Zenodo version if any supporting artifact
-  differs from `v0.2.1`.
+- Preserve BLK-005 as an explicit compiler-provenance limitation unless a
+  contemporaneous Circom build transcript is recovered.
+- Keep release and citation metadata synchronized for any future version.
 - Azure deployment, WAN/multi-host measurements, public-chain execution, and
   consumer-outage duration remain explicitly unmeasured limitations, not
   prerequisites for the bounded local claims.

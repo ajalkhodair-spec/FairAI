@@ -1,14 +1,14 @@
 {
   "canonical_target_sha256": {
-    "BLOCKERS.md": "a6247697eafd5ba630ef496f7829a12f31ffcbb3e04cfa6bbb1faf0e9231f617",
-    "README.md": "2e4817f64a96697ddb0ab0b3a886735da0a2926aa1819c81275daece6f2affcc",
-    "RELEASE_CHECKLIST.md": "462d86bbb4cc6ab2c420314bc66f477a817fbfe583876d9af237dff02eb7a79c",
+    "BLOCKERS.md": "8c113d45b8dfe714f3698d78b2f6eeb65ec44835b2b312a4804d0e7283dfc2d4",
+    "README.md": "b399ec6b2f8932a4b875ee636e2dac4dcc248453c33f49f6729250ddfa12e6df",
+    "RELEASE_CHECKLIST.md": "50d00e34e7622b0ede23e22636ec4f24d75b3466f567df70a403cddb0d2701a3",
     "audits/prechange/evidence_discrepancy_report.md": "cc6fa3675260300e9ab3a67ead06fdda4f688a0c5d1015a17a1925c2921a8f31",
-    "docs/revision/REVIEWER_EVIDENCE_MAP.md": "b6378630759ad5084bb8c2d8f2a4551ca7a52f2067c3471920e991d53d883243",
-    "docs/revision/REVIEWER_GAP_MATRIX.csv": "7394ffc013f4ff7cc09f889146d22cc6fdd50a98302eaa20b126fb3eabf0030e",
-    "docs/revision/STATUS.md": "3a797dd5693825d81ac09cd5451e7075a66009919adac2cfc828457a4a3a173d",
+    "docs/revision/REVIEWER_EVIDENCE_MAP.md": "cf3ac39aac1c53eced11d27aff485d9cbfb4807cf8fa91ebe6641d3b5aeeb8e2",
+    "docs/revision/REVIEWER_GAP_MATRIX.csv": "74f9552458f5817d357f7acb52bba76136ff3f06b17b4e7e9dc92ab2a5eb493e",
+    "docs/revision/STATUS.md": "20f7afd0702b599eede6c49832c803f440ae0ef11172d738d65d274019902930",
     "docs/revision/circom_version_reconciliation.md": "526721ec7fe53f70c049026807fc4fc38d01a0fa547a4c53696bae6b89246e42",
-    "docs/revision/closure_verification_status.md": "754f58c5b729407a84d81f2af50b41e056569a87d00aa9665741abc92155a752",
+    "docs/revision/closure_verification_status.md": "bfc05b38e381118aed02880c2e794ab8f42c97601df351276a11da48a6d7b46d",
     "docs/revision/direct_verifier_evidence_boundary.md": "09c429139c4039fda67ef8e1a06c36bc43bfa111384c0c24980cc5dd53ce50d7",
     "manuscript/Definitions/futureinternet-logo-eps-converted-to.pdf": "64a915535db8fc8c5924858b797ae87cc74253a60215ebf20ff971e6c7bd0a1d",
     "manuscript/Definitions/futureinternet-logo.eps": "d06e174d6db3a6012f821d354fa48628681d6b448a514f07215a446e3fef1ee1",
@@ -41,18 +41,18 @@
     "manuscript/Figures/fig5.png": "8f1b441bfed546aea23fae4d8328c50271e994fe04bb8a8fda0444a8fc0becc8",
     "manuscript/Figures/fig6.png": "65b48f79e74758382eab8ff73ab58c4acbdc7c35249eb6960c37276eb7becffd",
     "manuscript/README.md": "2b95d32caabc737296ab506ea2d3711ed3962ee5da26caca8049a91f3d7f45c4",
-    "manuscript/SOURCE_PROVENANCE.md": "879f8a14ea2b79983cab889c9c1a41daf17aa4480c628f670e262ec0ab639d0a",
+    "manuscript/SOURCE_PROVENANCE.md": "2ba10407149ab09808f5f931c59ecc2afe2eec6d9fbf312a9299bdefb40810ef",
     "outputs/major_revision/FairAI_Major_Revision_Results.xlsx": "62f6e676dff1083ea6b307c6f1fc152938af9af97afe9c11c3d4c06dfaa5fb02",
-    "outputs/major_revision/primary_csv/Missing_Data.csv": "f248a5092614635188a013ff466a4906c6a003931e24cb7445fbd967ef7a51cb",
-    "outputs/major_revision/primary_csv/Reviewer_Evidence_Map.csv": "bce14601ad886e2202baddabf9c101eb88b8785cbbd33b969b6fdf68a1d02924",
-    "outputs/major_revision/release_checksums.sha256": "321ca4c834e70cef6e99b499529e399c06fc653c6b1027b4731e1950af03cffa",
-    "outputs/major_revision/reviewer_evidence_map.json": "8fa5f82d86d19ebabf2eaf0fb836644a6d95f1a889dd0199d77483ab95f51161"
+    "outputs/major_revision/primary_csv/Missing_Data.csv": "97020a705d41874c28ae339e29383bcc9477b2b7f50fef621901a8767a022553",
+    "outputs/major_revision/primary_csv/Reviewer_Evidence_Map.csv": "70329a7743994f8bb9ec8e5e07fbc42613cd8a4628198c1e39fb76f5318af1a6",
+    "outputs/major_revision/release_checksums.sha256": "dcf550f360a3d7dd2a5ffd5040d88e5ff46864d0ed418d54bc8636d28e62a4f0",
+    "outputs/major_revision/reviewer_evidence_map.json": "8141881444c2a094556c3213df661e57408acc04ffb0419e4ae661c2ea9aa7ca"
   },
   "closure_checksum_manifest": "outputs/revision_audit/closure_checksums.sha256",
-  "closure_checksum_manifest_sha256": "8a0f21d35fa9509be7955acd7d3d78848e33b3e6a8d7c0c1accc994ae7b575b9",
+  "closure_checksum_manifest_sha256": "850a61639b6d0f7f66378cdb48088e271a9e41ece8236581b5304bd00c0e6e74",
   "closure_test_runs": {
     "python_compatibility": {
-      "exact_requirements_lock": false,
+      "exact_requirements_lock": true,
       "status": "passed",
       "tests": 82
     },
@@ -61,18 +61,24 @@
       "snarkjs": "0.7.5",
       "status": "passed",
       "tests": 22
+    },
+    "two_peer_kubo_compose": {
+      "kubo": "0.29.0",
+      "purpose": "functional_integration",
+      "repetitions": 3,
+      "status": "passed"
     }
   },
   "historical_freeze_preserved": "outputs/revision_audit/current_evidence_freeze.json",
   "release_lineage": {
-    "previous_commit": "cabcea687ba3d6476f98375617a9100f578aca85",
-    "previous_tag": "v0.2.1",
+    "published_commit": "6c064d0d3e01d0b6493b6650cb781379c7044fcd",
+    "published_tag": "v0.3.0",
     "zenodo_concept_doi": "10.5281/zenodo.21838694",
-    "zenodo_version_doi": "10.5281/zenodo.21838695"
+    "zenodo_version_doi": "10.5281/zenodo.21864931"
   },
   "schema_version": "fairai.closure_evidence_freeze.v1",
   "source_baseline_commit": "434ab67f067c8ab26f1908369f62d2e2b4ec3fe3",
-  "status": "compatibility_validated_pinned_clean_install_pending",
+  "status": "closed_with_documented_limitations",
   "target_count": 47,
   "workbook_rebuild": {
     "command": "python -m scripts.prepare_results_package --primary-csv-only && node scripts/build_results_workbook.mjs",

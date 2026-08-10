@@ -1,5 +1,29 @@
 # Clean Environment Test
 
+## Current public-release verification
+
+On 2026-08-10, an anonymous depth-one clone of public tag `v0.3.0` resolved to
+commit `6c064d0d3e01d0b6493b6650cb781379c7044fcd`. A newly created Python 3.11
+environment installed every exact version in `requirements-lock.txt`, and
+`npm ci` installed the committed Hardhat lockfile. From the repository root:
+
+- all 82 Python tests passed;
+- all 22 Solidity tests passed;
+- the revision smoke scenario completed;
+- a short real two-peer Kubo 0.29.0 Docker Compose benchmark completed with
+  three repetitions, four payload sizes, and concurrency 1/5/10.
+
+This closes the former public-remote, exact-pinned-install, anonymous-clone,
+and Docker functional-integration gaps. The 30-repetition native Kubo archive
+remains the source of publication performance results; the short Compose run
+is a functional reviewer check.
+
+The documented legacy full-path command is not self-contained because
+`zk/powersoftau_final.ptau` is intentionally not versioned. It requires Circom
+2.1.6, snarkjs 0.7.5, and an externally acquired phase-2 Powers of Tau file.
+Core tests, packaged V2 proof verification, smoke execution, and the strict
+IPFS benchmark do not require that file.
+
 ## Scope and commits
 
 - Clean-clone source/test commit: `846a068`
@@ -95,9 +119,9 @@ The following regenerated files matched the committed SHA-256 hashes exactly:
 
 The working tree remained clean after regeneration.
 
-## Unresolved G6 conditions
+## Historical G6 conditions
 
-G6 is not fully closed because:
+The earlier sandbox run could not close G6 because:
 
 - a fresh Python installation could not access the package index;
 - the active revision repository has no configured public remote;
@@ -105,5 +129,5 @@ G6 is not fully closed because:
 - strict Docker/Kubo execution remains denied by the task's Docker-socket
   permission boundary.
 
-No release or public-access completion claim should be made until those
-external conditions are resolved and the same protocol is rerun.
+Those conditions were subsequently resolved by the public `v0.3.0` clean-clone
+verification recorded above.
