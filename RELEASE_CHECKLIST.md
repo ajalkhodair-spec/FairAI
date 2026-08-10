@@ -9,7 +9,8 @@
 - [x] G4 expanded suites complete within the documented local evidence boundary
 - [x] G5 available measured results frozen and traced
 - [x] No secrets or user-specific paths in tracked project content
-- [x] Published `v0.2.1` clean clone passed 77 Python and 22 contract tests
+- [x] Published `v0.3.0` anonymous clean clone passed 82 Python and 22 contract tests
+- [x] Published clean clone completed smoke and real two-peer Kubo integration runs
 - [x] Legacy scenario reproduces or gap is documented
 - [x] One Adult scenario reproduces
 - [x] Tables and figures regenerate
@@ -22,5 +23,5 @@
 - [x] Consolidated workbook regenerated and visually verified from corrected CSV
 - [x] Current closure branch passes 82 Python tests in a compatible project environment
 - [x] Current closure branch passes 22 Hardhat tests with lockfile-matching Node dependencies
-- [ ] Current closure branch passes Python tests in a fresh exact-pinned environment
-- [ ] New GitHub release and Zenodo version published for post-`v0.2.1` changes
+- [x] Release commit passes Python tests in a fresh exact-pinned environment
+- [x] GitHub release `v0.3.0` and Zenodo version DOI `10.5281/zenodo.21864931` published

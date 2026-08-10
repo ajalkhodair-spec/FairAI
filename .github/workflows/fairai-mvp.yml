@@ -1,6 +1,9 @@
 name: FairAI MVP
 
 on:
+  workflow_dispatch:
+  release:
+    types: [published]
   push:
     paths:
       - "circuits/**"
@@ -12,7 +15,11 @@ on:
       - "tests/**"
       - "Makefile"
       - "requirements-lock.txt"
+      - "docker-compose.ipfs.yml"
       - "BLOCKERS.md"
+      - "CITATION.cff"
+      - "README.md"
+      - "RELEASE_CHECKLIST.md"
       - "docs/revision/**"
       - "outputs/major_revision/**"
       - ".github/workflows/fairai-mvp.yml"
@@ -27,7 +34,11 @@ on:
       - "tests/**"
       - "Makefile"
       - "requirements-lock.txt"
+      - "docker-compose.ipfs.yml"
       - "BLOCKERS.md"
+      - "CITATION.cff"
+      - "README.md"
+      - "RELEASE_CHECKLIST.md"
       - "docs/revision/**"
       - "outputs/major_revision/**"
       - ".github/workflows/fairai-mvp.yml"
@@ -68,3 +79,21 @@ jobs:
           --config configs/revision/smoke.yaml
           --output-root "${RUNNER_TEMP}/fairai-revision"
           --run-id ci-smoke
+
+  ipfs-integration:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: "3.11"
+      - run: python -m pip install -r requirements-lock.txt
+      - run: docker compose -f docker-compose.ipfs.yml up -d --wait
+      - run: >-
+          python -m fairai_revision.run
+          --config configs/revision/ci_ipfs.yaml
+          --output-root "${RUNNER_TEMP}/fairai-ipfs"
+          --run-id ci-two-peer-kubo
+      - if: always()
+        run: docker compose -f docker-compose.ipfs.yml down -v

@@ -47,8 +47,9 @@ nonclaims.
 - The V2 phase-2 setup has one experimental contributor. A governed multi-party
   ceremony is required before production deployment.
 - Strict local two-peer Kubo timings, publisher outage/recovery, and B2/B4/B7
-  runs are included. Consumer outage, WAN behavior, Docker Compose, and Azure
-  execution are not claimed as measured evidence.
+  runs are included. Docker Compose is exercised as a functional integration
+  check; consumer outage, WAN behavior, multi-host behavior, and Azure
+  execution are not claimed as measured performance evidence.
 - FairFed implements the published server aggregation rule; it does not claim
   to reproduce every local debiasing variant from the paper.
 - Raw training data stay local, but the implementation does not provide a
@@ -94,9 +95,18 @@ python -m pip install -r requirements-report.txt
 ```sh
 make test
 make revision-smoke
+make revision-proof
 ```
 
-Run the submitted-state reproduction with strict Kubo:
+These commands are the reviewer entry point. From an anonymous clean clone of
+release `v0.3.0`, they pass 82 Python tests, 22 Solidity tests, the smoke
+scenario, and packaged V2 Groth16 proof verification. The GitHub Actions
+workflow repeats the test suites and smoke scenario and also runs a real
+two-peer Kubo functional benchmark.
+
+Run the submitted-state reproduction with strict Kubo only after installing
+Circom 2.1.6 and snarkjs 0.7.5 and supplying the externally acquired phase-2
+Powers of Tau file at `zk/powersoftau_final.ptau`:
 
 ```sh
 docker compose -f docker-compose.ipfs.yml up -d --wait
@@ -127,6 +137,11 @@ make revision-ipfs
 
 The benchmark fails if either real Kubo endpoint is unavailable. It never
 records fallback CIDs as IPFS evidence.
+
+For a short functional Kubo check matching CI, replace the benchmark config
+with `configs/revision/ci_ipfs.yaml`. The short check establishes real
+add/pin/retrieval operation across two peers; publication performance numbers
+come from the tracked 30-repetition benchmark evidence, not from CI.
 
 Run the two focused trust-boundary scenarios from fresh Kubo volumes:
 
@@ -246,10 +261,9 @@ preprocessing only on the training split.
 
 ## Citation
 
-Use [CITATION.cff](CITATION.cff). Release `v0.2.1` is archived under version DOI
-`10.5281/zenodo.21838695`; concept DOI `10.5281/zenodo.21838694` resolves to the
-latest archived version. Closure changes made after `v0.2.1` require a new
-immutable GitHub release and Zenodo version before they are cited as published.
+Use [CITATION.cff](CITATION.cff). Release `v0.3.0` is archived under version DOI
+`10.5281/zenodo.21864931`; concept DOI `10.5281/zenodo.21838694` resolves to the
+latest archived version.
 
 ## License
 

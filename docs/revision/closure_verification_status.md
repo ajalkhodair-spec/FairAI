@@ -2,6 +2,11 @@
 
 ## Completed checks
 
+- On 2026-08-10, an anonymous depth-one clone of public tag `v0.3.0` installed
+  the exact Python lock under Python 3.11 and the Node lock under Node 20. All
+  82 Python and 22 Solidity tests passed. The smoke scenario and a real
+  two-peer Kubo 0.29.0 Docker Compose functional benchmark also completed.
+
 - Manuscript source hash matches the imported original:
   `edd73c6efae0d714c5419e590f4b773825bf59f6a01d6a14bb88a7ae54ca4555`.
 - A clean temporary-directory `latexmk` build completed successfully and
@@ -28,9 +33,9 @@
   `@nomicfoundation/hardhat-toolbox` 6.1.2, and snarkjs 0.7.5. Those versions
   match the committed Node lockfile.
 
-## Environment-blocked checks
+## Historical environment-blocked checks
 
-The complete validation suite did not run in the current workspace:
+The complete validation suite could not run in the earlier isolated workspace:
 
 - A clean `.venv` was created and `pip install -r requirements-lock.txt` was
   attempted on 2026-08-08. The install could not reach PyPI because DNS/network
@@ -46,14 +51,16 @@ The system-Python discovery executed 37 entries: 27 passed and 10 ended in
 import errors caused by missing scientific dependencies. The bundled document
 runtime improved this to 61 passing entries and six environment errors. The
 separate project-lineage environment then passed all 82 tests as recorded
-above. Only the exact versions in `requirements-lock.txt` remain unverified in
-a newly created environment.
+above. The later public-release verification closed the exact-pinned and Docker
+functional gaps; these details are retained to distinguish historical sandbox
+limitations from repository failures.
 
 ## Release gate
 
-Status: `COMPATIBILITY_VALIDATED_PINNED_CLEAN_INSTALL_PENDING`
+Status: `CLOSED_WITH_DOCUMENTED_LIMITATIONS`
 
-Before release, install the pinned Python dependencies in a clean environment,
-run all Python tests, rerun the closure generators, and require every
-`--verify` command to pass. The lockfile-matching Solidity suite is already
-green, but CI should rerun it from `npm ci` as the immutable release check.
+Release `v0.3.0` is publicly accessible and archived. Its exact-pinned clean
+installation, complete test suites, smoke scenario, and functional Kubo path
+have been independently rerun. BLK-005, the single-contributor experimental
+ZKey, and unmeasured WAN, multi-host, public-chain, and consumer-outage cases
+remain explicit limitations rather than release-gate failures.

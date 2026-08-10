@@ -12,5 +12,5 @@
 
 The imported source is byte-identical to the recorded original TeX at the start
 of Milestone 1. Subsequent manuscript edits must be reviewed as normal Git
-changes and included in a new immutable release rather than attributed to
-`v0.2.1`.
+changes and included in a new immutable release rather than attributed to an
+earlier version. The reconciled package was published as `v0.3.0`.

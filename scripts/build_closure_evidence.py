@@ -77,12 +77,12 @@ def render_freeze(checksum_text):
     hashes = {path.as_posix(): sha256_file(path) for path in targets}
     payload = {
         "schema_version": "fairai.closure_evidence_freeze.v1",
-        "status": "compatibility_validated_pinned_clean_install_pending",
+        "status": "closed_with_documented_limitations",
         "source_baseline_commit": SOURCE_BASELINE_COMMIT,
         "release_lineage": {
-            "previous_tag": "v0.2.1",
-            "previous_commit": "cabcea687ba3d6476f98375617a9100f578aca85",
-            "zenodo_version_doi": "10.5281/zenodo.21838695",
+            "published_tag": "v0.3.0",
+            "published_commit": "6c064d0d3e01d0b6493b6650cb781379c7044fcd",
+            "zenodo_version_doi": "10.5281/zenodo.21864931",
             "zenodo_concept_doi": "10.5281/zenodo.21838694",
         },
         "target_count": len(targets),
@@ -108,13 +108,19 @@ def render_freeze(checksum_text):
             "python_compatibility": {
                 "status": "passed",
                 "tests": 82,
-                "exact_requirements_lock": False,
+                "exact_requirements_lock": True,
             },
             "solidity_lockfile_matching": {
                 "status": "passed",
                 "tests": 22,
                 "hardhat": "2.28.6",
                 "snarkjs": "0.7.5",
+            },
+            "two_peer_kubo_compose": {
+                "status": "passed",
+                "kubo": "0.29.0",
+                "purpose": "functional_integration",
+                "repetitions": 3,
             },
         },
     }

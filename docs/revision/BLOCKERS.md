@@ -10,12 +10,13 @@ The register contains four resolved or bounded-resolved historical blockers
 and one open publication-provenance blocker:
 
 - `BLK-001`: resolved with pinned and verified V2 artifacts and measurements;
-- `BLK-002`: resolved for local native Kubo; Docker Compose, recovery, and
+- `BLK-002`: resolved for local native Kubo performance evidence and public
+  clean-clone Docker Compose functional integration; consumer outage, WAN, and
   multi-host behavior remain limitations;
 - `BLK-003`: resolved with the published FairFed server rule and tests;
 - `BLK-004`: resolved with a public repository, passing GitHub Actions, an
-  anonymous clean-clone test, GitHub release `v0.2.1`, and Zenodo version DOI
-  `10.5281/zenodo.21838695`.
+  anonymous exact-pinned clean-clone test, GitHub release `v0.3.0`, and Zenodo
+  version DOI `10.5281/zenodo.21864931`.
 - `BLK-005`: open until the Circom 2.1.6 artifact-manifest declaration is
   reconciled with historical and current `0.5.46` executable metadata.
 
