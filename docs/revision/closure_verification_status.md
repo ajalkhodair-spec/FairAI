@@ -2,10 +2,12 @@
 
 ## Current revision verification
 
-- On 2026-08-11, the revised 43-sheet workbook was regenerated from the
-  canonical CSV package. The builder inspected the policy-approval,
-  paired-inference, and scaling-summary ranges, found zero formula-error
-  matches, and the rendered workbook sheets were visually reviewed.
+- On 2026-08-11, the revised 53-sheet workbook was regenerated from the
+  canonical CSV package. It contains 43 canonical evidence sheets and 10
+  formula-backed result figure sheets. The builder inspected the
+  policy-approval, paired-inference, and scaling-summary ranges, found zero
+  formula-error matches, and every rendered result figure was visually
+  reviewed.
 - The revised manuscript compiled successfully with `latexmk` to a 21-page
   PDF. The Experimental Setup, Results, Discussion, and Conclusion now use the
   measured Adult/COMPAS multi-seed evidence and identify the three-node

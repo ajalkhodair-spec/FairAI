@@ -39,8 +39,8 @@ nonclaims.
 - full-path false-metric and approved-artifact-unavailable trust-boundary tests;
 - repeated Hardhat gas and sequential/concurrent throughput measurements, plus
   modeled cost scenarios;
-- run manifests, statistical tables, a 43-sheet workbook, and figure-data
-  exports.
+- run manifests, statistical tables, a workbook with 43 canonical evidence
+  sheets and 10 formula-backed result figure sheets, and figure-data exports.
 
 ## Boundaries
 

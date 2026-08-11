@@ -99,7 +99,9 @@ def render_freeze(checksum_text):
         ),
         "workbook_rebuild": {
             "status": "completed_and_visually_verified",
-            "sheet_count": 43,
+            "sheet_count": 53,
+            "canonical_evidence_sheet_count": 43,
+            "result_figure_sheet_count": 10,
             "source": "outputs/major_revision/primary_csv/*.csv",
             "command": (
                 "python -m scripts.prepare_results_package --primary-csv-only "

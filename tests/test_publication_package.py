@@ -52,6 +52,12 @@ class PublicationPackageTests(unittest.TestCase):
 
     def test_workbook_payload_matches_declared_sheet_contract(self):
         self.assertEqual(len(SHEETS), 43)
+        readme = pd.read_csv(PRIMARY / "README.csv").set_index("item")["value"]
+        self.assertEqual(
+            readme["Figure sheets"],
+            "Ten formula-backed result figure sheets; 43 canonical evidence "
+            "sheets remain the data source",
+        )
         for sheet in (
             "Proof_Overhead",
             "IPFS_Availability",
