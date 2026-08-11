@@ -1,17 +1,34 @@
 # Closure Verification Status
 
-## Completed checks
+## Current revision verification
+
+- On 2026-08-11, the revised 43-sheet workbook was regenerated from the
+  canonical CSV package. The builder inspected the policy-approval,
+  paired-inference, and scaling-summary ranges, found zero formula-error
+  matches, and the rendered workbook sheets were visually reviewed.
+- The revised manuscript compiled successfully with `latexmk` to a 21-page
+  PDF. The Experimental Setup, Results, Discussion, and Conclusion now use the
+  measured Adult/COMPAS multi-seed evidence and identify the three-node
+  synthetic result as legacy regression evidence only.
+- The exact scientific Python lock was installed in an isolated Python 3.13.5
+  environment. All 84 Python tests passed, all 22 Solidity tests passed, the
+  smoke scenario completed, all integrity generators passed `--verify`, and
+  `git diff --check` passed.
+- The release checksum scope includes the canonical `Policy_Approval`,
+  `Paired_Inference`, and `Scaling_Summary` CSV files in addition to the
+  workbook and existing publication evidence.
+
+## Published v0.3.0 checks
 
 - On 2026-08-10, an anonymous depth-one clone of public tag `v0.3.0` installed
   the exact Python lock under Python 3.11 and the Node lock under Node 20. All
   82 Python and 22 Solidity tests passed. The smoke scenario and a real
   two-peer Kubo 0.29.0 Docker Compose functional benchmark also completed.
 
-- Manuscript source hash matches the imported original:
+- The imported manuscript source hash was
   `edd73c6efae0d714c5419e590f4b773825bf59f6a01d6a14bb88a7ae54ca4555`.
-- A clean temporary-directory `latexmk` build completed successfully and
-  produced a 23-page PDF on 2026-08-08. The build completed without fatal
-  errors; LaTeX reported non-fatal layout and header-height warnings.
+- A clean temporary-directory `latexmk` build of the v0.3.0 manuscript
+  produced a 23-page PDF on 2026-08-08 without fatal errors.
 - The 331-entry major-revision release checksum manifest verifies with zero
   missing files and zero mismatches.
 - The closure checksum manifest and evidence freeze verify against all selected
@@ -25,8 +42,9 @@
 - The consolidated workbook was rebuilt from all 40 canonical primary CSV
   sheets, inspected for the corrected blocker and reviewer rows, scanned with
   zero formula-error matches, and visually reviewed sheet by sheet.
-- The complete Python suite passed 82/82 tests in an existing project-lineage
-  Python 3.13.5 environment. Pandas 3.0.3 and scikit-learn 1.9.0 matched the
+- The complete Python suite passed 82/82 tests for the published v0.3.0 state
+  in an existing project-lineage Python 3.13.5 environment. Pandas 3.0.3 and
+  scikit-learn 1.9.0 matched the
   lock; NumPy 2.5.1 and SciPy 1.18.0 were newer than the locked 2.4.6 and
   1.17.1 versions. This is compatibility evidence, not an exact-pinned run.
 - The complete Solidity suite passed 22/22 tests using Hardhat 2.28.6,

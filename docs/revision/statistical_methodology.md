@@ -47,8 +47,10 @@ Thirty-repetition infrastructure summaries report mean, sample standard
 deviation, median, interquartile range, p95, minimum, maximum, and failures
 where the underlying measurement exists. Hardhat throughput is local,
 in-process evidence and must not be interpreted as public-chain throughput.
-Kubo statistics remain missing until the strict two-peer Docker benchmark can
-access the Docker daemon.
+Kubo statistics are derived from the archived strict two-peer Kubo 0.29.0
+benchmark with 30 repetitions per sequential payload size and concurrency or
+recovery condition. They characterize loopback peers on the local evaluation
+host and do not represent Internet-scale IPFS latency.
 
 ## Machine-readable outputs
 

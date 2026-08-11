@@ -39,7 +39,7 @@ nonclaims.
 - full-path false-metric and approved-artifact-unavailable trust-boundary tests;
 - repeated Hardhat gas and sequential/concurrent throughput measurements, plus
   modeled cost scenarios;
-- run manifests, statistical tables, a 40-sheet workbook, and figure-data
+- run manifests, statistical tables, a 43-sheet workbook, and figure-data
   exports.
 
 ## Boundaries
@@ -210,7 +210,7 @@ python -m scripts.build_release_checksums
 python -m scripts.build_closure_evidence
 ```
 
-The `--primary-csv-only` mode rebuilds the workbook payload from the 40 tracked
+The `--primary-csv-only` mode rebuilds the workbook payload from the 43 tracked
 canonical CSV sheets. Omit the flag only when the complete raw run directories
 listed by the experiment package are present. The workbook builder uses
 `@oai/artifact-tool`; install it in the report environment before running that

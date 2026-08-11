@@ -60,6 +60,11 @@ def validate_config(payload):
         raise ConfigError("rounds must be a positive integer")
     if not isinstance(payload["local_epochs"], int) or payload["local_epochs"] < 1:
         raise ConfigError("local_epochs must be a positive integer")
-    if payload["evidence_type"] not in {"measured", "derived", "modeled", "estimated"}:
+    if payload["evidence_type"] not in {
+        "measured",
+        "derived",
+        "modeled",
+        "estimated",
+        "configured_not_executed",
+    }:
         raise ConfigError("Unsupported evidence_type")
-

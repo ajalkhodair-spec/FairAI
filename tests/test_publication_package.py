@@ -51,15 +51,47 @@ class PublicationPackageTests(unittest.TestCase):
         self.assertIn("approved_model_retrieval", set(stages["stage"]))
 
     def test_workbook_payload_matches_declared_sheet_contract(self):
-        self.assertEqual(len(SHEETS), 40)
+        self.assertEqual(len(SHEETS), 43)
         for sheet in (
             "Proof_Overhead",
             "IPFS_Availability",
             "Stage_Timing",
             "Representation_Fairness",
             "Trust_Boundary",
+            "Policy_Approval",
+            "Paired_Inference",
+            "Scaling_Summary",
         ):
             self.assertIn(sheet, SHEETS)
+
+    def test_publication_labels_match_measurement_scope(self):
+        matrix = pd.read_csv(PRIMARY / "Experiment_Matrix.csv").set_index(
+            "scenario_id"
+        )
+        for scenario in ("azure_adult_bounded", "azure_compas_bounded"):
+            self.assertEqual(
+                matrix.loc[scenario, "evidence_type"],
+                "configured_not_executed",
+            )
+
+        approval = pd.read_csv(PRIMARY / "Policy_Approval.csv")
+        final_round = approval[approval["aggregation_scope"] == "final_round"]
+        final_means = final_round.set_index("policy_profile")["mean_approval_rate"]
+        self.assertAlmostEqual(final_means["lenient"], 0.55)
+        self.assertAlmostEqual(final_means["submitted"], 0.42)
+        self.assertAlmostEqual(final_means["moderate"], 0.27)
+        self.assertAlmostEqual(final_means["strict"], 0.07)
+
+        inference = pd.read_csv(PRIMARY / "Paired_Inference.csv")
+        row = inference[
+            (inference["analysis_family"] == "core_logistic")
+            & (inference["suite"] == "compas_core")
+            & (inference["partition"] == "joint_dirichlet_0.3")
+            & (inference["comparison"] == "B3-B0")
+            & (inference["metric"] == "accuracy")
+        ].iloc[0]
+        self.assertAlmostEqual(row["paired_effect_size_dz"], -1.448810129248246)
+        self.assertAlmostEqual(row["paired_t_p_holm"], 0.03179773136434811)
 
 
 if __name__ == "__main__":

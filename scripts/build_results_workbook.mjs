@@ -113,19 +113,35 @@ for (const [sheetName, sheetPayload] of Object.entries(payload.sheets)) {
 }
 
 const readme = workbook.worksheets.getItem("README");
-readme.getRange("A1:B9").format.rowHeight = 28;
-readme.getRange("A2:A9").format.font = { bold: true, color: "#174A5B" };
-readme.getRange("B2:B9").format.wrapText = true;
+const readmeRows = payload.sheets.README.rows.length + 1;
+readme.getRange(`A1:B${readmeRows}`).format.rowHeight = 28;
+readme.getRange(`A2:A${readmeRows}`).format.font = { bold: true, color: "#174A5B" };
+readme.getRange(`B2:B${readmeRows}`).format.wrapText = true;
 
 const inspection = await workbook.inspect({
   kind: "table",
   sheetId: "README",
-  range: "A1:B9",
+  range: `A1:B${readmeRows}`,
   include: "values,formulas",
   tableMaxRows: 10,
   tableMaxCols: 4,
 });
 process.stdout.write(`${inspection.ndjson}\n`);
+for (const [sheetId, range] of [
+  ["Policy_Approval", "A1:K9"],
+  ["Paired_Inference", "A1:Q25"],
+  ["Scaling_Summary", "A1:P16"],
+]) {
+  const evidenceInspection = await workbook.inspect({
+    kind: "table",
+    sheetId,
+    range,
+    include: "values,formulas",
+    tableMaxRows: 25,
+    tableMaxCols: 17,
+  });
+  process.stdout.write(`${evidenceInspection.ndjson}\n`);
+}
 const errors = await workbook.inspect({
   kind: "match",
   searchTerm: "#REF!|#DIV/0!|#VALUE!|#NAME\\?|#N/A",

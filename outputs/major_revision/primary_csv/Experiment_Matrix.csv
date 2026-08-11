@@ -4,8 +4,9 @@ adult_fairfed_comparison,federated_core,adult,logistic_regression,10,5,B0_B1_B3_
 adult_mlp,federated_core,adult,small_mlp,10,5,B0_B3_B5,5,measured,configs/revision/adult_mlp.yaml
 adversarial,federated_core,adult,logistic_regression,10,5,B0_B6_B4_B7,5,measured,configs/revision/adversarial.yaml
 approved_artifact_failure,federated_core,adult,logistic_regression,3,1,B0_B4_FAIL_CLOSED,1,measured,configs/revision/approved_artifact_failure.yaml
-azure_adult_bounded,federated_core,adult,logistic_regression,20,5,B2_B4_B5_B7,5,measured,configs/revision/azure_adult.yaml
-azure_compas_bounded,federated_core,compas,logistic_regression,20,5,B2_B4_B5_B7,5,measured,configs/revision/azure_compas.yaml
+azure_adult_bounded,federated_core,adult,logistic_regression,20,5,B2_B4_B5_B7,5,configured_not_executed,configs/revision/azure_adult.yaml
+azure_compas_bounded,federated_core,compas,logistic_regression,20,5,B2_B4_B5_B7,5,configured_not_executed,configs/revision/azure_compas.yaml
+ci_two_peer_ipfs,ipfs_benchmark,artifact_payloads,not_applicable,1,1,two_peer_kubo_ci,1,measured,configs/revision/ci_ipfs.yaml
 compas_core,federated_core,compas,logistic_regression,10,5,B0_B1_B2_B3_B4_B5,10,measured,configs/revision/compas_core.yaml
 compas_fairfed_comparison,federated_core,compas,logistic_regression,10,5,B0_B1_B3_B5,10,measured,configs/revision/compas_fairfed.yaml
 false_metric_reporting,federated_core,adult,logistic_regression,3,1,B0_B4_FALSE_METRICS,1,measured,configs/revision/false_metric_reporting.yaml

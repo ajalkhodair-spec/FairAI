@@ -19,6 +19,11 @@ ROOT = Path(__file__).resolve().parents[1]
 
 
 class RevisionInfrastructureTests(unittest.TestCase):
+    def test_azure_configs_are_explicitly_not_executed(self):
+        for name in ("azure_adult.yaml", "azure_compas.yaml"):
+            config = load_config(ROOT / "configs" / "revision" / name)
+            self.assertEqual(config["evidence_type"], "configured_not_executed")
+
     def test_false_metric_experiment_preserves_genuine_and_fabricated_decisions(self):
         from fairai_revision.b4_infrastructure import B4KuboLedgerAdapter
 
