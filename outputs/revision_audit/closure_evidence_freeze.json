@@ -1,14 +1,14 @@
 {
   "canonical_target_sha256": {
     "BLOCKERS.md": "8c113d45b8dfe714f3698d78b2f6eeb65ec44835b2b312a4804d0e7283dfc2d4",
-    "README.md": "f78007aaccd4fe13afaa4e5fe8b0c290e01ad0d5b513adda94df9e52bed142e7",
+    "README.md": "44ea9404c7ab8d3173491b15fe9a984fb8b700a3ceaadaedb8edc3dd9dcb884a",
     "RELEASE_CHECKLIST.md": "50d00e34e7622b0ede23e22636ec4f24d75b3466f567df70a403cddb0d2701a3",
     "audits/prechange/evidence_discrepancy_report.md": "cc6fa3675260300e9ab3a67ead06fdda4f688a0c5d1015a17a1925c2921a8f31",
     "docs/revision/REVIEWER_EVIDENCE_MAP.md": "cf3ac39aac1c53eced11d27aff485d9cbfb4807cf8fa91ebe6641d3b5aeeb8e2",
     "docs/revision/REVIEWER_GAP_MATRIX.csv": "74f9552458f5817d357f7acb52bba76136ff3f06b17b4e7e9dc92ab2a5eb493e",
     "docs/revision/STATUS.md": "20f7afd0702b599eede6c49832c803f440ae0ef11172d738d65d274019902930",
     "docs/revision/circom_version_reconciliation.md": "526721ec7fe53f70c049026807fc4fc38d01a0fa547a4c53696bae6b89246e42",
-    "docs/revision/closure_verification_status.md": "8e20535272b2e6bd96f7caf5d13b0f36636b4bea6a1344ab9d225af8b3f321d6",
+    "docs/revision/closure_verification_status.md": "2419d320bad71e4d48ea2884f252fcc534cd7524c88744574a821d7a33e8817e",
     "docs/revision/direct_verifier_evidence_boundary.md": "09c429139c4039fda67ef8e1a06c36bc43bfa111384c0c24980cc5dd53ce50d7",
     "manuscript/Definitions/futureinternet-logo-eps-converted-to.pdf": "64a915535db8fc8c5924858b797ae87cc74253a60215ebf20ff971e6c7bd0a1d",
     "manuscript/Definitions/futureinternet-logo.eps": "d06e174d6db3a6012f821d354fa48628681d6b448a514f07215a446e3fef1ee1",
@@ -24,7 +24,7 @@
     "manuscript/Definitions/mdpi_apacite.bst": "c7fffe0231922e5521dc360889fafe941ee26d154c1ce4e167e4ec9f2d13498f",
     "manuscript/Definitions/mdpi_apacite.sty": "9e9bb23ded45f7f76236ad304d4bda2c066fb48041b272cebc20f940c17865a7",
     "manuscript/Definitions/mdpi_chicago.bst": "4a73faf6e0cf1a225d1b9a41a6955d3cc29a55c5fdce662177d00eee3946ce36",
-    "manuscript/FairAI.tex": "e8e7e8d359313f7b6330f7a38cba1994affcfc88d4bfcd28ab51b4de0a3a1a5d",
+    "manuscript/FairAI.tex": "8994a8a09015fca0f28e12ba1c3272411ba314ab84241750357d0e213436b8c4",
     "manuscript/Figures/Results/fig1.png": "80f56eee7bbe18a54ab2e7bba89c407d348f1ed14519a95b389f2b84a99c156e",
     "manuscript/Figures/Results/fig2.png": "c8cd62f65c4768e7f45d7f64ec85a18f01f09b3430f80a40bac9819dba5065b6",
     "manuscript/Figures/Results/fig3.png": "f2b5b7af454d182a2f3b00e35e12c61e436505b6be7db122dac265524233b85b",
@@ -42,17 +42,17 @@
     "manuscript/Figures/fig6.png": "65b48f79e74758382eab8ff73ab58c4acbdc7c35249eb6960c37276eb7becffd",
     "manuscript/README.md": "2b95d32caabc737296ab506ea2d3711ed3962ee5da26caca8049a91f3d7f45c4",
     "manuscript/SOURCE_PROVENANCE.md": "2ba10407149ab09808f5f931c59ecc2afe2eec6d9fbf312a9299bdefb40810ef",
-    "outputs/major_revision/FairAI_Major_Revision_Results.xlsx": "9355e9179c8c891f390c5082969291b67c10756855b400cc9e3333a49fa6dd7c",
+    "outputs/major_revision/FairAI_Major_Revision_Results.xlsx": "152c80cf4490db9c0edc1cd36ea1c23bbaa5e3e19261f66eceddcea35ef125ae",
     "outputs/major_revision/primary_csv/Missing_Data.csv": "97020a705d41874c28ae339e29383bcc9477b2b7f50fef621901a8767a022553",
     "outputs/major_revision/primary_csv/Paired_Inference.csv": "b3775533efbc35651d01f9e174c8cbc289e745542d61fd0f25a3849d5e321a2b",
     "outputs/major_revision/primary_csv/Policy_Approval.csv": "642dce8a5c9927eea1875860f9165666df7c82f35f51c4bfa9eeb14799286960",
     "outputs/major_revision/primary_csv/Reviewer_Evidence_Map.csv": "70329a7743994f8bb9ec8e5e07fbc42613cd8a4628198c1e39fb76f5318af1a6",
     "outputs/major_revision/primary_csv/Scaling_Summary.csv": "fcada9779e533e675bf36e4911fb037a836cd81c068a1dfdc19008e441412b24",
-    "outputs/major_revision/release_checksums.sha256": "c65833e2261f62450b3dd99972fb494318d162fe7354ec4d4ccfd5fc5749eaf1",
+    "outputs/major_revision/release_checksums.sha256": "965a74ad2f62d2fcd08107be535a9e35bb916588355dc4e0eb8d04195230f8fa",
     "outputs/major_revision/reviewer_evidence_map.json": "8141881444c2a094556c3213df661e57408acc04ffb0419e4ae661c2ea9aa7ca"
   },
   "closure_checksum_manifest": "outputs/revision_audit/closure_checksums.sha256",
-  "closure_checksum_manifest_sha256": "8e9f50ccb0dd2d288eb8b8b94a27a6632fbb9642fdf085186d845ef16d8891f6",
+  "closure_checksum_manifest_sha256": "9fc2f3b2cfbb8b3f25a54e0abf9850416aadfedb6fc1b4a5befef7bb1f1ce1fc",
   "closure_test_runs": {
     "python_compatibility": {
       "exact_requirements_lock": true,
@@ -87,8 +87,8 @@
     "canonical_evidence_sheet_count": 43,
     "command": "python -m scripts.prepare_results_package --primary-csv-only && node scripts/build_results_workbook.mjs",
     "formula_error_scan_matches": 0,
-    "result_figure_sheet_count": 10,
-    "sheet_count": 53,
+    "result_presentation_sheet_count": 20,
+    "sheet_count": 63,
     "source": "outputs/major_revision/primary_csv/*.csv",
     "status": "completed_and_visually_verified"
   }

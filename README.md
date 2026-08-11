@@ -40,7 +40,8 @@ nonclaims.
 - repeated Hardhat gas and sequential/concurrent throughput measurements, plus
   modeled cost scenarios;
 - run manifests, statistical tables, a workbook with 43 canonical evidence
-  sheets and 10 formula-backed result figure sheets, and figure-data exports.
+  sheets and 20 formula-backed reviewer-result presentation sheets, and
+  figure-data exports.
 
 ## Boundaries
 

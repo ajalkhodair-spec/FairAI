@@ -36,6 +36,16 @@ const FIGURE_SHEETS = [
   "Fig08_Proof_Gas",
   "Fig09_Security_Trust",
   "Fig10_Poisoning",
+  "Fig11_All_Fairness",
+  "Fig12_Controlled_Baselines",
+  "Fig13_Stage_Overhead",
+  "Fig14_Gas_Batching_Cost",
+  "Fig15_Adversarial_Matrix",
+  "Fig16_Entropy_Representation",
+  "Fig17_Proof_Trust_Paths",
+  "Fig18_Privacy_Boundary",
+  "Fig19_Ethics_Scope",
+  "Fig20_Complexity",
 ];
 const SERIES_COLORS = ["#176B87", "#C35A21", "#3B7A57", "#6B4C9A"];
 
@@ -54,6 +64,23 @@ function sourceFormula(sheetName, criteria, column) {
     throw new Error(`No ${column} column exists in ${sheetName}`);
   }
   return `='${sheetName}'!$${columnName(columnIndex)}$${rowIndex + 2}`;
+}
+
+function conditionalAverageFormula(
+  sheetName,
+  criteriaColumn,
+  criteriaValue,
+  valueColumn,
+) {
+  const source = payload.sheets[sheetName];
+  const criteriaIndex = source.columns.indexOf(criteriaColumn);
+  const valueIndex = source.columns.indexOf(valueColumn);
+  if (criteriaIndex < 0 || valueIndex < 0) {
+    throw new Error(`Missing conditional-average column in ${sheetName}`);
+  }
+  const lastRow = source.rows.length + 1;
+  const criterion = String(criteriaValue).replaceAll('"', '""');
+  return `=AVERAGEIF('${sheetName}'!$${columnName(criteriaIndex)}$2:$${columnName(criteriaIndex)}$${lastRow},"${criterion}",'${sheetName}'!$${columnName(valueIndex)}$2:$${columnName(valueIndex)}$${lastRow})`;
 }
 
 function createFigureSheet(name, title, subtitle, sourceNote) {
@@ -366,6 +393,262 @@ poisoning.getRange("B6:E9").format.numberFormat = "0.0000";
 addChart(poisoning, "bar", "A5:C9", "Mean accuracy by attack", "A12", "J31", "0.00");
 previewRanges.push({ sheetName: FIGURE_SHEETS[9], range: "A1:Q32" });
 
+const allFairness = createFigureSheet(
+  FIGURE_SHEETS[10],
+  "Figure 11. All Measured Fairness Criteria",
+  "Lower gaps indicate smaller measured disparity; ten paired seeds under joint Dirichlet alpha=0.3.",
+  "Source: Baseline_Comparison, B0 versus B3. Calibration and domain-specific metrics were not executed.",
+);
+const fairnessMetrics = [
+  ["DP gap", "demographic_parity_gap"],
+  ["EO gap", "equal_opportunity_gap"],
+  ["EOdds gap", "equalized_odds_gap"],
+  ["Subgroup accuracy gap", "subgroup_accuracy_gap"],
+];
+for (const [startColumn, scenario, label] of [[0, "adult_core", "Adult"], [8, "compas_core", "COMPAS"]]) {
+  writeLinkedTable(allFairness, 5, startColumn, ["Metric", "B0 mean", "B3 mean", "B0 SD", "B3 SD", "n"], fairnessMetrics.map(([metricLabel, metric]) => [
+    metricLabel,
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method: "B0", metric }, "mean"),
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method: "B3", metric }, "mean"),
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method: "B0", metric }, "std"),
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method: "B3", metric }, "std"),
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method: "B0", metric }, "n"),
+  ]));
+  allFairness.getRange(`${columnName(startColumn + 1)}6:${columnName(startColumn + 4)}9`).format.numberFormat = "0.0000";
+  addChart(allFairness, "bar", `${columnName(startColumn)}5:${columnName(startColumn + 2)}9`, `${label}: mean fairness gaps`, startColumn === 0 ? "A12" : "J12", startColumn === 0 ? "H32" : "Q32", "0.00");
+}
+allFairness.getRange("A1:A33").format.columnWidth = 28;
+allFairness.getRange("I1:I33").format.columnWidth = 28;
+previewRanges.push({ sheetName: FIGURE_SHEETS[10], range: "A1:Q33" });
+
+const baselines = createFigureSheet(
+  FIGURE_SHEETS[11],
+  "Figure 12. Controlled Core Baselines and Ablation",
+  "B0, B1, and B3 share the core ten-seed design; B2/B4/B5/B6/B7 belong to separate bounded experiments.",
+  "Source: Baseline_Comparison, joint Dirichlet alpha=0.3. This sheet does not imply an unexecuted all-method comparison.",
+);
+for (const [startColumn, scenario, label, fairnessMetric, fairnessLabel] of [
+  [0, "adult_core", "Adult", "demographic_parity_gap", "DP gap"],
+  [8, "compas_core", "COMPAS", "equalized_odds_gap", "EOdds gap"],
+]) {
+  writeLinkedTable(baselines, 5, startColumn, ["Method", "Accuracy", "Macro-F1", fairnessLabel, "Runtime ms", "n"], ["B0", "B1", "B3"].map((method) => [
+    method,
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method, metric: "accuracy" }, "mean"),
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method, metric: "macro_f1" }, "mean"),
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method, metric: fairnessMetric }, "mean"),
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method, metric: "runtime_ms" }, "mean"),
+    sourceFormula("Baseline_Comparison", { scenario_id: scenario, partition: "joint_dirichlet_0.3", method, metric: "accuracy" }, "n"),
+  ]));
+  baselines.getRange(`${columnName(startColumn + 1)}6:${columnName(startColumn + 3)}8`).format.numberFormat = "0.0000";
+  baselines.getRange(`${columnName(startColumn + 4)}6:${columnName(startColumn + 4)}8`).format.numberFormat = "0.00";
+  addChart(baselines, "bar", `${columnName(startColumn)}5:${columnName(startColumn + 1)}8`, `${label}: mean accuracy`, startColumn === 0 ? "A11" : "J11", startColumn === 0 ? "H31" : "Q31", "0.00");
+}
+previewRanges.push({ sheetName: FIGURE_SHEETS[11], range: "A1:Q32" });
+
+const stageOverhead = createFigureSheet(
+  FIGURE_SHEETS[12],
+  "Figure 13. Measured Workflow Stage Overhead",
+  "Stages were instrumented independently across different experimental units; values are not additive end-to-end decomposition.",
+  "Source: Stage_Timing. Direct Solidity wall-clock latency was not instrumented and is therefore excluded.",
+);
+const proofStages = [["Witness generation", "witness_generation"], ["Proof generation", "proof_generation"], ["Off-chain verification", "off_chain_proof_verification"]];
+const workflowStages = [
+  ["Local training", "local_training"],
+  ["Local evaluation", "local_evaluation"],
+  ["Fairness computation", "fairness_computation"],
+  ["Artifact serialization", "artifact_serialization"],
+  ["Kubo add", "kubo_add"],
+  ["Consumer retrieval", "consumer_retrieval"],
+  ["Contract submission", "contract_submission"],
+  ["Approved retrieval", "approved_model_retrieval"],
+  ["Aggregation", "aggregation"],
+  ["Global publication", "global_publication"],
+  ["End-to-end method", "end_to_end_method"],
+];
+writeLinkedTable(stageOverhead, 5, 0, ["Proof stage", "Mean ms", "SD ms", "p95 ms", "n"], proofStages.map(([label, stage]) => [label, sourceFormula("Stage_Timing", { stage }, "mean_ms"), sourceFormula("Stage_Timing", { stage }, "std_ms"), sourceFormula("Stage_Timing", { stage }, "p95_ms"), sourceFormula("Stage_Timing", { stage }, "n")]));
+writeLinkedTable(stageOverhead, 5, 7, ["Workflow stage", "Mean ms", "SD ms", "p95 ms", "n"], workflowStages.map(([label, stage]) => [label, sourceFormula("Stage_Timing", { stage }, "mean_ms"), sourceFormula("Stage_Timing", { stage }, "std_ms"), sourceFormula("Stage_Timing", { stage }, "p95_ms"), sourceFormula("Stage_Timing", { stage }, "n")]));
+stageOverhead.getRange("B6:D8").format.numberFormat = "0.00";
+stageOverhead.getRange("I6:K16").format.numberFormat = "0.00";
+stageOverhead.getRange("A1:A39").format.columnWidth = 28;
+stageOverhead.getRange("H1:H39").format.columnWidth = 28;
+addChart(stageOverhead, "bar", "A5:B8", "Groth16 stage means (ms)", "A19", "H38", "0");
+addChart(stageOverhead, "bar", "H5:I15", "Operational stage means (ms); end-to-end shown in table", "J19", "Q38", "0.0");
+previewRanges.push({ sheetName: FIGURE_SHEETS[12], range: "A1:Q39" });
+
+const gasCost = createFigureSheet(
+  FIGURE_SHEETS[13],
+  "Figure 14. Lifecycle Gas, Batching, and Modeled Cost",
+  "Gas is measured on local Hardhat. USD values are modeled at 10 Gwei and USD 2,000/ETH, not public-chain measurements.",
+  "Source: Gas_By_Function, Gas_Batching, and Cost_Scenarios.",
+);
+const lifecycleOperations = [
+  ["Create round", "create_round", 1],
+  ["Submit model", "submit_model", 1],
+  ["Close submissions", "close_submissions", 1],
+  ["Start aggregation", "start_aggregation", 1],
+  ["Publish global model", "publish_global_model", 1],
+  ["Archive round", "archive_round", 1],
+  ["Verify Groth16", "verify_v2_groth16", 0],
+  ["Deploy Groth16 verifier", "deploy_v2_groth16_verifier", 0],
+];
+writeLinkedTable(gasCost, 5, 0, ["Operation", "Mean gas", "n"], lifecycleOperations.map(([label, operation, batch_size]) => [label, sourceFormula("Gas_By_Function", { operation, batch_size }, "mean_gas"), sourceFormula("Gas_By_Function", { operation, batch_size }, "n")]));
+const batchSizes = [1, 5, 10, 20];
+writeLinkedTable(gasCost, 5, 7, ["Batch", "Submit gas", "Publish gas", "Submit modeled USD", "Publish modeled USD"], batchSizes.map((batch_size) => [
+  String(batch_size),
+  sourceFormula("Gas_Batching", { operation: "submit_model", batch_size }, "mean_gas"),
+  sourceFormula("Gas_Batching", { operation: "publish_global_model", batch_size }, "mean_gas"),
+  sourceFormula("Cost_Scenarios", { operation: "submit_model", batch_size, gas_price_gwei_assumption: 10, eth_usd_assumption: 2000 }, "modeled_cost_usd"),
+  sourceFormula("Cost_Scenarios", { operation: "publish_global_model", batch_size, gas_price_gwei_assumption: 10, eth_usd_assumption: 2000 }, "modeled_cost_usd"),
+]));
+gasCost.getRange("B6:B13").format.numberFormat = "#,##0";
+gasCost.getRange("I6:J9").format.numberFormat = "#,##0";
+gasCost.getRange("K6:L9").format.numberFormat = '"$"0.00';
+gasCost.getRange("A1:A35").format.columnWidth = 30;
+addChart(gasCost, "bar", "A5:B13", "Measured lifecycle gas", "A16", "H35", "#,##0");
+addChart(gasCost, "line", "H5:J9", "Measured gas by batch size", "J16", "Q35", "#,##0");
+previewRanges.push({ sheetName: FIGURE_SHEETS[13], range: "A1:Q36" });
+
+const adversarial = createFigureSheet(
+  FIGURE_SHEETS[14],
+  "Figure 15. A1-A14 Adversarial and Failure Matrix",
+  "Detected/rejected denotes the executed bounded control outcome; poisoning and trust-boundary non-detections are intentional findings.",
+  "Source: Adversarial_Results. Superseded rows point to current evidence in their interpretation column.",
+);
+const adversarialScenarios = payload.sheets.Adversarial_Results.rows.map((row) => row.scenario);
+writeLinkedTable(adversarial, 5, 0, ["Scenario", "Detected", "Rejected", "Evidence epoch", "Observed behavior", "Current interpretation"], adversarialScenarios.map((scenario) => [
+  sourceFormula("Adversarial_Results", { scenario }, "scenario"),
+  sourceFormula("Adversarial_Results", { scenario }, "detected"),
+  sourceFormula("Adversarial_Results", { scenario }, "rejected"),
+  sourceFormula("Adversarial_Results", { scenario }, "evidence_epoch"),
+  sourceFormula("Adversarial_Results", { scenario }, "observed_behavior"),
+  sourceFormula("Adversarial_Results", { scenario }, "current_interpretation"),
+]));
+adversarial.getRange("A1:A35").format.columnWidth = 38;
+adversarial.getRange("D1:D35").format.columnWidth = 24;
+adversarial.getRange("E1:F35").format.columnWidth = 48;
+adversarial.getRange("A6:F19").format.wrapText = true;
+adversarial.getRange("A6:F19").format.rowHeight = 38;
+previewRanges.push({ sheetName: FIGURE_SHEETS[14], range: "A1:Q20" });
+
+const entropyRepresentation = createFigureSheet(
+  FIGURE_SHEETS[15],
+  "Figure 16. Client Entropy and Representation Outcomes",
+  "Entropy is measured over 100 client partitions per condition; representation outcomes are derived from measured client decisions.",
+  "Source: Entropy and Representation_Fairness. These are associations and diagnostics, not causal estimates.",
+);
+const partitions = [["IID", "iid"], ["Dirichlet 1.0", "joint_dirichlet_1.0"], ["Dirichlet 0.3", "joint_dirichlet_0.3"]];
+writeLinkedTable(entropyRepresentation, 5, 0, ["Partition", "Mean label entropy", "Mean group entropy"], partitions.map(([label, partition]) => [label, conditionalAverageFormula("Entropy", "partition", partition, "label_entropy"), conditionalAverageFormula("Entropy", "partition", partition, "group_entropy")]));
+const representationRows = [];
+for (const [label, partition] of partitions) {
+  for (const minority_heavy of [false, true]) {
+    representationRows.push([
+      `${label} / ${minority_heavy ? "minority-heavy" : "other"}`,
+      sourceFormula("Representation_Fairness", { partition, minority_heavy }, "approval_rate"),
+      sourceFormula("Representation_Fairness", { partition, minority_heavy }, "rejection_rate"),
+      sourceFormula("Representation_Fairness", { partition, minority_heavy }, "mean_minority_fraction"),
+      sourceFormula("Representation_Fairness", { partition, minority_heavy }, "mean_excluded_sample_fraction"),
+      sourceFormula("Representation_Fairness", { partition, minority_heavy }, "seeds"),
+    ]);
+  }
+}
+writeLinkedTable(entropyRepresentation, 5, 7, ["Group", "Approval", "Rejection", "Minority fraction", "Excluded sample fraction", "Seeds"], representationRows);
+entropyRepresentation.getRange("B6:C8").format.numberFormat = "0.0000";
+entropyRepresentation.getRange("I6:L11").format.numberFormat = "0.0%";
+entropyRepresentation.getRange("A1:A33").format.columnWidth = 26;
+entropyRepresentation.getRange("H1:H33").format.columnWidth = 34;
+addChart(entropyRepresentation, "bar", "A5:C8", "Mean client entropy", "A14", "H33", "0.00");
+addChart(entropyRepresentation, "bar", "H5:J11", "Approval and rejection by representation group", "J14", "Q33", "0%");
+previewRanges.push({ sheetName: FIGURE_SHEETS[15], range: "A1:Q34" });
+
+const proofTrust = createFigureSheet(
+  FIGURE_SHEETS[16],
+  "Figure 17. Proof Path Measurements and Trust Boundary",
+  "Direct and signed paths were exercised locally, but they expose different measurements and trust assumptions.",
+  "Source: Stage_Timing, Proof_Overhead, Gas_By_Function, Verifier_Security, and Proof_Semantics.",
+);
+writeLinkedTable(proofTrust, 5, 0, ["Path", "Measured latency ms", "Latency n", "Measured gas", "Gas n", "Observed trust finding", "Evidence class"], [
+  ["Off-chain Groth16 verification", sourceFormula("Stage_Timing", { stage: "off_chain_proof_verification" }, "mean_ms"), sourceFormula("Stage_Timing", { stage: "off_chain_proof_verification" }, "n"), null, null, "Thirty valid proofs verified; six negative cases rejected", "measured"],
+  ["Direct Solidity Groth16", null, null, sourceFormula("Gas_By_Function", { operation: "verify_v2_groth16", batch_size: 0 }, "mean_gas"), sourceFormula("Gas_By_Function", { operation: "verify_v2_groth16", batch_size: 0 }, "n"), "Wall-clock latency was not instrumented", "measured gas / missing latency"],
+  ["EIP-712 signed verifier", sourceFormula("Stage_Timing", { stage: "eip712_decision_signing" }, "mean_ms"), sourceFormula("Stage_Timing", { stage: "eip712_decision_signing" }, "n"), null, null, "One authorized-key compromise was accepted by design", "measured bounded test"],
+]);
+writeLinkedTable(proofTrust, 5, 9, ["False-metric relation", "Value"], [
+  ["Threshold-compliant relation accepted", sourceFormula("Proof_Semantics", { scenario: "A12" }, "proof_relation_accepts")],
+  ["Independent metric derivation proved", sourceFormula("Proof_Semantics", { scenario: "A12" }, "independent_metric_derivation_proved")],
+  ["False reporting detected", sourceFormula("Proof_Semantics", { scenario: "A12" }, "detected")],
+]);
+proofTrust.getRange("B6:B8").format.numberFormat = "0.00";
+proofTrust.getRange("D6:D8").format.numberFormat = "#,##0";
+proofTrust.getRange("A1:A25").format.columnWidth = 34;
+proofTrust.getRange("F1:G25").format.columnWidth = 34;
+proofTrust.getRange("J1:J25").format.columnWidth = 36;
+proofTrust.getRange("A6:G8").format.wrapText = true;
+proofTrust.getRange("A6:G8").format.rowHeight = 42;
+previewRanges.push({ sheetName: FIGURE_SHEETS[16], range: "A1:Q18" });
+
+const privacy = createFigureSheet(
+  FIGURE_SHEETS[17],
+  "Figure 18. Privacy Exposure Boundary",
+  "This is a scope inventory, not an empirical privacy-attack benchmark. The supported claim is that raw data are not centralized.",
+  "Source: Privacy_Exposure. Membership inference, inversion, and gradient-leakage attacks were not executed.",
+);
+const privacyFields = payload.sheets.Privacy_Exposure.rows.map((row) => row.field);
+writeLinkedTable(privacy, 5, 0, ["Field", "Visibility", "Location", "Potential leakage", "Current mitigation", "Residual risk"], privacyFields.map((field) => [
+  sourceFormula("Privacy_Exposure", { field }, "field"),
+  sourceFormula("Privacy_Exposure", { field }, "visibility"),
+  sourceFormula("Privacy_Exposure", { field }, "location"),
+  sourceFormula("Privacy_Exposure", { field }, "potential_leakage"),
+  sourceFormula("Privacy_Exposure", { field }, "current_mitigation"),
+  sourceFormula("Privacy_Exposure", { field }, "residual_risk"),
+]));
+privacy.getRange("A1:A30").format.columnWidth = 25;
+privacy.getRange("B1:C30").format.columnWidth = 24;
+privacy.getRange("D1:F30").format.columnWidth = 42;
+privacy.getRange("A6:F23").format.wrapText = true;
+privacy.getRange("A6:F23").format.rowHeight = 38;
+previewRanges.push({ sheetName: FIGURE_SHEETS[17], range: "A1:Q24" });
+
+const ethics = createFigureSheet(
+  FIGURE_SHEETS[18],
+  "Figure 19. Ethical Principle Scope",
+  "Fairness is directly operationalized; several governance properties are supported; the remaining principles are not automated.",
+  "Source: Ethics_Scope. The table prevents fairness-policy enforcement from being presented as complete ethical reasoning.",
+);
+const ethicsDimensions = payload.sheets.Ethics_Scope.rows.map((row) => row.dimension);
+writeLinkedTable(ethics, 5, 0, ["Dimension", "Classification", "Direct measurement", "Implemented support", "Explicit nonclaim"], ethicsDimensions.map((dimension) => [
+  sourceFormula("Ethics_Scope", { dimension }, "dimension"),
+  sourceFormula("Ethics_Scope", { dimension }, "classification"),
+  sourceFormula("Ethics_Scope", { dimension }, "direct_measurement"),
+  sourceFormula("Ethics_Scope", { dimension }, "implemented_support"),
+  sourceFormula("Ethics_Scope", { dimension }, "nonclaim"),
+]));
+ethics.getRange("A1:A25").format.columnWidth = 28;
+ethics.getRange("B1:B25").format.columnWidth = 34;
+ethics.getRange("C1:E25").format.columnWidth = 44;
+ethics.getRange("A6:E18").format.wrapText = true;
+ethics.getRange("A6:E18").format.rowHeight = 42;
+previewRanges.push({ sheetName: FIGURE_SHEETS[18], range: "A1:Q19" });
+
+const complexity = createFigureSheet(
+  FIGURE_SHEETS[19],
+  "Figure 20. Analytical Workflow Complexity",
+  "Complexity expressions characterize implementation growth; they are analytical, not measured runtime results.",
+  "Source: Complexity. Measured stage timings are presented separately in Figure 13.",
+);
+const complexityStages = payload.sheets.Complexity.rows.map((row) => row.stage);
+writeLinkedTable(complexity, 5, 0, ["Stage", "Notation", "Time complexity", "Space or growth", "Implementation boundary"], complexityStages.map((stage) => [
+  sourceFormula("Complexity", { stage }, "stage"),
+  sourceFormula("Complexity", { stage }, "notation"),
+  sourceFormula("Complexity", { stage }, "time_complexity"),
+  sourceFormula("Complexity", { stage }, "space_or_growth"),
+  sourceFormula("Complexity", { stage }, "implementation_boundary"),
+]));
+complexity.getRange("A1:A26").format.columnWidth = 30;
+complexity.getRange("B1:D26").format.columnWidth = 28;
+complexity.getRange("E1:E26").format.columnWidth = 52;
+complexity.getRange("A6:E19").format.wrapText = true;
+complexity.getRange("A6:E19").format.rowHeight = 38;
+previewRanges.push({ sheetName: FIGURE_SHEETS[19], range: "A1:Q20" });
+
 const readme = workbook.worksheets.getItem("README");
 const readmeRows = payload.sheets.README.rows.length + 1;
 readme.getRange(`A1:B${readmeRows}`).format.rowHeight = 28;
@@ -395,6 +678,23 @@ for (const [sheetId, range] of [
     tableMaxCols: 17,
   });
   process.stdout.write(`${evidenceInspection.ndjson}\n`);
+}
+for (const [sheetId, range] of [
+  ["Fig11_All_Fairness", "A1:N9"],
+  ["Fig13_Stage_Overhead", "A1:L16"],
+  ["Fig14_Gas_Batching_Cost", "A1:L13"],
+  ["Fig16_Entropy_Representation", "A1:M11"],
+  ["Fig17_Proof_Trust_Paths", "A1:K8"],
+]) {
+  const resultInspection = await workbook.inspect({
+    kind: "table",
+    sheetId,
+    range,
+    include: "values,formulas",
+    tableMaxRows: 20,
+    tableMaxCols: 14,
+  });
+  process.stdout.write(`${resultInspection.ndjson}\n`);
 }
 const chartInspection = await workbook.inspect({
   kind: "drawing",

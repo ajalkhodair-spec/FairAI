@@ -2,11 +2,11 @@
 
 ## Current revision verification
 
-- On 2026-08-11, the revised 53-sheet workbook was regenerated from the
-  canonical CSV package. It contains 43 canonical evidence sheets and 10
-  formula-backed result figure sheets. The builder inspected the
+- On 2026-08-11, the revised 63-sheet workbook was regenerated from the
+  canonical CSV package. It contains 43 canonical evidence sheets and 20
+  formula-backed reviewer-result presentation sheets. The builder inspected the
   policy-approval, paired-inference, and scaling-summary ranges, found zero
-  formula-error matches, and every rendered result figure was visually
+  formula-error matches, and every rendered result presentation sheet was visually
   reviewed.
 - The revised manuscript compiled successfully with `latexmk` to a 21-page
   PDF. The Experimental Setup, Results, Discussion, and Conclusion now use the
@@ -42,9 +42,10 @@
   2026-08-08. All blocker, reviewer-evidence, release-checksum, and closure
   generators passed their `--verify` modes, and `git diff --check` passed.
 - The consolidated workbook was rebuilt from all 40 canonical primary CSV
+  files into 43 canonical evidence sheets and 20 reviewer-result presentation
   sheets, inspected for the corrected blocker and reviewer rows, scanned with
   zero formula-error matches, and visually reviewed sheet by sheet.
-- The complete Python suite passed 82/82 tests for the published v0.3.0 state
+- The complete Python suite passed 84/84 tests for the current revision state
   in an existing project-lineage Python 3.13.5 environment. Pandas 3.0.3 and
   scikit-learn 1.9.0 matched the
   lock; NumPy 2.5.1 and SciPy 1.18.0 were newer than the locked 2.4.6 and

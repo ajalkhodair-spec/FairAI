@@ -394,13 +394,13 @@ def main():
             [
                 workbook["README"][
                     ~workbook["README"]["item"].isin(
-                        ["Workbook role", "Figure sheets", "Azure status"]
+                        ["Workbook role", "Figure sheets", "Result presentation sheets", "Azure status"]
                     )
                 ],
                 pd.DataFrame(
                     [
                         ["Workbook role", "Consolidated publication view derived from canonical CSV evidence"],
-                        ["Figure sheets", "Ten formula-backed result figure sheets; 43 canonical evidence sheets remain the data source"],
+                        ["Result presentation sheets", "Twenty formula-backed reviewer-result presentation sheets; 43 canonical evidence sheets remain the data source"],
                         ["Azure status", "Configured and validated as infrastructure code; not executed or measured"],
                     ],
                     columns=["item", "value"],
@@ -462,7 +462,7 @@ def main():
             ["FairFed status", "Published stateful weighting rule implemented and evaluated on Adult and COMPAS"],
             ["Source of truth", "Run manifests and source_file columns"],
             ["Workbook role", "Consolidated publication view derived from canonical CSV evidence"],
-            ["Figure sheets", "Ten formula-backed result figure sheets; 43 canonical evidence sheets remain the data source"],
+            ["Result presentation sheets", "Twenty formula-backed reviewer-result presentation sheets; 43 canonical evidence sheets remain the data source"],
             ["Azure status", "Configured and validated as infrastructure code; not executed or measured"],
         ],
         columns=["item", "value"],

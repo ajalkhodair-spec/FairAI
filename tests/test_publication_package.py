@@ -54,8 +54,8 @@ class PublicationPackageTests(unittest.TestCase):
         self.assertEqual(len(SHEETS), 43)
         readme = pd.read_csv(PRIMARY / "README.csv").set_index("item")["value"]
         self.assertEqual(
-            readme["Figure sheets"],
-            "Ten formula-backed result figure sheets; 43 canonical evidence "
+            readme["Result presentation sheets"],
+            "Twenty formula-backed reviewer-result presentation sheets; 43 canonical evidence "
             "sheets remain the data source",
         )
         for sheet in (
