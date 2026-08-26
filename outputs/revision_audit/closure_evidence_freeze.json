@@ -1,7 +1,7 @@
 {
   "canonical_target_sha256": {
     "BLOCKERS.md": "8c113d45b8dfe714f3698d78b2f6eeb65ec44835b2b312a4804d0e7283dfc2d4",
-    "README.md": "44ea9404c7ab8d3173491b15fe9a984fb8b700a3ceaadaedb8edc3dd9dcb884a",
+    "README.md": "6a52b451abf96b7ebd51c33c414f7252738b1abc7c7c155f6aca3b40f7ac6c15",
     "RELEASE_CHECKLIST.md": "50d00e34e7622b0ede23e22636ec4f24d75b3466f567df70a403cddb0d2701a3",
     "audits/prechange/evidence_discrepancy_report.md": "cc6fa3675260300e9ab3a67ead06fdda4f688a0c5d1015a17a1925c2921a8f31",
     "docs/revision/REVIEWER_EVIDENCE_MAP.md": "cf3ac39aac1c53eced11d27aff485d9cbfb4807cf8fa91ebe6641d3b5aeeb8e2",
@@ -24,7 +24,7 @@
     "manuscript/Definitions/mdpi_apacite.bst": "c7fffe0231922e5521dc360889fafe941ee26d154c1ce4e167e4ec9f2d13498f",
     "manuscript/Definitions/mdpi_apacite.sty": "9e9bb23ded45f7f76236ad304d4bda2c066fb48041b272cebc20f940c17865a7",
     "manuscript/Definitions/mdpi_chicago.bst": "4a73faf6e0cf1a225d1b9a41a6955d3cc29a55c5fdce662177d00eee3946ce36",
-    "manuscript/FairAI.tex": "8994a8a09015fca0f28e12ba1c3272411ba314ab84241750357d0e213436b8c4",
+    "manuscript/FairAI.tex": "0cc7e7f41f91fa2d182a4a5aac0a5950f1fd05fd8a05c977570990c3d116b3d0",
     "manuscript/Figures/Results/fig1.png": "80f56eee7bbe18a54ab2e7bba89c407d348f1ed14519a95b389f2b84a99c156e",
     "manuscript/Figures/Results/fig2.png": "c8cd62f65c4768e7f45d7f64ec85a18f01f09b3430f80a40bac9819dba5065b6",
     "manuscript/Figures/Results/fig3.png": "f2b5b7af454d182a2f3b00e35e12c61e436505b6be7db122dac265524233b85b",
@@ -52,7 +52,7 @@
     "outputs/major_revision/reviewer_evidence_map.json": "8141881444c2a094556c3213df661e57408acc04ffb0419e4ae661c2ea9aa7ca"
   },
   "closure_checksum_manifest": "outputs/revision_audit/closure_checksums.sha256",
-  "closure_checksum_manifest_sha256": "9fc2f3b2cfbb8b3f25a54e0abf9850416aadfedb6fc1b4a5befef7bb1f1ce1fc",
+  "closure_checksum_manifest_sha256": "af65ee84918cf9b2d351056101fc8e30f95c741b5ddde2c77497e667e517426a",
   "closure_test_runs": {
     "python_compatibility": {
       "exact_requirements_lock": true,
