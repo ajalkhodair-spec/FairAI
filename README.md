@@ -262,8 +262,8 @@ preprocessing only on the training split.
 
 ## Citation
 
-Use [CITATION.cff](CITATION.cff). Release `v0.3.0` is archived under version DOI
-`10.5281/zenodo.21864931`; concept DOI `10.5281/zenodo.21838694` resolves to the
+Use [CITATION.cff](CITATION.cff). Release `v0.4.0` is archived under version DOI
+`10.5281/zenodo.22113559`; concept DOI `10.5281/zenodo.21838694` resolves to the
 latest archived version.
 
 ## License
