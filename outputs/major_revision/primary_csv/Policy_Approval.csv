@@ -1,0 +1,9 @@
+run_id,policy_profile,aggregation_scope,seed_count,round_observations,mean_approval_rate,std_approval_rate,minimum_approval_rate,maximum_approval_rate,evidence_type,source_file
+threshold-sensitivity-10seed-aa165b3,lenient,all_five_rounds,10,50,0.5940000000000001,0.13763305250868027,0.3,0.9,derived_from_measured_rounds,outputs/major_revision/primary_csv/Global_Metrics.csv
+threshold-sensitivity-10seed-aa165b3,moderate,all_five_rounds,10,50,0.32199999999999995,0.1298193407181295,0.1,0.5,derived_from_measured_rounds,outputs/major_revision/primary_csv/Global_Metrics.csv
+threshold-sensitivity-10seed-aa165b3,strict,all_five_rounds,10,50,0.07200000000000001,0.08091315576289312,0.0,0.2,derived_from_measured_rounds,outputs/major_revision/primary_csv/Global_Metrics.csv
+threshold-sensitivity-10seed-aa165b3,submitted,all_five_rounds,10,50,0.514,0.155195728954486,0.2,0.9,derived_from_measured_rounds,outputs/major_revision/primary_csv/Global_Metrics.csv
+threshold-sensitivity-10seed-aa165b3,lenient,final_round,10,10,0.5499999999999999,0.135400640077266,0.3,0.7,derived_from_measured_rounds,outputs/major_revision/primary_csv/Global_Metrics.csv
+threshold-sensitivity-10seed-aa165b3,moderate,final_round,10,10,0.27,0.10593499054713804,0.1,0.4,derived_from_measured_rounds,outputs/major_revision/primary_csv/Global_Metrics.csv
+threshold-sensitivity-10seed-aa165b3,strict,final_round,10,10,0.06999999999999999,0.08232726023485645,0.0,0.2,derived_from_measured_rounds,outputs/major_revision/primary_csv/Global_Metrics.csv
+threshold-sensitivity-10seed-aa165b3,submitted,final_round,10,10,0.42000000000000004,0.1398411797560202,0.2,0.6,derived_from_measured_rounds,outputs/major_revision/primary_csv/Global_Metrics.csv

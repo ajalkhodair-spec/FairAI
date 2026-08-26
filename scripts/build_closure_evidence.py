@@ -25,6 +25,9 @@ FIXED_TARGETS = (
     ROOT / "outputs/major_revision/reviewer_evidence_map.json",
     ROOT / "outputs/major_revision/primary_csv/Reviewer_Evidence_Map.csv",
     ROOT / "outputs/major_revision/primary_csv/Missing_Data.csv",
+    ROOT / "outputs/major_revision/primary_csv/Paired_Inference.csv",
+    ROOT / "outputs/major_revision/primary_csv/Policy_Approval.csv",
+    ROOT / "outputs/major_revision/primary_csv/Scaling_Summary.csv",
 )
 MANUSCRIPT_BUILD_SUFFIXES = {
     ".aux",
@@ -96,7 +99,9 @@ def render_freeze(checksum_text):
         ),
         "workbook_rebuild": {
             "status": "completed_and_visually_verified",
-            "sheet_count": 40,
+            "sheet_count": 63,
+            "canonical_evidence_sheet_count": 43,
+            "result_presentation_sheet_count": 20,
             "source": "outputs/major_revision/primary_csv/*.csv",
             "command": (
                 "python -m scripts.prepare_results_package --primary-csv-only "
@@ -107,7 +112,7 @@ def render_freeze(checksum_text):
         "closure_test_runs": {
             "python_compatibility": {
                 "status": "passed",
-                "tests": 82,
+                "tests": 84,
                 "exact_requirements_lock": True,
             },
             "solidity_lockfile_matching": {

@@ -2,7 +2,7 @@
   "schema_version": "fairai.revision.config.v1",
   "scenario_id": "azure_compas_bounded",
   "executor": "federated_core",
-  "evidence_type": "measured",
+  "evidence_type": "configured_not_executed",
   "seed": 16001,
   "dataset": "compas",
   "model": "logistic_regression",

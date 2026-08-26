@@ -21,6 +21,7 @@ SHEETS = [
     "Scaling",
     "Heterogeneity",
     "Threshold_Sensitivity",
+    "Policy_Approval",
     "Convergence",
     "Proof_Overhead",
     "Proof_Semantics",
@@ -44,6 +45,8 @@ SHEETS = [
     "Representation_Fairness",
     "Trust_Boundary",
     "Statistics",
+    "Paired_Inference",
+    "Scaling_Summary",
     "Missing_Data",
     "Claims_Supported",
     "Reviewer_Evidence_Map",
@@ -205,6 +208,121 @@ def flatten_proof_benchmark(path):
     return pd.DataFrame(rows)
 
 
+def summarize_policy_approval_frame(rounds, run_id, source):
+    rounds = rounds[
+        (rounds["scenario_id"] == "threshold_sensitivity")
+        & (rounds["method"] == "B3")
+    ].copy()
+    rows = []
+    scopes = {
+        "all_five_rounds": rounds,
+        "final_round": rounds[rounds["round"] == rounds["round"].max()],
+    }
+    for scope, frame in scopes.items():
+        for policy_profile, values in frame.groupby("policy_profile", sort=True):
+            approval = values["approval_rate"]
+            rows.append(
+                {
+                    "run_id": run_id,
+                    "policy_profile": policy_profile,
+                    "aggregation_scope": scope,
+                    "seed_count": int(values["seed"].nunique()),
+                    "round_observations": int(len(values)),
+                    "mean_approval_rate": approval.mean(),
+                    "std_approval_rate": approval.std(),
+                    "minimum_approval_rate": approval.min(),
+                    "maximum_approval_rate": approval.max(),
+                    "evidence_type": "derived_from_measured_rounds",
+                    "source_file": str(source),
+                }
+            )
+    return pd.DataFrame(rows)
+
+
+def summarize_policy_approval(path, run_id):
+    return summarize_policy_approval_frame(read_csv(path), run_id, path)
+
+
+def summarize_scaling(path, run_id):
+    frame = read_csv(path)
+    result = frame[
+        (frame["suite"] == "scaling") & (frame["metric"] == "runtime_ms")
+    ].copy()
+    result.insert(0, "run_id", run_id)
+    result["evidence_type"] = "derived_from_measured_runs"
+    result["source_file"] = str(path)
+    return result
+
+
+def paired_inference(core_path, expanded_path, fairfed_path):
+    frames = []
+    for analysis_family, path in (
+        ("core_logistic", core_path),
+        ("expanded_sensitivity", expanded_path),
+        ("fairfed_scaling", fairfed_path),
+    ):
+        frame = read_csv(path).rename(columns={"scenario_id": "suite"})
+        frame.insert(0, "analysis_family", analysis_family)
+        frame["evidence_type"] = "derived_from_paired_measured_runs"
+        frame["source_file"] = str(path)
+        frames.append(frame)
+    return pd.concat(frames, ignore_index=True, sort=False)
+
+
+def annotate_attack_evidence(frame):
+    result = frame.copy()
+    superseded = {
+        "A1_invalid_groth16_proof": (
+            "historical_superseded",
+            "Current V2 Groth16 proof and negative-case evidence is in Proof_Overhead and Proof_Semantics.",
+        ),
+        "A7_ipfs_artifact_unavailable": (
+            "historical_superseded",
+            "Current real Kubo outage/recovery and unavailable-approved-artifact evidence is in IPFS_Availability and Trust_Boundary.",
+        ),
+        "A8_ipfs_artifact_tampering": (
+            "historical_superseded",
+            "Current strict byte-verification evidence is in the Kubo full-path archive.",
+        ),
+        "A9_random_weight_poisoning": (
+            "historical_extended",
+            "The five-seed algorithmic result remains valid and is extended by the strict B4/B7 Kubo/V2 poisoning suite.",
+        ),
+        "A10_sign_flip_poisoning": (
+            "historical_extended",
+            "The five-seed algorithmic result remains valid and is extended by the strict B4/B7 Kubo/V2 poisoning suite.",
+        ),
+    }
+    result["evidence_epoch"] = "current"
+    result["current_interpretation"] = "Current bounded evidence; retain the stated limitation."
+    for scenario, (epoch, interpretation) in superseded.items():
+        mask = result["scenario"] == scenario
+        result.loc[mask, "evidence_epoch"] = epoch
+        result.loc[mask, "current_interpretation"] = interpretation
+    return result
+
+
+def experiment_matrix():
+    configs = []
+    for path in sorted(Path("configs/revision").glob("*.yaml")):
+        payload = json.loads(path.read_text(encoding="utf-8"))
+        configs.append(
+            {
+                "scenario_id": payload["scenario_id"],
+                "executor": payload["executor"],
+                "dataset": payload["dataset"],
+                "model": payload["model"],
+                "clients": payload["clients"],
+                "rounds": payload["rounds"],
+                "method": payload["method"],
+                "seeds": payload.get("seeds", 1),
+                "evidence_type": payload["evidence_type"],
+                "source_file": str(path),
+            }
+        )
+    return pd.DataFrame(configs)
+
+
 def main():
     parser = argparse.ArgumentParser()
     parser.add_argument("--output-root", default="outputs/major_revision")
@@ -247,8 +365,60 @@ def main():
     csv_root.mkdir(parents=True, exist_ok=True)
     if args.primary_csv_only:
         workbook = {
-            sheet: read_csv(csv_root / f"{sheet}.csv") for sheet in SHEETS
+            sheet: read_csv(csv_root / f"{sheet}.csv")
+            for sheet in SHEETS
+            if (csv_root / f"{sheet}.csv").exists()
         }
+        workbook["Experiment_Matrix"] = experiment_matrix()
+        workbook["Policy_Approval"] = summarize_policy_approval_frame(
+            workbook["Global_Metrics"],
+            "threshold-sensitivity-10seed-aa165b3",
+            "outputs/major_revision/primary_csv/Global_Metrics.csv",
+        )
+        workbook["Paired_Inference"] = paired_inference(
+            Path("outputs/major_revision/core-statistics-bootstrap/paired_tests.csv"),
+            Path(args.analysis_dir) / "paired_tests.csv",
+            Path(args.fairfed_analysis_dir) / "paired_tests.csv",
+        )
+        workbook["Scaling_Summary"] = summarize_scaling(
+            Path(args.fairfed_analysis_dir) / "descriptive_statistics.csv",
+            Path(args.fairfed_analysis_dir).name,
+        )
+        workbook["Adversarial_Results"] = annotate_attack_evidence(
+            workbook["Adversarial_Results"].drop(
+                columns=["evidence_epoch", "current_interpretation"],
+                errors="ignore",
+            )
+        )
+        workbook["README"] = pd.concat(
+            [
+                workbook["README"][
+                    ~workbook["README"]["item"].isin(
+                        ["Workbook role", "Figure sheets", "Result presentation sheets", "Azure status"]
+                    )
+                ],
+                pd.DataFrame(
+                    [
+                        ["Workbook role", "Consolidated publication view derived from canonical CSV evidence"],
+                        ["Result presentation sheets", "Twenty formula-backed reviewer-result presentation sheets; 43 canonical evidence sheets remain the data source"],
+                        ["Azure status", "Configured and validated as infrastructure code; not executed or measured"],
+                    ],
+                    columns=["item", "value"],
+                ),
+            ],
+            ignore_index=True,
+        )
+        for sheet in (
+            "README",
+            "Experiment_Matrix",
+            "Adversarial_Results",
+            "Policy_Approval",
+            "Paired_Inference",
+            "Scaling_Summary",
+        ):
+            workbook[sheet].to_csv(
+                csv_root / f"{sheet}.csv", index=False, quoting=csv.QUOTE_MINIMAL
+            )
         write_workbook_payload(root, workbook)
         return
 
@@ -291,28 +461,14 @@ def main():
             ["V2 proof status", "Thirty valid proofs verified and six negative cases rejected; production ceremony still required"],
             ["FairFed status", "Published stateful weighting rule implemented and evaluated on Adult and COMPAS"],
             ["Source of truth", "Run manifests and source_file columns"],
+            ["Workbook role", "Consolidated publication view derived from canonical CSV evidence"],
+            ["Result presentation sheets", "Twenty formula-backed reviewer-result presentation sheets; 43 canonical evidence sheets remain the data source"],
+            ["Azure status", "Configured and validated as infrastructure code; not executed or measured"],
         ],
         columns=["item", "value"],
     )
 
-    configs = []
-    for path in sorted(Path("configs/revision").glob("*.yaml")):
-        payload = json.loads(path.read_text(encoding="utf-8"))
-        configs.append(
-            {
-                "scenario_id": payload["scenario_id"],
-                "executor": payload["executor"],
-                "dataset": payload["dataset"],
-                "model": payload["model"],
-                "clients": payload["clients"],
-                "rounds": payload["rounds"],
-                "method": payload["method"],
-                "seeds": payload.get("seeds", 1),
-                "evidence_type": payload["evidence_type"],
-                "source_file": str(path),
-            }
-        )
-    workbook["Experiment_Matrix"] = pd.DataFrame(configs)
+    workbook["Experiment_Matrix"] = experiment_matrix()
 
     manifest_paths = [
         runs[name] / "manifests" / "run_manifest.json"
@@ -407,6 +563,10 @@ def main():
         "measured_B3_policy_effect",
         str(runs["threshold"] / "metrics" / "test_metrics.csv"),
     )
+    workbook["Policy_Approval"] = summarize_policy_approval(
+        runs["threshold"] / "metrics" / "fairness_metrics_global.csv",
+        runs["threshold"].name,
+    )
     workbook["Convergence"] = workbook["Global_Metrics"]
     workbook["Proof_Overhead"] = flatten_proof_benchmark(
         Path("outputs/revision_audit/v2_proof_benchmark.json")
@@ -476,7 +636,9 @@ def main():
         str(runs["gas"] / "derived" / "modeled_transaction_costs.csv"),
     )
     workbook["Adversarial_Results"] = add_trace(
-        read_csv(root / "security-evidence" / "attack_matrix.csv"),
+        annotate_attack_evidence(
+            read_csv(root / "security-evidence" / "attack_matrix.csv")
+        ),
         "security-evidence",
         "mixed",
         str(root / "security-evidence" / "attack_matrix.csv"),
@@ -524,6 +686,15 @@ def main():
         analysis_root.name,
         "derived",
         str(analysis_root / "experiment_summary.csv"),
+    )
+    workbook["Paired_Inference"] = paired_inference(
+        core_analysis_root / "paired_tests.csv",
+        analysis_root / "paired_tests.csv",
+        fairfed_analysis_root / "paired_tests.csv",
+    )
+    workbook["Scaling_Summary"] = summarize_scaling(
+        fairfed_analysis_root / "descriptive_statistics.csv",
+        fairfed_analysis_root.name,
     )
     blockers = read_blockers(Path("BLOCKERS.md"))
     workbook["Missing_Data"] = blockers

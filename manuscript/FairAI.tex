@@ -111,7 +111,7 @@
 \Title{FairAI: A Blockchain- and IPFS-Enabled Framework for Verifiable Ethical Federated Learning with Proof-Based Approval-Gated Aggregation}
 
 %% ── Abstract ────────────────────────────────────────────────────────────────
-\abstract{Federated learning enables collaborative model training without centralizing raw data, yet practical deployments still lack strong mechanisms for verifying ethical compliance, preserving model provenance, and auditing aggregation decisions. This paper presents FairAI, a verifiable ethical federated learning framework that integrates blockchain-based auditability, IPFS-based artifact traceability, smart-contract governance, proof-based eligibility verification, and approval-gated aggregation. In FairAI, local models are treated as governed artifacts: each participant trains locally, publishes model-related artifacts off-chain, submits content identifiers and verification metadata to the contract layer, and contributes to the global model only if approved by the ethical governance workflow. The framework follows a decentralized architecture composed of blockchain, IPFS storage, ethical smart contracts, and federated local/global learning components. The final implementation validates the feasibility of the proposed framework by executing the full governance path with three local nodes, strict IPFS artifact storage, Groth16 proof generation, signed verifier-based contract decisions, and approved-only weighted aggregation. Two nodes were approved, while one node was rejected because its demographic parity gap exceeded the configured fairness threshold. The approved-only aggregation achieved a global validation accuracy of 0.938889 and a demographic parity gap of 0.144269. Across three repeated trials, the approval rate remained 0.666667, with a mean proof generation time of 629.425 ms and mean IPFS retrieval time of 0.928 ms. These results demonstrate that FairAI can enforce configurable ethical eligibility, preserve local data privacy, maintain verifiable model provenance, and produce an auditable global model through approval-gated federated aggregation.}
+\abstract{Federated learning enables collaborative training without centralizing raw data, but practical systems still need mechanisms for policy enforcement, artifact provenance, and auditable aggregation. This paper presents FairAI, an approval-gated federated-learning framework integrating fairness policies, IPFS content addressing, smart-contract governance, Groth16 eligibility proofs, and approved-only aggregation. We evaluate a local research implementation on Adult and COMPAS using 10-client, five-round, paired multi-seed experiments under IID and joint Dirichlet partitions, together with model, policy, client-scaling, proof, storage, gas, and attack sensitivity studies. Under the main Dirichlet \(\alpha=0.3\) condition, policy gating reduced the mean Adult demographic-parity gap from 0.0273 to 0.0127 while accuracy decreased from 0.7740 to 0.7629; neither reported paired change remained significant after Holm correction. On COMPAS, mean equalized-odds gap decreased from 0.2262 to 0.1226 while accuracy decreased from 0.6495 to 0.5809; both paired changes were significant after correction. Thirty Groth16 trials verified all valid proofs and rejected six negative cases, and a two-peer Kubo benchmark measured add, retrieval, pin, concurrency, and recovery behavior. Contract and full-path tests confirmed authorization, replay protection, CID binding, lifecycle controls, and fail-closed aggregation when an approved artifact was unavailable. A false-metric experiment also showed that the current circuit proves compliance of supplied metrics, not their correct derivation from private data. The evidence supports FairAI as a reproducible, validated research implementation with explicit trust boundaries, not as a production or cloud deployment.}
 
 %% ── Keywords ────────────────────────────────────────────────────────────────
 \keyword{Federated learning; ethical AI; blockchain; smart contracts; IPFS; zero-knowledge proofs; Groth16; fairness verification; approved-only aggregation; auditability; decentralized machine learning; trustworthy AI}
@@ -132,7 +132,7 @@ Zero-knowledge proofs (ZKPs) add verifiability without unnecessary disclosure. I
 
 This article presents FairAI, a verifiable ethical FL framework that integrates blockchain-based auditability, IPFS-based artifact traceability, ethical smart-contract governance, proof-based eligibility verification, and approval-gated aggregation. This work extends the author's earlier FairAI conference paper, which introduced the original DLT/IPFS-based ethical AI training concept \cite{intro_15}. The present journal version substantially extends that work by formalizing FairAI for federated learning, implementing the smart-contract and IPFS artifact-governance path, integrating proof-based eligibility verification, validating approved-only aggregation, and reporting framework-level experimental results. In FairAI, a local model is treated as a governed artifact linked to model files, metadata, proof evidence, verification status, CIDs, and audit records. Local nodes train privately, publish model-related artifacts off-chain, submit CIDs and verification metadata to the contract layer, and contribute to the global model only if approved.
 
-The implementation validates the feasibility of FairAI by exercising the full FairAI governance path. The results show that the framework can reject a fairness-noncompliant local model before aggregation, aggregate only approved local models, publish the resulting global model through content-addressed storage, and preserve an auditable record of the workflow. These outcomes support the central claim of this work: ethical FL can be operationalized as a verifiable governance process over model artifacts, rather than treated only as a post-hoc fairness assessment. Figure \ref{fig:fairai-high-level-overview} presents the high-level FairAI architecture. The remainder of this article is organized as follows: Section \ref{sec:novel-contributions} summarizes the contributions, Section \ref{sec:background-related-works} reviews related work, Section \ref{sec:proposed-framework} presents the framework, Section \ref{sec:experimental-setup} describes the experimental setup, Section \ref{sec:results} reports the results, Section \ref{sec:discussion} discusses the findings, and Section \ref{sec:conclusion-future-work} concludes the article.
+The implementation evaluates FairAI as a bounded local research system on Adult and COMPAS. It exercises policy-gated aggregation, strict content-addressed artifact retrieval, signed and direct proof-verification paths, smart-contract lifecycle controls, and fail-closed behavior. Paired multi-seed experiments quantify fairness--utility trade-offs rather than assuming that the gate improves every outcome. Trust-boundary tests also identify what the current proof does not establish, including correct derivation of supplied metrics from private data. Figure \ref{fig:fairai-high-level-overview} presents the high-level FairAI architecture. The remainder of this article is organized as follows: Section \ref{sec:novel-contributions} summarizes the contributions, Section \ref{sec:background-related-works} reviews related work, Section \ref{sec:proposed-framework} presents the framework, Section \ref{sec:experimental-setup} describes the experimental setup, Section \ref{sec:results} reports the results, Section \ref{sec:discussion} discusses the findings, and Section \ref{sec:conclusion-future-work} concludes the article.
 
 % ============================================================
 % High-level FairAI architecture
@@ -160,10 +160,10 @@ This article extends FairAI into a verifiable ethical federated learning framewo
 	Instead of treating local updates as opaque submissions, FairAI links each model to metrics, proof evidence, metadata, public inputs, manifests, CIDs, verification status, approval decisions, and audit records.
 	
 	\item \textbf{Proof-based approval gate before aggregation.}
-	FairAI enforces configurable utility and fairness constraints before aggregation. Non-compliant, unverifiable, or unsigned model artifacts are rejected before they can influence the global model.
+	FairAI enforces configurable utility and fairness constraints over submitted evidence before aggregation. Non-compliant, unverifiable, unsigned, or unavailable artifacts fail closed; the current circuit does not prove metric derivation from private examples.
 	
-	\item \textbf{Implementation-based validation of approved-only aggregation.}
-	The framework is validated through an implementation that exercises private local training, Groth16 proof generation, IPFS artifact publication, smart-contract decision recording, approved-only weighted aggregation, global model publication, and audit lifecycle archival.
+	\item \textbf{Reproducible multi-dimensional evaluation.}
+	The implementation is evaluated with real benchmark datasets, paired multi-seed baselines, heterogeneous client partitions, policy and model sensitivity, logical-client scaling, Groth16 and Kubo microbenchmarks, smart-contract gas measurements, and bounded trust-boundary and poisoning tests.
 \end{enumerate}
 
 % ============================================================
@@ -699,374 +699,137 @@ Equation \eqref{eq:approved-subset-optimization} summarizes FairAI as an approve
 \label{sec:experimental-setup}
 % ============================================================
 
-The experiment validates the feasibility of the proposed FairAI framework through the  implementation of its core governance workflow. The objective is to demonstrate that local models can be trained privately, verified against an ethical eligibility policy, published as traceable IPFS artifacts, recorded through smart-contract governance, and aggregated only when approved.
+The evaluation was designed as a bounded, local research validation of the FairAI workflow. It measures learning behavior, policy-gated aggregation, proof and contract operations, and IPFS storage under reproducible local conditions. It is not a production deployment, a public-chain benchmark, a wide-area network test, or an Azure execution. Azure configurations are included as validated infrastructure code, but no Azure run manifest or Azure measurement is reported.
 
-The implementation uses three local client nodes, a Hardhat local Ethereum network, Dockerized Kubo/IPFS in strict \texttt{kubo-http} mode, Solidity smart contracts, a verifier-service signing path, and a Python master aggregation process. The smart-contract layer consists of \texttt{FairAIEthicalLedger}, \texttt{FairAISignedVerifier}, and \texttt{FairAIMultisigAdmin}. Local models are logistic regression classifiers, and global aggregation is performed using weighted FedAvg over approved models only.
+\subsection{Datasets, Models, and Client Partitions}
 
-Each client node generates a private synthetic dataset, trains locally, computes performance and fairness metrics, generates a Groth16 proof artifact using the \texttt{FairnessEligibility.circom} circuit, verifies the proof locally using \texttt{snarkjs}, uploads model-related artifacts to IPFS, and submits CIDs and verification metadata to the contract layer. Raw training data remain local and are not written on-chain.
+The primary experiments use the Adult income dataset with sex as the protected attribute and the COMPAS recidivism dataset with race as the protected attribute. Dataset files are checksum-pinned by the run manifests. Preprocessing is fitted on the training split only and then applied to validation and test data. The core model is federated logistic regression; a one-hidden-layer multilayer perceptron (MLP) is evaluated as a bounded model-sensitivity condition.
 
-The eligibility policy instantiates the general FairAI policy by setting \(F_i = DPGap_i\), \(\tau_{\mathrm{acc}} = 0.62\), and \(\tau_{\mathrm{fair}} = 0.28\). Therefore, each submitted local model must satisfy:
-\[
-Acc_i \geq 0.62,
-\qquad
-DPGap_i \leq 0.28,
-\]
-where \(Acc_i\) is the local validation accuracy and \(DPGap_i\) is the demographic parity gap of node \(i\). Models that fail either condition are rejected and excluded from aggregation.
+Each core run uses 10 logical clients, five communication rounds, and three local epochs per round. Client data are partitioned under independent and identically distributed (IID) sampling and joint label--protected-attribute Dirichlet sampling. The main heterogeneous condition uses \(\alpha=0.3\); a measured \(\alpha=1.0\) condition is retained as a secondary heterogeneity check. Partition manifests record client counts, sample counts, entropy, and protected-group representation. Logical clients execute sequentially on one host, so client-count experiments evaluate software and algorithmic scaling rather than geographically distributed network scaling.
 
-The on-chain decision path uses a signed verifier-service model. The verifier checks the Groth16 proof off-chain, signs the verification decision, and \texttt{FairAISignedVerifier} verifies the authorized signature on-chain. The ledger contract then records the approval or rejection decision. This implementation preserves the FairAI verification workflow while keeping proof computation separate from on-chain governance recording.
+\subsection{Methods and Ablations}
 
-After submissions close, the master process retrieves only approved model artifacts from IPFS and aggregates them using weighted FedAvg. The resulting global model and evaluation summary are published back to IPFS, and their CIDs are recorded through the contract layer. The final round follows the lifecycle:
-\[
-\texttt{Open}
-\rightarrow
-\texttt{SubmissionClosed}
-\rightarrow
-\texttt{AggregationStarted}
-\rightarrow
-\texttt{Published}
-\rightarrow
-\texttt{Archived}.
-\]
+Methods within a comparison share the seed, split, client partition, initial model, round count, optimizer, and batch semantics. Table~\ref{tab:experimental-methods} defines the evaluated methods. B0--B5 are used in the core comparison where supported; B6 and B7 are restricted to robustness experiments. B2 validates infrastructure without claiming ethical verification, whereas B4 requires policy approval, proof verification, artifact binding, a signed verifier decision, and on-chain approval.
 
-The experiment is repeated three times. The collected outputs include node-level approval decisions, proof-generation time, IPFS retrieval time, transaction gas where available, global validation accuracy, global demographic parity gap, global model CID, evaluation summary CID, and lifecycle status. Figure \ref{fig:fairai-experimental-setup} presents the experimental setup used to validate the FairAI framework. The setup connects three local client nodes, Dockerized Kubo/IPFS, the verifier service, Hardhat smart contracts, and the master aggregation process.
-
-% ============================================================
-% Experimental Setup Figure
-% ============================================================
-
-\begin{figure}[htpb]
+\begin{table*}[htpb]
+	\caption{Evaluated Baselines and Ablations.}
+	\label{tab:experimental-methods}
 	\centering
-	\includegraphics[width=\textwidth]{Figures/fig6.png}
-	\caption{FairAI Experimental Setup.}
-	\label{fig:fairai-experimental-setup}
-\end{figure}
+	\scriptsize
+	\begin{tabular}{clll}
+		\toprule
+		\textbf{ID} & \textbf{Eligibility} & \textbf{Aggregation} & \textbf{Infrastructure / purpose} \\
+		\midrule
+		B0 & All valid updates & Sample-weighted FedAvg & Conventional FL reference \\
+		B1 & All valid updates & Sample-weighted FedAvg & Post-hoc fairness evaluation \\
+		B2 & All valid updates & Sample-weighted FedAvg & Blockchain and strict IPFS; no ethical proof gate \\
+		B3 & Public-metric policy & Sample-weighted FedAvg & Approval gate without Groth16 \\
+		B4 & Full FairAI checks & Sample-weighted FedAvg & Strict IPFS, Groth16, signed verifier, and ledger approval \\
+		B5 & All valid updates & FairFed (\(\beta=1\), signed EOD) & Fairness-aware server weighting \\
+		B6 & All valid updates & Coordinate-wise median & Robust aggregation comparison \\
+		B7 & Full FairAI checks & Coordinate-wise median & FairAI gate followed by robust aggregation \\
+		\bottomrule
+	\end{tabular}
+\end{table*}
 
-% ============================================================
+\subsection{Fairness Policy and Outcomes}
+
+The evaluation records accuracy, macro-F1, demographic-parity (DP) gap, equal-opportunity (EO) gap, equalized-odds (EOdds) gap, and subgroup-accuracy gap. Lower gaps indicate smaller measured disparity. A client is eligible only when all metrics selected by the policy satisfy their configured bounds; undefined protected-group metrics fail closed. Threshold sensitivity is evaluated with lenient, submitted, moderate, and strict policy profiles over the same ten seeds and five rounds. Approval rates are reported separately over all 50 seed-round observations and over the ten final-round observations to prevent ambiguity.
+
+\subsection{Proof, Contract, and IPFS Environment}
+
+The V2 eligibility circuit is implemented in Circom and benchmarked with Groth16. Thirty valid proofs and six negative cases are used to measure witness generation, proof generation, and off-chain verification. The experimental proving key comes from a single-contributor setup and is not a production trusted ceremony. The Solidity path comprises the ethical ledger, EIP-712 signed verifier, direct generated Groth16 verifier, role checks, replay protection, CID uniqueness, and round lifecycle controls. Gas is measured on local Hardhat; it is not interpreted as public-chain latency or cost.
+
+IPFS measurements use two native Kubo 0.29.0 peers on loopback. Sequential add, cold retrieval, warm retrieval, and pin operations use payloads from 1~KiB to 10~MiB with 30 repetitions per size. Concurrency tests use 1~MiB objects at 1, 5, 10, and 20 concurrent operations. A 30-repetition publisher-restart experiment measures fail-closed retrieval and recovery. Every full-path artifact is retrieved by CID and byte-checked before aggregation.
+
+\subsection{Replication and Statistical Analysis}
+
+The independent experimental unit is the configured seed. Core Adult and COMPAS experiments use 10 seeds. The MLP, algorithmic scaling, and general adversarial suites use five seeds. Strict Kubo/V2 bounded runs use three seeds; the strict poisoning condition uses five clients, three rounds, three seeds, and one malicious client (20\%). Client-scaling measurements cover 3, 5, 10, 20, and 50 logical clients. The original three-node synthetic run is retained only as single-seed legacy regression evidence and is excluded from inferential claims.
+
+Descriptive results report the mean, sample standard deviation, median, range, and deterministic two-sided 95\% percentile-bootstrap interval for the mean using 10,000 resamples. Paired method comparisons use the paired \(t\)-test and Wilcoxon signed-rank test, with Holm correction across the reported paired \(t\)-tests. Effect sizes are paired Cohen's \(d_z\) and matched-pairs rank-biserial correlation. The run manifests and source CSV files are authoritative; the workbook contains 43 canonical evidence sheets and 20 formula-backed reviewer-result presentation sheets, while the manuscript tables are derived publication views.
 
 % ============================================================
 \section{Results}
 \label{sec:results}
 % ============================================================
 
-This section presents the results of the final FairAI framework validation. The objective is to evaluate whether FairAI can operationalize ethical federated learning as a verifiable governance workflow. The results focus on artifact traceability, proof-based verification, smart-contract approval/rejection, approved-only aggregation, global model publication, and auditability. Model accuracy is reported as a supporting indicator of the approved aggregation outcome, rather than as the sole objective.
+\subsection{Core Real-Data Comparison}
 
-% ------------------------------------------------------------
-\subsection{Framework Execution and Lifecycle Validation}
-\label{subsec:results-framework-execution}
-% ------------------------------------------------------------
-
-The final FairAI deployment successfully executed the complete governance lifecycle:
-\[
-\texttt{Open}
-\rightarrow
-\texttt{SubmissionClosed}
-\rightarrow
-\texttt{AggregationStarted}
-\rightarrow
-\texttt{Published}
-\rightarrow
-\texttt{Archived}.
-\]
-This confirms that the framework completed all required stages: node submission, verification, approval/rejection, aggregation, global publication, and archival. The experiment used three local client nodes, three repeated trials, strict Dockerized Kubo/IPFS storage, a local Ethereum-compatible smart-contract ledger, Groth16 proof generation, signed verifier-service decisions, and approved-only weighted FedAvg. Table~\ref{tab:results-framework-config} summarizes the final validation configuration and outcome.
-
-\begin{table}[htpb]
-	\caption{Final FairAI Framework Validation Configuration and Outcome.}
-	\label{tab:results-framework-config}
-	\centering
-	\scriptsize
-	\renewcommand{\arraystretch}{1.08}
-	\begin{tabular}{ll}
-		\toprule
-		\textbf{Item} & \textbf{Value} \\
-		\midrule
-		Local client nodes & 3 \\
-		Repeated trials & 3 \\
-		Model type & Logistic regression \\
-		Blockchain environment & Hardhat local Ethereum \\
-		Smart-contract ledger & \texttt{FairAIEthicalLedger} \\
-		Verifier contract & \texttt{FairAISignedVerifier} \\
-		Governance contract & \texttt{FairAIMultisigAdmin} \\
-		Storage backend & Dockerized Kubo/IPFS \\
-		IPFS mode & Strict \texttt{kubo-http} \\
-		Proof system & Groth16 \\
-		Verification path & Local \texttt{snarkjs} verification + signed verifier decision \\
-		Aggregation method & Weighted FedAvg over approved models \\
-		Final lifecycle state & Archived \\
-		\bottomrule
-	\end{tabular}
-\end{table}
-
-The completed lifecycle demonstrates that FairAI can coordinate the full operational path from local contribution to auditable global output. Raw local training data were not written on-chain; only artifact CIDs, verification metadata, approval states, and audit events were recorded through the governance path.
-
-% ------------------------------------------------------------
-\subsection{Ethical Approval and Rejection Results}
-\label{subsec:results-approval-rejection}
-% ------------------------------------------------------------
-
-For the reported validation run, the general FairAI policy was instantiated as \(F_i = DPGap_i\), \(\tau_{\mathrm{acc}} = 0.62\), and \(\tau_{\mathrm{fair}} = 0.28\). Thus, each submitted local model was required to satisfy:
-\[
-Acc_i \geq 0.62,
-\qquad
-DPGap_i \leq 0.28.
-\]
-Node~1 and Node~2 satisfied both constraints and were approved. Node~3 was rejected because:
-\[
-DPGap_3 = 0.282132 > 0.280000.
-\]
-This result confirms that FairAI does not aggregate local models solely because they are accurate. A submitted model must also satisfy the configured ethical eligibility policy before it can contribute to the global model. Table \ref{tab:results-node-eligibility} reports the node-level eligibility metrics and smart-contract decisions.
+Table~\ref{tab:results-core} reports B0 and B3 under the main \(\alpha=0.3\) heterogeneous partition. On Adult, B3 reduced the mean DP gap from 0.0273 to 0.0127 (53.4\% descriptively) while mean accuracy decreased by 0.0111. After Holm correction, the paired accuracy difference was not significant (\(p=0.1424\)); the corrected DP-gap comparison was also not significant (\(p=0.6896\)). On COMPAS, B3 reduced mean EOdds gap from 0.2262 to 0.1226 (45.8\%) while accuracy decreased by 0.0686. The paired COMPAS differences were significant for accuracy (\(d_z=-1.4488\), Holm-adjusted \(p=0.0318\)) and EOdds gap (\(d_z=-1.3379\), Holm-adjusted \(p=0.0491\)). These results show an empirical fairness--utility trade-off in this measured condition; they do not establish that gating improves every fairness metric or dataset.
 
 \begin{table*}[htpb]
-	\caption{Node-Level Eligibility Results and Smart-Contract Approval Decisions.}
-	\label{tab:results-node-eligibility}
+	\caption{Core results under joint Dirichlet \(\alpha=0.3\) (10 paired seeds; mean \(\pm\) sample SD).}
+	\label{tab:results-core}
 	\centering
 	\scriptsize
-	\renewcommand{\arraystretch}{1.08}
-	\begin{tabular}{ccccccc}
+	\begin{tabular}{clccc}
 		\toprule
-		\textbf{Node} & \textbf{Accuracy} & \textbf{DP Gap} & \textbf{EO Gap} & \textbf{Verification Status} & \textbf{Decision} & \textbf{Aggregation Outcome} \\
+		\textbf{Dataset} & \textbf{Method} & \textbf{Accuracy} & \textbf{DP gap} & \textbf{EOdds gap} \\
 		\midrule
-		1 & 0.950000 & 0.003127 & 0.009868 & Passed & Approved & Included \\
-		2 & 0.962500 & 0.000000 & 0.012077 & Passed & Approved & Included \\
-		3 & 0.962500 & 0.282132 & 0.000000 & Failed policy & Rejected & Excluded; DP gap $>$ threshold \\
+		Adult & B0 & $0.773991 \pm 0.001586$ & $0.027258 \pm 0.001551$ & $0.025160 \pm 0.002708$ \\
+		Adult & B3 & $0.762935 \pm 0.009931$ & $0.012706 \pm 0.019269$ & $0.016918 \pm 0.024225$ \\
+		COMPAS & B0 & $0.649495 \pm 0.025658$ & $0.174040 \pm 0.034923$ & $0.226195 \pm 0.039662$ \\
+		COMPAS & B3 & $0.580934 \pm 0.048983$ & $0.098263 \pm 0.087527$ & $0.122625 \pm 0.081479$ \\
 		\bottomrule
 	\end{tabular}
 \end{table*}
 
-The approval rate was \(0.666667\), while the rejection rate was \(0.333333\). Figure \ref{fig:results-policy-compliance}(a) visualizes the approval and rejection counts. Figure \ref{fig:results-policy-compliance}(b) shows that all nodes satisfied the minimum accuracy threshold, whereas Figure \ref{fig:results-policy-compliance}(c) shows that Node~3 exceeded the demographic parity gap threshold. This is the key governance result: FairAI enforces ethical eligibility before aggregation.
+The separate FairFed comparison also displayed a large trade-off. On Adult, B0/B5 mean accuracy was 0.7752/0.6474 and mean EO gap was 0.0306/0.0112. On COMPAS, the corresponding values were 0.6462/0.5423 for accuracy and 0.1416/0.0428 for EO gap. These values evaluate the implemented stateful FairFed rule under the stated configuration; they are not interchangeable with B3 because the mechanisms differ.
 
-\begin{figure*}[htpb]
-	\centering
-	
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig1}
-		
-		\textbf{(a)} Submission Decisions
-	\end{minipage}
-	\hfill
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig2}
-		
-		\textbf{(b)} Accuracy Threshold
-	\end{minipage}
-	\hfill
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig3}
-		
-		\textbf{(c)} DP-Gap Threshold
-	\end{minipage}
-	
-	\caption{Ethical Approval and Policy Compliance Results.}
-	\label{fig:results-policy-compliance}
-\end{figure*}
+\subsection{Sensitivity to Model, Heterogeneity, and Policy}
 
-% ------------------------------------------------------------
-\subsection{Proof-Based Verification and IPFS Traceability}
-\label{subsec:results-proof-ipfs}
-% ------------------------------------------------------------
+The five-seed MLP condition produced high variability under \(\alpha=0.3\): mean accuracy was \(0.5514\pm0.1107\) for B0, \(0.4838\pm0.1983\) for B3, and \(0.4806\pm0.1716\) for B5. This bounded sensitivity result cautions against generalizing the logistic-regression findings to larger model classes. The separately measured \(\alpha=1.0\) partition used ten seeds and is included in the workbook with entropy and representation diagnostics; it is treated as a secondary heterogeneity condition rather than pooled with \(\alpha=0.3\).
 
-Each local node generated a Groth16 proof using the \texttt{FairnessEligibility.circom} circuit. The proof checks policy compliance over public scaled metrics, including accuracy, demographic parity gap, policy thresholds, node identifier, and round identifier. Proofs were verified locally using \texttt{snarkjs}. The final on-chain decision was recorded through a signed verifier-service path: the verifier checked the Groth16 proof off-chain, signed the decision, \texttt{FairAISignedVerifier} verified the authorized signature on-chain, and \texttt{FairAIEthicalLedger} recorded the approval or rejection.
+Policy sensitivity was monotonic in the measured threshold suite. Across all five rounds, mean approval rates were 0.594, 0.514, 0.322, and 0.072 for the lenient, submitted, moderate, and strict profiles, respectively. Final-round means were 0.55, 0.42, 0.27, and 0.07. Reporting both scopes is necessary because the all-round value contains 50 seed-round observations, whereas the final-round value contains ten observations.
 
-The node-level proof-generation times recorded in the final validation run were 846.173 ms for Node~1, 804.006 ms for Node~2, and 332.103 ms for Node~3. Across the three repeated trials, the trial-level mean proof-generation time was 629.425333 ms. Therefore, the node-level values and the repeated-trial mean describe different aggregation levels of the measurement. Figure~\ref{fig:results-proof-ipfs}(a) shows the node-level proof-generation times. The final result path did not use direct Solidity Groth16 verification; instead, it used signed on-chain decision recording after local Groth16 verification.
+\subsection{Scaling and Infrastructure Overhead}
 
-The final framework run used strict Kubo/IPFS storage. Each local node published model-related artifacts to IPFS, including model files, metrics, metadata, proof artifacts, public inputs, and manifests. The global model and evaluation summary were also published as IPFS artifacts. The result package records 20 tracked artifacts with CIDs, artifact types, storage mode, schema validation status, retrieval status, pin status, and artifact sizes where available. Figure~\ref{fig:results-proof-ipfs}(b) shows the artifact distribution by type, and Figure~\ref{fig:results-proof-ipfs}(c) reports the node-level artifact sizes. The strict \texttt{kubo-http} mode confirms that the storage path used the real Dockerized Kubo/IPFS service rather than a local hash-only fallback, and the exported validation records show that key retrieval and pin checks passed.
-
-\begin{figure*}[htpb]
-	\centering
-	
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig4}
-		
-		\textbf{(a)} Proof Generation Time
-	\end{minipage}
-	\hfill
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig5}
-		
-		\textbf{(b)} IPFS Artifact Count
-	\end{minipage}
-	\hfill
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig6}
-		
-		\textbf{(c)} Artifact Size
-	\end{minipage}
-	
-	\caption{Proof-Based Verification and IPFS Traceability Results.}
-	\label{fig:results-proof-ipfs}
-\end{figure*}
-
-% ------------------------------------------------------------
-\subsection{Approved-Only Aggregation and Global Publication}
-\label{subsec:results-approved-aggregation}
-% ------------------------------------------------------------
-
-After verification, only approved local model artifacts were retrieved and aggregated. Node~1 and Node~2 formed the approved set, while Node~3 was excluded. The global model was computed using weighted FedAvg, with local sample count as the weighting factor. The resulting global model achieved a validation accuracy of \(0.938889\) and a demographic parity gap of \(0.144269\). Table~\ref{tab:results-global-publication} summarizes the approved-only aggregation and global publication results.
+Table~\ref{tab:results-scaling} reports measured method runtime for 3 and 50 logical clients. Runtime increased for all three methods; B5 was the most expensive at both endpoints. Since clients were executed on one host, the result characterizes implementation scaling and does not include WAN communication, scheduling contention across physical workers, or cloud orchestration.
 
 \begin{table}[htpb]
-	\caption{Approved-Only Aggregation and Global Artifact Publication Results.}
-	\label{tab:results-global-publication}
+	\caption{Algorithmic runtime scaling (five seeds; mean \(\pm\) sample SD, ms).}
+	\label{tab:results-scaling}
 	\centering
 	\scriptsize
-	\renewcommand{\arraystretch}{1.08}
-	\begin{tabular}{ll}
-		\toprule
-		\textbf{Metric} & \textbf{Value} \\
-		\midrule
-		Approved participants & \texttt{[1, 2]} \\
-		Rejected participants & \texttt{[3]} \\
-		Aggregation method & Weighted FedAvg \\
-		Weighting factor & Local sample count \\
-		Global validation accuracy & 0.938889 \\
-		Global demographic parity gap & 0.144269 \\
-		Global model CID & \texttt{bafkreihanoztcqq4p...aupccjn4zm} \\
-		Evaluation summary CID & \texttt{bafkreigkcm7b4wwix...rae3nqljem} \\
-		Global publication gas & 449664 \\
-		\bottomrule
-	\end{tabular}
-\end{table}
-
-The result demonstrates that FairAI can produce a global model while excluding a non-compliant participant from the aggregation set. The global model and evaluation summary were published as content-addressed artifacts, preserving traceability between approved inputs and final outputs.
-
-% ------------------------------------------------------------
-\subsection{Audit, Gas, and Repeated-Trial Measurements}
-\label{subsec:results-audit-repeated}
-% ------------------------------------------------------------
-
-The contract logs recorded gas usage for node submission/audit events and global publication. Node~1 submission/audit logging used 760819 gas, Node~2 used 743695 gas, Node~3 used 717757 gas, and global publication used 449664 gas. Table~\ref{tab:results-gas} reports the captured gas usage, and Figure~\ref{fig:results-cost-performance}(a) visualizes the same measurements.
-
-\begin{table}[htpb]
-	\caption{Captured Gas Usage for Submission/Audit Events and Global Publication.}
-	\label{tab:results-gas}
-	\centering
-	\scriptsize
-	\renewcommand{\arraystretch}{1.08}
 	\begin{tabular}{lcc}
 		\toprule
-		\textbf{Event} & \textbf{Node / Scope} & \textbf{Gas Used} \\
+		\textbf{Method} & \textbf{3 clients} & \textbf{50 clients} \\
 		\midrule
-		Model submission and audit & Node 1 & 760819 \\
-		Model submission and audit & Node 2 & 743695 \\
-		Model submission and audit & Node 3 & 717757 \\
-		Global model publication & Global & 449664 \\
+		B0 & $38.52 \pm 3.43$ & $130.65 \pm 8.05$ \\
+		B5 & $51.33 \pm 4.35$ & $220.10 \pm 17.83$ \\
+		B6 & $38.82 \pm 4.02$ & $132.08 \pm 11.40$ \\
 		\bottomrule
 	\end{tabular}
 \end{table}
 
-The final experiment runner executed three repeated trials. The mean approval rate was \(0.666667\), the mean global accuracy was \(0.938889\), and the mean global demographic parity gap was \(0.144269\). The mean proof-generation time was 629.425333 ms, the mean IPFS retrieval time was 0.928381 ms, and the mean runtime was 3165.868667 ms. Table~\ref{tab:results-repeated-trials} summarizes the repeated-trial framework metrics. Figure~\ref{fig:results-cost-performance}(b) visualizes the aggregate approval, performance, and fairness metrics, while Figure~\ref{fig:results-cost-performance}(c) visualizes the main overhead metrics.
+The two-peer Kubo benchmark completed 30 repetitions per payload size. For 1~KiB payloads, mean add, cold retrieval, warm retrieval, and pin times were 55.43, 22.20, 0.98, and 19.77~ms. For 10~MiB payloads they were 67.44, 77.22, 20.99, and 17.04~ms. With 1~MiB objects, mean throughput increased from 18.44~MiB/s at concurrency 1 to 43.38~MiB/s at concurrency 10, then was 41.73~MiB/s at concurrency 20. In the publisher-restart test, mean outage detection, peer readiness, and verified recovery times were 5.92, 108.78, and 240.10~ms, respectively. These are loopback Kubo measurements, not Internet-scale IPFS latency.
 
-\begin{table}[htpb]
-	\caption{Repeated-Trial Framework Metrics.}
-	\label{tab:results-repeated-trials}
-	\centering
-	\scriptsize
-	\renewcommand{\arraystretch}{1.08}
-	\begin{tabular}{lcc}
-		\toprule
-		\textbf{Metric} & \textbf{Mean / Value} & \textbf{Std.} \\
-		\midrule
-		Trials & 3.000000 & 0.000000 \\
-		Approval rate & 0.666667 & 0.000000 \\
-		Global accuracy & 0.938889 & 0.000000 \\
-		Global demographic parity gap & 0.144269 & 0.000000 \\
-		Proof generation time (ms) & 629.425333 & 4.905826 \\
-		IPFS retrieval time (ms) & 0.928381 & 0.060721 \\
-		Runtime (ms) & 3165.868667 & 9.652791 \\
-		Global publication gas & 449664.000000 & 0.000000 \\
-		\bottomrule
-	\end{tabular}
-\end{table}
+For the V2 Groth16 benchmark, mean witness generation, proof generation, and off-chain verification times were 30.68, 257.51, and 213.59~ms over 30 valid proofs; all six negative cases were rejected. Direct verification on local Hardhat consumed 348,811 gas per proof in 30 measurements, and verifier deployment consumed 1,001,364 gas. The archive contains the aggregate gas record but not 30 individual transaction-receipt hashes, so the claim is limited to the recorded local benchmark summary.
 
-The repeated trials show stable framework behavior under the tested configuration. The same approval pattern was preserved across trials, and the measured proof, retrieval, and runtime values showed low variation. These values quantify the cost of the smart-contract governance path and show that approvals, rejections, and global publication are recorded as auditable blockchain events.
+\subsection{Security and Trust-Boundary Findings}
 
-\begin{figure*}[htpb]
-	\centering
-	
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig9}
-		
-		\textbf{(a)} Gas Usage
-	\end{minipage}
-	\hfill
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig8}
-		
-		\textbf{(b)} Performance and Fairness
-	\end{minipage}
-	\hfill
-	\begin{minipage}[t]{0.32\textwidth}
-		\centering
-		\includegraphics[width=\linewidth]{Figures/Results/fig7}
-		
-		\textbf{(c)} Overhead Metrics
-	\end{minipage}
-	
-	\caption{Governance Cost and Repeated-Trial Results.}
-	\label{fig:results-cost-performance}
-\end{figure*}
+Contract tests rejected unauthorized signers, signed-field mutations, decision replay, nonce reuse, unregistered nodes, duplicate submissions, and duplicate CIDs. Full-path artifact retrieval failed closed: when an already approved artifact became unavailable, the round entered \texttt{Cancelled}, aggregation did not occur, and no global model was published. Strict byte comparison also detects content mismatch after CID retrieval.
 
-% ------------------------------------------------------------
-\subsection{Framework Validation Summary}
-\label{subsec:results-validation-summary}
-% ------------------------------------------------------------
+The trust-boundary experiment exposed an important non-claim. Fabricated but internally consistent fairness metrics were approved and aggregated, because the current circuit proves threshold compliance and artifact binding for supplied metrics; it does not prove that those metrics were correctly derived from private examples. Similarly, a compromised authorized verifier can sign a false decision. FairAI therefore provides auditable enforcement of stated evidence under its trust assumptions, not end-to-end proof of honest private-data computation.
 
-Table~\ref{tab:results-validation-checklist} summarizes the validated FairAI properties. The results confirm that the framework can preserve local data privacy, publish artifacts to IPFS, register CIDs and verification states through smart contracts, execute Groth16 proof generation and local verification, record signed verifier decisions, reject non-compliant models, aggregate only approved local models, publish the global model, and archive the round.
-
-\begin{table}[htpb]
-	\caption{FairAI Framework Validation Checklist.}
-	\label{tab:results-validation-checklist}
-	\centering
-	\scriptsize
-	\renewcommand{\arraystretch}{1.08}
-	\begin{tabular}{lc}
-		\toprule
-		\textbf{Framework property} & \textbf{Validated} \\
-		\midrule
-		Raw local training data remain off-chain & Yes \\
-		Strict Kubo/IPFS artifact storage used & Yes \\
-		Model, metrics, proof, public-input, metadata, and manifest artifacts stored & Yes \\
-		CIDs and verification states recorded through governance path & Yes \\
-		Groth16 proof generation executed & Yes \\
-		Local \texttt{snarkjs} proof verification executed & Yes \\
-		Signed verifier-service on-chain decision path executed & Yes \\
-		Smart-contract approval/rejection recorded & Yes \\
-		Fairness-noncompliant node rejected & Yes \\
-		Only approved nodes aggregated & Yes \\
-		Global model and evaluation summary published as CIDs & Yes \\
-		Round archived & Yes \\
-		\bottomrule
-	\end{tabular}
-\end{table}
-
-The framework validation confirms that FairAI implements ethical FL as a governed artifact workflow. The system does not simply train and aggregate local models; it records which artifacts were submitted, how they were verified, which models were approved or rejected, and which approved artifacts shaped the final global output.
+Poisoning experiments further show that policy compliance and Byzantine robustness are distinct. The general five-seed suite compares FedAvg and coordinate-wise median under label-flip, sign-flip, and random-weight attacks. A stricter three-seed full-path condition evaluates B4 and B7 with five clients and one malicious participant. These bounded tests support fail-closed and robust-aggregation behavior for the executed attacks, but they do not establish universal poisoning detection.
 % ============================================================
 % ============================================================
 \section{Discussion}
 \label{sec:discussion}
 % ============================================================
 
-The final FairAI validation demonstrates that ethical federated learning can be operationalized as a governed model-artifact workflow rather than as a post-hoc evaluation step. The results show that local models can be trained privately, packaged as traceable artifacts, verified against an eligibility policy, recorded through smart-contract governance, and selectively aggregated only when approved. This directly supports the approval-gated model formalized in Eq. \eqref{eq:approval-gate-model} and the approved-only aggregation rule in Eq. \eqref{eq:approved-fedavg}. In contrast to conventional FL, where participation often determines whether an update enters the aggregation pool, FairAI makes aggregation eligibility an auditable governance decision.
+The measured evaluation supports FairAI as an auditable approval-gated workflow, but it also makes the trade-offs and trust assumptions visible. On the main heterogeneous condition, B3 reduced descriptive disparity on both datasets while lowering accuracy, with statistically significant paired changes on COMPAS but not on Adult after Holm correction. Consequently, the evidence supports configurable enforcement and traceability rather than a universal claim that gating improves fairness without utility loss. This interpretation is consistent with work showing that fairness behavior depends on data heterogeneity, metric choice, and optimization design \cite{intro_4,intro_5,rw_16}.
 
-The results provide evidence for three main framework-level claims. First, FairAI enforces ethical eligibility before aggregation. Table \ref{tab:results-node-eligibility} and Figure \ref{fig:results-policy-compliance} show that Node~1 and Node~2 satisfied the configured accuracy and demographic parity constraints, while Node~3 was rejected because its demographic parity gap exceeded the configured threshold. This is important because the rejected node still achieved high local accuracy, demonstrating that accuracy alone is insufficient for ethical aggregation. This finding is consistent with fairness-aware FL research showing that fairness, privacy, heterogeneity, and aggregation behavior can interact in complex ways \cite{intro_4,intro_5,rw_16}. FairAI does not assume that one fairness metric is universally sufficient; rather, it provides a mechanism for enforcing configurable ethical policies before the global model is updated.
+The storage and ledger components provide a concrete provenance chain. Model artifacts remain off-chain in Kubo/IPFS, while CIDs, round state, verifier decisions, and publication events are bound to the governance record. The fail-closed outage experiment is particularly relevant: prior approval alone was insufficient for aggregation when the referenced artifact could not be retrieved and byte-validated. This extends the usual blockchain--IPFS division of large off-chain objects and on-chain references \cite{intro_8,rw_21} with an aggregation-time availability and integrity check.
 
-Second, FairAI provides traceable and auditable model provenance. The IPFS-backed artifact model stores local models, proof artifacts, metrics, metadata, public inputs, and manifests off-chain, while CIDs and verification decisions are recorded through the governance path. Figure \ref{fig:results-proof-ipfs} summarizes the proof-generation and IPFS artifact-traceability results, and Table \ref{tab:results-validation-checklist} confirms that the framework validated strict Kubo/IPFS storage, CID registration, proof generation, local verification, signed verifier-service decision recording, and lifecycle archival. This follows the blockchain--IPFS pattern in which large artifacts remain outside the ledger while immutable references are stored on-chain \cite{intro_8,rw_21}. In FairAI, however, CIDs are not only storage references; they connect each submitted model to its verification status, approval decision, and aggregation eligibility.
+The V2 proof results also narrow what ``verifiable'' means in this implementation. The circuit and verifier establish that supplied public metrics satisfy the encoded policy and are bound to the submitted artifact context. The direct Solidity verifier and signed EIP-712 path were both exercised locally. However, the false-metric experiment demonstrates that the circuit does not prove correct metric derivation from private examples; an authorized-verifier compromise also remains in the trust boundary. A production claim would require a multi-party trusted setup or transparent proof system, stronger private-computation semantics, hardened key custody, independent verifier governance, and external security review.
 
-Third, FairAI remains operational after enforcing the approval gate. Table \ref{tab:results-global-publication} shows that only the two approved local models were aggregated, producing a global validation accuracy of \(0.938889\) and a demographic parity gap of \(0.144269\). These values should be interpreted as feasibility indicators rather than as the sole contribution of the work. The central contribution is that the final global model was built only from artifacts that passed the governance workflow. The repeated-trial results in Table \ref{tab:results-repeated-trials} and Figure \ref{fig:results-cost-performance} further show stable approval rate, global accuracy, fairness gap, proof-generation time, IPFS retrieval time, runtime, and global publication gas under the tested configuration.
+FairAI and robust aggregation address different stages. The approval gate can exclude unauthorized, unverifiable, policy-violating, or unavailable artifacts before aggregation. Coordinate-wise median can reduce the influence of some malicious updates that remain eligible. Neither control alone detects all poisoning, and the bounded attack suite should not be read as a general Byzantine-security proof \cite{intro_13,rw_26,rw_27,rw_28}. The B7 composition is therefore best understood as defense in depth under the executed attack models.
 
-The verification pathway also clarifies the role of proof-based governance in FairAI. In the reported implementation, Groth16 proofs are generated from the eligibility circuit and checked locally using \texttt{snarkjs}; the on-chain decision is then recorded through a signed verifier-service path. This architecture separates proof computation from governance recording: the verifier checks the proof and signs the decision, while the contract verifies the authorized decision and records the approval or rejection. This design is consistent with recent verifiable-FL work in which proof systems support privacy-preserving verification of distributed learning claims \cite{intro_9,intro_10,intro_14,rw_22}. It also keeps FairAI modular, since the same governance workflow can support direct on-chain verification, signed verifier services, or future optimized ZKP verification backends.
+The system measurements establish local feasibility, not production capacity. The 50-client condition uses logical clients on one machine; Kubo peers communicate over loopback; Hardhat does not model public-chain confirmation, fees, or congestion; and Azure configurations were not executed. Adult and COMPAS, logistic regression, one small MLP, and the reported seed counts do not establish external validity across domains or model families. The original three-node synthetic output remains useful for regression testing only and is not part of the inferential evidence.
 
-The measured overhead is expected because FairAI introduces governance stages that are absent from baseline FL: artifact publication, proof generation, CID registration, signed verification, contract logging, approved-only retrieval, and auditable global publication. The gas measurements in Table \ref{tab:results-gas} quantify the on-chain cost of recording node submissions/audit events and global publication. These costs are not incidental; they represent the cost of auditability, traceability, and enforceability. In production deployments, this trade-off can be tuned through batching, proof optimization, storage-gateway optimization, permissioned deployment, or alternative verification backends.
-
-FairAI also complements robust FL defenses. Byzantine-resilient aggregation methods typically attempt to reduce the effect of malicious updates after they enter the candidate update pool \cite{intro_13,rw_26,rw_27,rw_28}. FairAI acts earlier: a local model must pass the approval workflow before it becomes eligible for retrieval and aggregation. This creates a pre-aggregation governance boundary that can prevent policy-violating, unverifiable, or unauthorized artifacts from influencing the global model. The framework also improves non-repudiation because submissions, CIDs, decisions, and publication records are logged through the governance layer.
-
-The evaluation remains a framework validation. The workload uses three local nodes, synthetic local datasets, logistic regression, and three repeated trials. These choices are appropriate for validating the complete FairAI governance path, but larger deployments, additional datasets, more complex models, and broader adversarial settings are needed to characterize scalability and generalization. In addition, direct Solidity Groth16 verification remains a separate integration path, and richer fairness policies with domain-specific protected attributes should be evaluated in future work. Overall, the findings support the central claim of this paper: ethical FL can be implemented as an auditable approval-gated workflow over model artifacts, rather than as a post-hoc assessment of a completed global model.
+Within these limits, the evaluation improves on a proof-of-concept demonstration by providing real datasets, paired multi-seed comparisons, explicit baselines and ablations, measured proof/IPFS/gas microbenchmarks, policy sensitivity, logical-client scaling, attack tests, machine-readable provenance, and deterministic publication artifacts. A production deployment remains future engineering and evaluation work rather than a label applied to the current local implementation.
 
 % ------------------------------------------------------------
 \subsection{Comparative Analysis}
@@ -1163,17 +926,19 @@ To contextualize the findings, Table \ref{tab:comparative-analysis-results} comp
 	\textit{Abbreviations:} BC = blockchain/smart contracts; IPFS = off-chain artifact storage; ZKP = proof-based verification; Fair = fairness governance; Rob. = robustness/security; Gate = approval-gated aggregation.
 \end{table*}
 
+\clearpage
+
 % ============================================================
 % ============================================================
 \section{Conclusion and Future Work}
 \label{sec:conclusion-future-work}
 % ============================================================
 
-This paper presented \textit{FairAI}, a verifiable ethical federated learning framework that integrates blockchain-based auditability, IPFS-based artifact traceability, ethical smart-contract governance, proof-based eligibility verification, and approval-gated aggregation. FairAI addresses a key limitation of conventional FL by treating each local model as a governed artifact rather than an automatically aggregable update. In the proposed workflow, local models are trained privately, linked to CIDs and verification metadata, evaluated against an ethical policy, and included in the global aggregation only after approval.
+This paper presented \textit{FairAI}, an approval-gated federated-learning framework that combines fairness-policy enforcement, content-addressed artifact storage, smart-contract audit records, proof-based eligibility checks, and approved-only aggregation. The implementation was evaluated on Adult and COMPAS with paired multi-seed baselines, heterogeneous client partitions, policy sensitivity, logical-client scaling, proof and IPFS microbenchmarks, and bounded attack tests.
 
-The framework was validated through an implementation that exercised the complete FairAI governance path. The validation confirmed that FairAI can reject a fairness-noncompliant model before aggregation, aggregate only approved local models, publish the global model and evaluation summary as content-addressed artifacts, and preserve an auditable lifecycle from submission to archival. In the final run, two nodes were approved and one node was rejected because its demographic parity gap exceeded the configured threshold. Approved-only weighted FedAvg achieved a global validation accuracy of \(0.938889\) with a demographic parity gap of \(0.144269\), demonstrating that ethical eligibility can be enforced without preventing global model construction.
+The results show that the gate is operational and auditable, but that fairness and utility outcomes depend on the dataset and policy. Under strong heterogeneity, B3 reduced descriptive disparity while lowering accuracy; corrected paired differences were significant for the reported COMPAS accuracy and EOdds outcomes but not for the corresponding Adult outcomes. The two-peer Kubo path, direct and signed verifier paths, ledger controls, and fail-closed artifact retrieval were exercised locally. The false-metric and authorized-verifier tests identify the principal remaining trust limitations.
 
-Overall, FairAI shows that ethical FL can be implemented as an auditable approval-gated governance workflow over model artifacts, rather than as a post-hoc assessment of a completed model. Future work will evaluate larger and more heterogeneous deployments, additional datasets and model families, optimized on-chain or hybrid ZKP verification, richer domain-specific fairness policies, and broader adversarial conditions including Byzantine behavior, verifier compromise, storage unavailability, gas-cost optimization, and deployment on permissioned or public blockchain environments.
+FairAI should therefore be described as a validated research implementation rather than a production deployment. Future work should prove metric derivation from private computation, use a production-grade ceremony or transparent proof system, distribute clients and storage across independent hosts and networks, execute cloud and public/permissioned-chain studies, broaden datasets and model families, and obtain independent contract and cryptographic review.
 
 %=============================================================================
 \section*{Supplementary Materials}
@@ -1193,7 +958,7 @@ This research received no external funding.
 %=============================================================================
 \section*{Institutional Review Board Statement}
 
-Not applicable. This study did not involve humans or animals.
+Not applicable. The evaluation used previously published benchmark datasets and did not recruit participants or collect new human-subject data.
 
 %=============================================================================
 \section*{Informed Consent Statement}
@@ -1203,7 +968,7 @@ Not applicable. This study did not involve human participants.
 %=============================================================================
 \section*{Data Availability Statement}
 
-The data supporting the findings of this study are available through the project GitHub repository \cite{fairai_mvp_2026}. The repository includes the generated CSV files, consolidated results workbook, independent chart-data workbooks, raw output artifacts, experiment summaries, and scripts used to reproduce the reported results. No human-subject data were used in this study.
+The code, configuration, run manifests, generated CSV files, consolidated results workbook, experiment summaries, and scripts supporting the reported results are available through the project GitHub repository \cite{fairai_mvp_2026}. Adult and COMPAS are public benchmark datasets subject to their original distribution terms; the repository records the dataset checksums used by the experiments.
 
 %=============================================================================
 \section*{Acknowledgments}
